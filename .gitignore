@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+.vs/
+BinObj/
+*.ilk
+*.pdb
+*.cso
+
+# DirectX Texture libraries
+!DirectXTex.lib
+!DirectXTex_Debug.lib
+
+# Except Resources To Be Copied
+Bin/
+Engine/
+!/GameEngine/Bin/
