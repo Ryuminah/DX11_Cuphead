@@ -19,9 +19,12 @@ CTransform::CTransform()    :
     m_UpdatePos(true),
     m_UpdatePosZ(false),
     m_DefaultZ(0.f),
+    m_PrevWorldPos(0.f,0.f,0.f),
     m_PhysicsSimulate(false),
     m_Pivot(0.5f,0.f,0.f),
-    m_Gravity(5.f),m_GravityAccel(25.5f)
+    m_Gravity(5.f),m_GravityAccel(25.5f),
+    m_bCanMove(false),
+    m_bUseBlockMovement(false)
 {
     for (int i = 0; i < AXIS_END; ++i)
     {
@@ -1514,10 +1517,13 @@ bool CTransform::Init()
 
 void CTransform::Update(float DeltaTime)
 {
+    // 내 현재 위치의 값을 이전 위치의 값으로 저장해둠
+  
 }
 
 void CTransform::PostUpdate(float DeltaTime)
 {
+
     // 중력 적용
     if (m_PhysicsSimulate)
     {
@@ -1566,6 +1572,7 @@ void CTransform::PostUpdate(float DeltaTime)
         }
     }
 
+
     if (m_UpdateScale)
         m_matScale.Scaling(m_WorldScale);
 
@@ -1573,7 +1580,16 @@ void CTransform::PostUpdate(float DeltaTime)
         m_matRot.Rotation(m_WorldRot);
 
     if (m_UpdatePos)
+    {
+        // 움직일 수 없는 상황이면 이전 위치로 되돌린다.
+        if (!m_bCanMove)
+        {
+            //m_WorldPos = m_PrevWorldPos;
+        }
+
         m_matPos.Translation(m_WorldPos);
+    }
+      
 
     m_matWorld = m_matScale * m_matRot * m_matPos;
 }

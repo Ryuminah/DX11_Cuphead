@@ -83,6 +83,7 @@ void CCollisionSection::Collision(float DeltaTime)
 			CollisionProfile* SrcProfile = Src->GetProfile();
 			CollisionProfile* DestProfile = Dest->GetProfile();
 
+			// 콜리전 반응이 Ignore일 경우 무시한다.
 			if (SrcProfile->vecChannel[(int)DestProfile->Channel].Interaction ==
 				Collision_Interaction::Ignore ||
 				DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction ==
@@ -115,6 +116,9 @@ void CCollisionSection::Collision(float DeltaTime)
 				Src->CallCollisionCallback(Collision_State::End);
 				Dest->CallCollisionCallback(Collision_State::End);
 			}
+
+			// 콜리전의 충돌 판정이 전부 끝난 이후.
+			
 		}
 	}
 }

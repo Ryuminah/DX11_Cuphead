@@ -58,8 +58,14 @@ void CColliderBox2D::PostUpdate(float DeltaTime)
 {
 	CCollider::PostUpdate(DeltaTime);
 
-	m_Info.Center.x = GetWorldPos().x;
-	m_Info.Center.y = GetWorldPos().y;
+	/*m_Info.Center.x = GetWorldPos().x;
+	m_Info.Center.y = GetWorldPos().y;*/
+
+	// Pivot에 따른 충돌 범위 계산을 보정해줌.
+	Vector3	Pivot = GetPivot() - 0.5f;
+
+	m_Info.Center.x = GetWorldPos().x - Pivot.x * GetExtent().x;
+	m_Info.Center.y = GetWorldPos().y - Pivot.y * GetExtent().y;
 
 	m_Info.Axis[AXIS_X].x = GetAxis(AXIS_X).x;
 	m_Info.Axis[AXIS_X].y = GetAxis(AXIS_X).y;

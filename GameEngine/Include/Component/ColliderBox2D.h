@@ -28,6 +28,12 @@ public:
 		SetWorldScale(m_Info.Length[0] * 2.f, m_Info.Length[1] * 2.f, 1.f);
 	}
 
+	Vector2 GetExtent()
+	{
+		Vector3 Extent = m_Info.Max - m_Info.Min;
+		return Vector2(Extent.x, Extent.y);
+	}
+
 public:
 	virtual void Start();
 	virtual bool Init();

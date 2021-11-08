@@ -310,7 +310,7 @@ void CSceneCollision::Collision(float DeltaTime)
 		SectionInfo->vecSection[i]->Clear();
 	}
 
-
+	// 충돌이 전부 끝난 이후
 
 
 

@@ -59,6 +59,8 @@ private:
 	float	m_GravityAccel;
 	float	m_Gravity;
 	bool	m_PhysicsSimulate;
+	bool	m_bUseBlockMovement;
+	bool	m_bCanMove;
 
 public:
 	float GetGravity() const
@@ -192,6 +194,8 @@ private:    // World Data
 	Vector3 m_WorldScale;
 	Vector3 m_WorldRot;
 	Vector3 m_WorldPos;
+	Vector3 m_PrevWorldPos;
+
 	Vector3 m_Pivot;
 	Vector3 m_MeshSize;
 
