@@ -42,7 +42,6 @@ protected:
 	// 나중에 움직임 전용으로 빼기
 	float m_Speed;
 	bool bIsAttack;	// 공격중인지
-	bool bCanMove;	// 움직일 수 있는지
 
 
 public:

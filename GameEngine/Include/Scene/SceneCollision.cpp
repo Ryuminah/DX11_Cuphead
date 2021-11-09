@@ -294,6 +294,8 @@ void CSceneCollision::Collision(float DeltaTime)
 		(*iter)->CheckPrevColliderSection();
 	}
 
+	// 물체끼리의 충돌이 끝난 이후
+
 	// 마우스와 물체 충돌
 	CollisionMouse(DeltaTime);
 

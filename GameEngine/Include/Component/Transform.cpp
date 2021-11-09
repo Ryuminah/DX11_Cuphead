@@ -23,7 +23,7 @@ CTransform::CTransform()    :
     m_PhysicsSimulate(false),
     m_Pivot(0.5f,0.f,0.f),
     m_Gravity(5.f),m_GravityAccel(25.5f),
-    m_bCanMove(false),
+    m_bCanMove(true),
     m_bUseBlockMovement(false)
 {
     for (int i = 0; i < AXIS_END; ++i)
@@ -381,6 +381,7 @@ void CTransform::SetRelativeRotationZ(float z)
 
 void CTransform::SetRelativePos(const Vector3& Pos)
 {
+
     m_Velocity = Pos - m_RelativePos;
 
     m_RelativePos = Pos;
@@ -717,6 +718,8 @@ void CTransform::AddRelativeRotationZ(float z)
 
 void CTransform::AddRelativePos(const Vector3& Pos)
 {
+    // 다음 위치가 움직일 수 있는 위치인지 체크해줘야 함.
+
     m_Velocity += Pos;
 
     m_RelativePos += Pos;
@@ -1517,13 +1520,11 @@ bool CTransform::Init()
 
 void CTransform::Update(float DeltaTime)
 {
-    // 내 현재 위치의 값을 이전 위치의 값으로 저장해둠
   
 }
 
 void CTransform::PostUpdate(float DeltaTime)
 {
-
     // 중력 적용
     if (m_PhysicsSimulate)
     {
@@ -1581,16 +1582,10 @@ void CTransform::PostUpdate(float DeltaTime)
 
     if (m_UpdatePos)
     {
-        // 움직일 수 없는 상황이면 이전 위치로 되돌린다.
-        if (!m_bCanMove)
-        {
-            //m_WorldPos = m_PrevWorldPos;
-        }
 
-        m_matPos.Translation(m_WorldPos);
+		m_matPos.Translation(m_WorldPos);
     }
-      
-
+    
     m_matWorld = m_matScale * m_matRot * m_matPos;
 }
 
@@ -1598,7 +1593,7 @@ void CTransform::SetTransform()
 {
     m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
 
-    m_pCBuffer->SetWorldMatrix(m_matWorld);
+	m_pCBuffer->SetWorldMatrix(m_matWorld);
 
     CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
     
@@ -1614,7 +1609,12 @@ void CTransform::SetTransform()
     m_pCBuffer->SetMeshSize(m_MeshSize);
 
     m_pCBuffer->UpdateCBuffer();
-}
+
+    // 화면상에 그려진 최종 위치 정보를 저장
+    m_PrevWorldPos = m_WorldPos;
+
+ }
+
 
 void CTransform::ComputeWorld()
 {

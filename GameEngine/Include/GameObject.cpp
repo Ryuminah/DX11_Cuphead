@@ -207,6 +207,7 @@ CGameObject* CGameObject::Clone()
 
 void CGameObject::Animation2DNotify(const std::string& Name)
 {
+
 }
 
 void CGameObject::ClearTransformState()
@@ -473,6 +474,11 @@ void CGameObject::SetMeshSize(float x, float y, float z)
 void CGameObject::SetDefaultZ(float Z)
 {
 	m_RootComponent->SetDefaultZ(Z);
+}
+
+void CGameObject::SetCanMove(bool bCanMove)
+{
+	m_RootComponent->SetCanMove(bCanMove);
 }
 
 void CGameObject::SetPhysicsSimulate(bool Simulate)

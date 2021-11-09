@@ -2,6 +2,7 @@
 #include "CollisionSection.h"
 #include "../Component/Collider.h"
 #include "../Input.h"
+#include "../GameObject.h"
 
 CCollisionSection::CCollisionSection()
 {
@@ -92,10 +93,14 @@ void CCollisionSection::Collision(float DeltaTime)
 
 			if (Src->Collision(Dest))
 			{
+				//Src->GetOwner()->SetCanMove(false);
+
 				// 이전에 이 충돌체와 충돌했는지를 판단한다.
 				// 이전충돌체에 없다면 지금 막 충돌을 시작한다는 의미이다.
 				if (!Src->CheckPrevCollision(Dest))
 				{
+					// 충돌을 막음
+
 					Src->AddPrevCollider(Dest);
 					Dest->AddPrevCollider(Src);
 
@@ -109,6 +114,7 @@ void CCollisionSection::Collision(float DeltaTime)
 			// 이전에 충돌되었던 물체라면 부딪힌 물체가 지금 떨어진다는 의미이다.
 			else if (Src->CheckPrevCollision(Dest))
 			{
+
 				Src->DeletePrevCollider(Dest);
 				Dest->DeletePrevCollider(Src);
 
@@ -116,9 +122,6 @@ void CCollisionSection::Collision(float DeltaTime)
 				Src->CallCollisionCallback(Collision_State::End);
 				Dest->CallCollisionCallback(Collision_State::End);
 			}
-
-			// 콜리전의 충돌 판정이 전부 끝난 이후.
-			
 		}
 	}
 }

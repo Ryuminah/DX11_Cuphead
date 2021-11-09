@@ -58,6 +58,7 @@ bool CMugman::Init()
 
 	m_LeftMuzzle = CreateSceneComponent<CSceneComponent>("LeftMuzzle");
 	m_RightMuzzle = CreateSceneComponent<CSceneComponent>("RightMuzzle");
+
 	
 
 	//m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
@@ -129,6 +130,7 @@ bool CMugman::Init()
 
 void CMugman::Update(float DeltaTime)
 {
+
 	CFightObject::Update(DeltaTime);
 
 
@@ -298,6 +300,8 @@ void CMugman::MoveLeft(float DeltaTime)
 	{
 		m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
 	}
+
+	SetCanMove(true);
 	AddRelativePos(GetAxis(AXIS_X) * -m_Speed * DeltaTime);
 }
 

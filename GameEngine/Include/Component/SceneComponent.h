@@ -125,6 +125,7 @@ public:
     void SetMeshSize(float x, float y, float z);
     void SetPhysicsSimulate(bool Simulate);
     void SetDefaultZ(float Z);
+    void SetCanMove(bool bCanMove);
 
  public:
      float GetGravityAccel();

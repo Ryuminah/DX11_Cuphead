@@ -147,6 +147,7 @@ public:
 	void SetMeshSize(const Vector3& Size);
 	void SetMeshSize(float x, float y, float z);
 	void SetDefaultZ(float Z);
+	void SetCanMove(bool bCanMove);
 
 public:
 	void SetPhysicsSimulate(bool Simulate);

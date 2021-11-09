@@ -587,6 +587,18 @@ void CSceneComponent::SetDefaultZ(float Z)
     m_pTransform->SetDefaultZ(Z);
 }
 
+void CSceneComponent::SetCanMove(bool bCanMove)
+{
+    m_pTransform->SetCanMove(bCanMove);
+
+    size_t  Size = m_vecChild.size();
+
+    for (size_t i = 0; i < Size; ++i)
+    {
+        m_vecChild[i]->SetCanMove(bCanMove);
+    }
+}
+
 float CSceneComponent::GetGravityAccel()
 {
     return m_pTransform->GetGravityAccel();

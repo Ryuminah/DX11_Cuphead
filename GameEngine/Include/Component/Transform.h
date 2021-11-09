@@ -55,7 +55,7 @@ private:
 	bool    m_UpdateRot;
 	bool    m_UpdatePos;
 	bool	m_UpdatePosZ;
-	
+
 	float	m_GravityAccel;
 	float	m_Gravity;
 	bool	m_PhysicsSimulate;
@@ -134,6 +134,11 @@ public:
 		m_UpdatePosZ = UpdatePosZ;
 	}
 
+	void SetCanMove(bool bCanMove)
+	{
+		m_bCanMove = bCanMove;
+	}
+
 	void InheritScale();
 	void InheritRot();
 	void InheritPos();
@@ -203,6 +208,9 @@ private:    // World Data
 	Matrix  m_matRot;
 	Matrix  m_matPos;
 	Matrix  m_matWorld;
+	Matrix  m_PrevMatWorld;
+
+
 
 public:
 	Vector3 GetWorldScale() const
@@ -249,7 +257,7 @@ public:
 	{
 		return m_matWorld;
 	}
-	
+
 public:
 	void SetPivot(const Vector3& Pivot)
 	{
@@ -269,6 +277,11 @@ public:
 	void SetMeshSize(float x, float y, float z)
 	{
 		m_MeshSize = Vector3(x, y, z);
+	}
+
+	void SavePrevWorldPos()
+	{
+		m_PrevWorldPos = m_WorldPos;
 	}
 
 public:
