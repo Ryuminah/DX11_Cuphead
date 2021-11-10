@@ -20,6 +20,7 @@ protected:
 	bool            m_Start;
 	float			m_LifeTime;
 	bool			m_LifeTimeEnable;
+	
 
 public:
 	void SetLifeTime(float Time)
@@ -136,6 +137,7 @@ public:
 	Vector3 GetWorldPos()   const;
 	Vector3 GetPivot()  const;
 	Vector3 GetMeshSize()   const;
+	Vector3 GetPrevWorldPos() const;
 	Matrix GetScaleMatrix() const;
 	Matrix GetRotatinMatrix()   const;
 	Matrix GetTranslationMatrix()   const;
@@ -148,6 +150,7 @@ public:
 	void SetMeshSize(float x, float y, float z);
 	void SetDefaultZ(float Z);
 	void SetCanMove(bool bCanMove);
+	void SetPrevWorldPos(const Vector3& PrevWorldPos);
 
 public:
 	void SetPhysicsSimulate(bool Simulate);

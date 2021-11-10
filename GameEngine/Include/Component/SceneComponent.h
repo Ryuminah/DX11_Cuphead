@@ -113,10 +113,12 @@ public:
     Vector3 GetWorldPos()   const;
     Vector3 GetPivot()  const;
     Vector3 GetMeshSize()   const;
+    Vector3 GetPrevWorldPos() const;
     Matrix GetScaleMatrix() const;
     Matrix GetRotatinMatrix()   const;
     Matrix GetTranslationMatrix()   const;
     Matrix GetWorldMatrix() const;
+    
 
 public:
     void SetPivot(const Vector3& Pivot);
@@ -126,6 +128,7 @@ public:
     void SetPhysicsSimulate(bool Simulate);
     void SetDefaultZ(float Z);
     void SetCanMove(bool bCanMove);
+    void SetPrevWorldPos(const Vector3& PrevWorldPos);
 
  public:
      float GetGravityAccel();

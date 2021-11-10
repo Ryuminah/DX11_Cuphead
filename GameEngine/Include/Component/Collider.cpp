@@ -9,6 +9,7 @@ CCollider::CCollider()
 {
 	m_SceneComponentType = SceneComponent_Type::Primitive;
 	m_ColliderSpace = Collider_Space::Collider3D;
+	m_ColliderType = Collider_Type::Character;
 	m_PrimitiveType = PrimitiveComponent_Type::Primitive3D;
 	m_3DType = RT3D_Default;
 

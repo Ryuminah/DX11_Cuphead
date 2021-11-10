@@ -1,6 +1,7 @@
 #include "StepCloud.h"
 #include "../Animation2D/StepCloudAnimation.h"
 
+
 CStepCloud::CStepCloud() 
 {
 
@@ -39,11 +40,14 @@ bool CStepCloud::Init()
 	m_Collider->SetExtent(100.f, 20.f);
 	m_Collider->SetPivot(0.5f, 0.5f, 0.f);
 	m_Collider->SetCollisionProfile("Static");
+	m_Collider->SetColliderType(Collider_Type::Static);
+
 
 	m_TestCollider->SetExtent(640.f, 20.f);
 	m_TestCollider->SetPivot(0.0f, 0.0f, 0.f);
 	m_TestCollider->SetRelativePos(-800.f,-400.f,0.f);
 	m_TestCollider->SetCollisionProfile("Static");
+	m_TestCollider->SetColliderType(Collider_Type::Static);
 
 	m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_TestCollider);

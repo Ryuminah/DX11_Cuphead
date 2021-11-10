@@ -431,6 +431,11 @@ Vector3 CGameObject::GetMeshSize() const
 	return m_RootComponent.Get()->GetMeshSize();
 }
 
+Vector3 CGameObject::GetPrevWorldPos() const
+{
+	return m_RootComponent.Get()->GetPrevWorldPos();
+}
+
 Matrix CGameObject::GetScaleMatrix() const
 {
 	return m_RootComponent.Get()->GetScaleMatrix();
@@ -481,6 +486,11 @@ void CGameObject::SetCanMove(bool bCanMove)
 	m_RootComponent->SetCanMove(bCanMove);
 }
 
+void CGameObject::SetPrevWorldPos(const Vector3& PrevWorldPos)
+{
+	m_RootComponent->SetPrevWorldPos(PrevWorldPos);
+}
+
 void CGameObject::SetPhysicsSimulate(bool Simulate)
 {
 	m_RootComponent->SetPhysicsSimulate(Simulate);
@@ -489,12 +499,12 @@ void CGameObject::SetPhysicsSimulate(bool Simulate)
 
 float CGameObject::GetGravityAccel()
 {
-	return m_RootComponent->GetGravityAccel();
+	return m_RootComponent.Get()->GetGravityAccel();
 }
 
 float CGameObject::GetGravity()
 {
-	return m_RootComponent->GetGravity();
+	return m_RootComponent.Get()->GetGravity();
 }
 
 void CGameObject::SetWorldScale(const Vector3& Scale)

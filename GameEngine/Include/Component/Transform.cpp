@@ -1498,6 +1498,59 @@ void CTransform::AddWorldPos(float x, float y, float z)
     }
 }
 
+void CTransform::CaculateMatWorld()
+{
+    if (m_UpdatePosZ)
+    {
+        CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
+
+        float   CameraBottom = Camera->GetCameraBottom();
+
+        Resolution  RS = CDevice::GetInst()->GetResolution();
+
+        float   PivotY = m_WorldPos.y - m_Pivot.y * m_WorldScale.y;
+
+        float   ConvertY = PivotY - CameraBottom;
+
+        float   Ratio = ConvertY / (RS.Height * 2.f);
+
+        // Back
+        if (m_DefaultZ >= 0.7f)
+        {
+            // Min : 0.7f   Max : 0.99999f 
+            m_WorldPos.z = (0.99999f - 0.7f) * Ratio + 0.7f;
+        }
+
+        // Default
+        else if (m_DefaultZ >= 0.3f)
+        {
+            // Min : 0.3f   Max : 0.69999f 
+            m_WorldPos.z = (0.69999f - 0.3f) * Ratio + 0.3f;
+        }
+
+        // Particle
+        else
+        {
+            // Min : 0.f   Max : 0.29999f 
+            m_WorldPos.z = 0.29999f * Ratio;
+        }
+    }
+
+    if (m_UpdateScale)
+        m_matScale.Scaling(m_WorldScale);
+
+    if (m_UpdateRot)
+        m_matRot.Rotation(m_WorldRot);
+
+    if (m_UpdatePos)
+    {
+
+        m_matPos.Translation(m_WorldPos);
+    }
+
+    m_matWorld = m_matScale * m_matRot * m_matPos;
+}
+
 void CTransform::Start()
 {
     m_VelocityScale = Vector3::Zero;
@@ -1593,6 +1646,14 @@ void CTransform::SetTransform()
 {
     m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
 
+    if (!m_bCanMove)
+    {
+        // 움직인 만큼 되돌려준 뒤, 다시 계산해줌
+        Vector3 vMove = m_PrevWorldPos - m_WorldPos;
+        AddWorldPos(vMove);
+    }
+
+    CaculateMatWorld();
 	m_pCBuffer->SetWorldMatrix(m_matWorld);
 
     CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
@@ -1614,7 +1675,6 @@ void CTransform::SetTransform()
     m_PrevWorldPos = m_WorldPos;
 
  }
-
 
 void CTransform::ComputeWorld()
 {

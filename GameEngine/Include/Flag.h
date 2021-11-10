@@ -155,6 +155,12 @@ enum class Collider_Shape
     Pixel
 };
 
+enum class Collider_Type
+{
+    Character,
+    Static
+};
+
 enum class Render_Space
 {
     Render2D,

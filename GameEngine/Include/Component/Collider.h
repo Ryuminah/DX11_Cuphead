@@ -24,6 +24,7 @@ protected:
 protected:
 	Collider_Shape	m_ColliderShape;
 	Collider_Space	m_ColliderSpace;
+	Collider_Type	m_ColliderType;
 	std::vector<int>	m_vecSectionIndex;
 	Vector3		m_Min;
 	Vector3		m_Max;
@@ -63,6 +64,11 @@ public:
 		return m_ColliderSpace;
 	}
 
+	Collider_Type GetColliderType() const
+	{
+		return m_ColliderType;
+	}
+
 	Vector3 GetMin()	const
 	{
 		return m_Min;
@@ -86,6 +92,12 @@ public:
 	void SetHitResult(HitResult result)
 	{
 		m_HitResult = result;
+	}
+
+public:
+	void SetColliderType(Collider_Type type)
+	{
+		m_ColliderType = type;
 	}
 
 public:

@@ -59,7 +59,6 @@ bool CMugman::Init()
 	m_LeftMuzzle = CreateSceneComponent<CSceneComponent>("LeftMuzzle");
 	m_RightMuzzle = CreateSceneComponent<CSceneComponent>("RightMuzzle");
 
-	
 
 	//m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
 	//m_Camera = CreateSceneComponent<CCamera>("Camera");
@@ -95,8 +94,8 @@ bool CMugman::Init()
 
 	// 프레임 종료 콜백 설정
 
-	m_Sprite->AddChild(m_Rotation);
-	m_Sprite->AddChild(m_Muzzle);
+	//m_Sprite->AddChild(m_Rotation);
+	//m_Sprite->AddChild(m_Muzzle);
 
 	m_Muzzle->SetInheritRotZ(true);
 	m_Muzzle->SetRelativePos(Vector3(0.f, 75.f, 0.f));
@@ -130,7 +129,6 @@ bool CMugman::Init()
 
 void CMugman::Update(float DeltaTime)
 {
-
 	CFightObject::Update(DeltaTime);
 
 
@@ -251,6 +249,7 @@ void CMugman::MoveUp(float DeltaTime)
 	}
 
 	m_Animation->ChangeAnimation("Mugman_AimUp_R");
+
 	AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
 }
 
@@ -301,7 +300,6 @@ void CMugman::MoveLeft(float DeltaTime)
 		m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
 	}
 
-	SetCanMove(true);
 	AddRelativePos(GetAxis(AXIS_X) * -m_Speed * DeltaTime);
 }
 

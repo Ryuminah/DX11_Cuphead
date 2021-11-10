@@ -208,11 +208,15 @@ private:    // World Data
 	Matrix  m_matRot;
 	Matrix  m_matPos;
 	Matrix  m_matWorld;
-	Matrix  m_PrevMatWorld;
 
 
 
 public:
+	Vector3 GetPrevWorldPos() const
+	{
+		return m_PrevWorldPos;
+	}
+
 	Vector3 GetWorldScale() const
 	{
 		return m_WorldScale;
@@ -279,9 +283,9 @@ public:
 		m_MeshSize = Vector3(x, y, z);
 	}
 
-	void SavePrevWorldPos()
+	void SetPrevWorldPos(const Vector3& PrevWorldPos)
 	{
-		m_PrevWorldPos = m_WorldPos;
+		m_PrevWorldPos = PrevWorldPos;
 	}
 
 public:
@@ -303,6 +307,7 @@ public:
 	void AddWorldRotationZ(float z);
 	void AddWorldPos(const Vector3& Pos);
 	void AddWorldPos(float x, float y, float z);
+	void CaculateMatWorld();
 
 public:
 	void Start();

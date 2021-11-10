@@ -537,6 +537,11 @@ Vector3 CSceneComponent::GetMeshSize() const
     return m_pTransform->GetMeshSize();
 }
 
+Vector3 CSceneComponent::GetPrevWorldPos() const
+{
+    return m_pTransform->GetPrevWorldPos();
+}
+
 Matrix CSceneComponent::GetScaleMatrix() const
 {
     return m_pTransform->GetScaleMatrix();
@@ -596,6 +601,18 @@ void CSceneComponent::SetCanMove(bool bCanMove)
     for (size_t i = 0; i < Size; ++i)
     {
         m_vecChild[i]->SetCanMove(bCanMove);
+    }
+}
+
+void CSceneComponent::SetPrevWorldPos(const Vector3& PrevWorldPos)
+{
+    m_pTransform->SetPrevWorldPos(PrevWorldPos);
+
+    size_t  Size = m_vecChild.size();
+
+    for (size_t i = 0; i < Size; ++i)
+    {
+        m_vecChild[i]->SetPrevWorldPos(PrevWorldPos);
     }
 }
 
