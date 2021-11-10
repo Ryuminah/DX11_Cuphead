@@ -41,7 +41,15 @@ BinObj/
 !DirectXTex.lib
 !DirectXTex_Debug.lib
 
+# Fmod libraries
+!fmod.dll
+!fmod_vc.lib
+!fmod64_vc.lib
+!fmod64.dll
+
 # Except Resources To Be Copied
 Bin/
 Engine/
 !/GameEngine/Bin/
+
+
