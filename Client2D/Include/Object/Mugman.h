@@ -96,5 +96,6 @@ public:
 	// ∆Ì¿«º∫
 public:
 	void ChangeAnimDirection();
+	void CollisionBegin(const HitResult& result, CCollider* Collider);
 };
 

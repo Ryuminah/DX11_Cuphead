@@ -122,7 +122,11 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
 
 	SetDefaultZ(0.1f);
-	SetPhysicsSimulate(false);
+	SetPhysicsSimulate(true);
+
+	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
+	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
+
 
 	return true;
 }
@@ -152,14 +156,13 @@ void CMugman::Update(float DeltaTime)
 		
 		m_JumpAccel -= GetGravityAccel() * DeltaTime;
 
-		// 점프가 끝났을 경우
-		if (GetRelativePos().y <= m_PosY)
+		// 땅일 경우 점프가 끝난 것으로 간주
+		if (m_bIsGround)
 		{ 
 			JumpEnd();
-			SetPhysicsSimulate(false);
 
 			// 높이 원래대로 되돌려줌
-			SetRelativePos(GetRelativePos().x, m_PosY, GetRelativePos().z);
+			//SetRelativePos(GetRelativePos().x, m_PosY, GetRelativePos().z);
 			if (m_Direction == Direction::RIGHT)
 			{
 				m_Animation->ChangeAnimation("Mugman_Idle_R");
@@ -425,6 +428,7 @@ void CMugman::DashEnd()
 	m_bIsDash = false;
 	m_bCanDash = true;
 	m_bCanJump = true;
+	m_bIsGround = true;
 	m_DashSpeed = 80.f;
 	m_DashTime = 0.f;
 }
@@ -473,6 +477,21 @@ void CMugman::ChangeAnimDirection()
 			m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
 			break;
 		}
+	}
+}
+
+void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
+{	
+	if (result.DestCollider->GetName() == "StepCloudCollider")
+	{
+		// 올라가고 있는 중이라면 충돌하지 않음
+		if (GetWorldPos().y - GetPrevWorldPos().y > 0)
+		{
+			return;
+		}
+		
+		m_bIsGround = true;
+		SetPhysicsSimulate(false);
 	}
 }
 

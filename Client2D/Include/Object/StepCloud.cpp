@@ -29,7 +29,7 @@ bool CStepCloud::Init()
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("StepCloud");
 	m_Collider = CreateSceneComponent<CColliderBox2D>("StepCloudCollider");
-	m_TestCollider = CreateSceneComponent<CColliderBox2D>("TestCollider");
+	m_TestCollider = CreateSceneComponent<CColliderBox2D>("StepCloudCollider");
 	
 	SetRootComponent(m_Sprite);
 
