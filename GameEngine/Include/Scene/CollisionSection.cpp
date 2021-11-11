@@ -96,20 +96,6 @@ void CCollisionSection::Collision(float DeltaTime)
 				// 이전충돌체에 없다면 지금 막 충돌을 시작한다는 의미이다.
 				if (!Src->CheckPrevCollision(Dest))
 				{
-					// 나한테 박고있는 오브젝트의 Collider_Type이 Character라면,
-					if (Dest->GetColliderType() == Collider_Type::Character)
-					{
-						float CurDistance = Vector3::Distance(Dest->GetWorldPos(), Src->GetWorldPos());
-						float PrevDistance = Vector3::Distance(Dest->GetPrevWorldPos(), Src->GetPrevWorldPos());
-
-						// 현재 이동한 거리의 길이벡터가 이전위치의 길이벡터가 더 크다면 이동이 가능한 방향
-						/*if (CurDistance - PrevDistance <= 0)
-						{
-							Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
-
-						}*/
-					}
-
 					// 충돌을 막음
 					Src->AddPrevCollider(Dest);
 					Dest->AddPrevCollider(Src);
@@ -122,22 +108,64 @@ void CCollisionSection::Collision(float DeltaTime)
 				// 충돌 중 일 경우,
 				else
 				{
-					if (Dest->GetColliderType() == Collider_Type::Character)
+					// 부딪치는 콜리전이 캐릭터이고, 충돌을 사용할 때
+					if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement())
 					{
-						// 캐릭터 콜리전이 현재 나의 어느 방향에 있는지를 구한 뒤,
-						// 캐릭터 이동방향의 콜리전이 내 쪽이라면 이동을 못하게 한다.
-						float CurDistance = Vector3::Distance(Dest->GetWorldPos(), Src->GetWorldPos());
-						float PrevDistance = Vector3::Distance(Dest->GetPrevWorldPos(), Src->GetPrevWorldPos());
+						// 현재 콜리전의 캐릭터 콜리전의 어느 분면에 위치해있는지 판단
+						Vector3 MovePos = Dest->GetWorldPos() - Dest->GetPrevWorldPos();
+						Vector3 Distance = Src->GetWorldPos() - Dest->GetWorldPos();
+						Vector3 PrevDistance = Src->GetPrevWorldPos() - Dest->GetPrevWorldPos();
 
-						// 현재 이동한 거리의 길이벡터가 이전위치의 길이벡터가 더 크다면 이동이 가능한 방향
-						if (CurDistance - PrevDistance <=0)
+						Vector2 ComparePivot = { Src->GetMax().x - Src->GetWorldPos().x ,Src->GetMax().y - Src->GetWorldPos().y };
+						Vector2 TopRight = { Dest->GetMax().x , Dest->GetMax().y };
+						Vector2 TopLeft = { Dest->GetMin().x , Dest->GetMax().y };
+						Vector2 BottomRight = { Dest->GetMax().x , Dest->GetMin().y };
+						Vector2 BottomLeft = { Dest->GetMin().x , Dest->GetMin().y };
+
+						Vector2 DestPivot[4] = { TopRight, TopLeft, BottomRight, BottomLeft };
+						Vector2 NearPivot = DestPivot[0];
+
+						for (size_t i = 0; i < 4; ++i)
 						{
-							
+							Vector2 NearDistance = { Src->GetPrevWorldPos().x - NearPivot.x, Src->GetPrevWorldPos().y - NearPivot.y };
+							Vector2 CheckDistance = { Src->GetPrevWorldPos().x - DestPivot[i].x, Src->GetPrevWorldPos().y - DestPivot[i].y };
+
+							NearPivot = abs(NearDistance.x) + abs(NearDistance.y) <= abs(CheckDistance.x) + abs(CheckDistance.y) ? NearPivot : DestPivot[i];
+						}
+						NearPivot.x -= (Src->GetWorldPos().x);
+						NearPivot.y -= (Src->GetWorldPos().y);
+
+						float Vertical = abs(ComparePivot.y) - abs(NearPivot.y);
+						float Horizontal = abs(ComparePivot.x) - abs(NearPivot.x);
+
+						// 수직으로 무조건 이동할 수 있는 경우
+						if (abs(Vertical) > abs(Horizontal))
+						{
+							// 가로이동 이라면 block 확인
+							if (MovePos.x > 0 || MovePos.x < 0)
+							{
+								// 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
+								if (abs(PrevDistance.x) > abs(Distance.x))
+								{
+									Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
+
+								}
+							}
 						}
 
-						else
+						// 수평으로 이동할 수 있는 경우
+						if (abs(Vertical) < abs(Horizontal))
 						{
-							Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
+							if (MovePos.y > 0 || MovePos.y < 0)
+							{
+								// 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
+								if (abs(PrevDistance.y) > abs(Distance.y))
+								{
+									Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
+
+								}
+							}
+
 						}
 					}
 				}

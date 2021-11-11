@@ -118,6 +118,7 @@ public:
     Matrix GetRotatinMatrix()   const;
     Matrix GetTranslationMatrix()   const;
     Matrix GetWorldMatrix() const;
+
     
 
 public:
@@ -127,10 +128,11 @@ public:
     void SetMeshSize(float x, float y, float z);
     void SetPhysicsSimulate(bool Simulate);
     void SetDefaultZ(float Z);
-    void SetCanMove(bool bCanMove);
+    void SetUseBlockMovement(bool bUseBlockMovement);
     void SetPrevWorldPos(const Vector3& PrevWorldPos);
 
  public:
+     bool GetUseBlockMovement();
      float GetGravityAccel();
      float GetGravity();
 

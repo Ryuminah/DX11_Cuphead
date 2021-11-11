@@ -23,8 +23,7 @@ CTransform::CTransform()    :
     m_PhysicsSimulate(false),
     m_Pivot(0.5f,0.f,0.f),
     m_Gravity(5.f),m_GravityAccel(25.5f),
-    m_bCanMove(true),
-    m_bUseBlockMovement(false)
+    m_bUseBlockMovement(true)
 {
     for (int i = 0; i < AXIS_END; ++i)
     {
@@ -1646,14 +1645,8 @@ void CTransform::SetTransform()
 {
     m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
 
-    if (!m_bCanMove)
-    {
-        // 움직인 만큼 되돌려준 뒤, 다시 계산해줌
-        Vector3 vMove = m_PrevWorldPos - m_WorldPos;
-        AddWorldPos(vMove);
-    }
-
     CaculateMatWorld();
+
 	m_pCBuffer->SetWorldMatrix(m_matWorld);
 
     CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
@@ -1673,6 +1666,7 @@ void CTransform::SetTransform()
 
     // 화면상에 그려진 최종 위치 정보를 저장
     m_PrevWorldPos = m_WorldPos;
+    m_PrevWorldPos.z = 0.f;
 
  }
 

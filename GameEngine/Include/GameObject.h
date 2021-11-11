@@ -149,13 +149,14 @@ public:
 	void SetMeshSize(const Vector3& Size);
 	void SetMeshSize(float x, float y, float z);
 	void SetDefaultZ(float Z);
-	void SetCanMove(bool bCanMove);
+	void SetUseBlockMovement(bool bUseBlockMovement);
 	void SetPrevWorldPos(const Vector3& PrevWorldPos);
 
 public:
 	void SetPhysicsSimulate(bool Simulate);
 	float GetGravityAccel();
 	float GetGravity();
+	bool GetUseBlockMovement();
 
 public:
 	void SetWorldScale(const Vector3& Scale);

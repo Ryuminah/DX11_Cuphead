@@ -318,6 +318,7 @@ void CMugman::Jump(float DeltaTime)
 	m_bIsJump = true;
 	m_bIsGround = false;
 	SetPhysicsSimulate(true);
+	SetUseBlockMovement(false);
 
 	if (m_Direction == Direction::RIGHT)
 	{
@@ -414,6 +415,8 @@ void CMugman::JumpEnd()
 	m_JumpVelocity = 50.f;
 	m_JumpTime = 0.0f;
 	m_JumpAccel = 90.f;
+
+	SetUseBlockMovement(true);
 }
 
 void CMugman::DashEnd()

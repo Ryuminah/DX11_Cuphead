@@ -39,6 +39,11 @@ protected:
 
 
 public:
+	std::list<CCollider*>	GetPrevCollisionList() const
+	{
+		return m_PrevCollisionList;
+	}
+
 	bool GetDebugRender()	const
 	{
 		return m_DebugRender;

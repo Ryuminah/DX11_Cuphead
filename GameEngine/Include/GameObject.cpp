@@ -481,9 +481,9 @@ void CGameObject::SetDefaultZ(float Z)
 	m_RootComponent->SetDefaultZ(Z);
 }
 
-void CGameObject::SetCanMove(bool bCanMove)
+void CGameObject::SetUseBlockMovement(bool bUseBlockMovement)
 {
-	m_RootComponent->SetCanMove(bCanMove);
+	m_RootComponent->SetUseBlockMovement(bUseBlockMovement);
 }
 
 void CGameObject::SetPrevWorldPos(const Vector3& PrevWorldPos)
@@ -505,6 +505,11 @@ float CGameObject::GetGravityAccel()
 float CGameObject::GetGravity()
 {
 	return m_RootComponent.Get()->GetGravity();
+}
+
+bool CGameObject::GetUseBlockMovement()
+{
+	return m_RootComponent.Get()->GetUseBlockMovement();
 }
 
 void CGameObject::SetWorldScale(const Vector3& Scale)

@@ -60,7 +60,6 @@ private:
 	float	m_Gravity;
 	bool	m_PhysicsSimulate;
 	bool	m_bUseBlockMovement;
-	bool	m_bCanMove;
 
 public:
 	float GetGravity() const
@@ -96,6 +95,11 @@ public:
 	Vector3 GetAxis(AXIS Axis)  const
 	{
 		return m_Axis[Axis];
+	}
+
+	bool GetUseBlockMovement() const
+	{
+		return m_bUseBlockMovement;
 	}
 
 public:
@@ -134,9 +138,9 @@ public:
 		m_UpdatePosZ = UpdatePosZ;
 	}
 
-	void SetCanMove(bool bCanMove)
+	void SetUseBlockMovement(bool bUseBlockMovement)
 	{
-		m_bCanMove = bCanMove;
+		m_bUseBlockMovement = bUseBlockMovement;
 	}
 
 	void InheritScale();

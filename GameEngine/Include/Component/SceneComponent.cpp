@@ -592,15 +592,15 @@ void CSceneComponent::SetDefaultZ(float Z)
     m_pTransform->SetDefaultZ(Z);
 }
 
-void CSceneComponent::SetCanMove(bool bCanMove)
+void CSceneComponent::SetUseBlockMovement(bool bUseBlockMovement)
 {
-    m_pTransform->SetCanMove(bCanMove);
+    m_pTransform->SetUseBlockMovement(bUseBlockMovement);
 
     size_t  Size = m_vecChild.size();
 
     for (size_t i = 0; i < Size; ++i)
     {
-        m_vecChild[i]->SetCanMove(bCanMove);
+        m_vecChild[i]->SetUseBlockMovement(bUseBlockMovement);
     }
 }
 
@@ -614,6 +614,11 @@ void CSceneComponent::SetPrevWorldPos(const Vector3& PrevWorldPos)
     {
         m_vecChild[i]->SetPrevWorldPos(PrevWorldPos);
     }
+}
+
+bool CSceneComponent::GetUseBlockMovement()
+{
+    return m_pTransform->GetUseBlockMovement();
 }
 
 float CSceneComponent::GetGravityAccel()
