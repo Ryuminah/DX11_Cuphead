@@ -12,7 +12,7 @@ enum class Mugman_State
 };
 
 class CMugman :
-    public CFightObject
+	public CFightObject
 {
 	friend class CScene;
 
@@ -30,7 +30,7 @@ private:
 private:
 	Mugman_State	m_State;
 
-private: 
+private:
 	// basic Movement
 	bool m_bCanJump;
 	bool m_bIsJump;
@@ -39,7 +39,7 @@ private:
 
 	bool m_bIsDash;
 	bool m_bCanDash;
-	
+
 	float m_JumpTime;
 	float m_JumpVelocity;
 	float m_JumpAccel;
@@ -48,6 +48,8 @@ private:
 	float m_DashTime;
 	float m_DashSpeed;
 
+	// Attack
+	int	m_BulletCount;
 
 
 
@@ -85,23 +87,28 @@ public: //Get Set
 		return m_bIsGround;
 	}
 
-	
-// Move 包访
+	//Check Logic
 public:
-	void CheckJump();
+	void FallCheck(float DeltaTime);
+	void JumpCheck(float DeltaTime);
+	void DashCheck(float DeltaTime);
+
+	// Move 包访
+public:
 	void JumpEnd();
 	void DashEnd();
+	void OnGround();
 
-// Shoot 包访
+	// Shoot 包访
 public:
 	void CheckShootTime(float DeltaTime);
 	void OnStepCloud(float MoveZ, float CloudY);
 
-	
+
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
+	void CollisionOverlap(const HitResult& result, CCollider* Collider);
 	void CollisionEnd(const HitResult& result, CCollider* Collider);
 
 
 };
-

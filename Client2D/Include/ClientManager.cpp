@@ -46,10 +46,12 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Static, Collision_Interaction::Ignore);
 
     CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
-    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Enemy, Collision_Interaction::Trigger);
     CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Static, Collision_Interaction::Block);
 
     CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Player, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Static, Collision_Interaction::Ignore);
+
 
 
     

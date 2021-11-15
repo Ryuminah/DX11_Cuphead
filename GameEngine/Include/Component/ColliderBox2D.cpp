@@ -43,7 +43,6 @@ bool CColliderBox2D::Init()
 	m_Info.Axis[AXIS_Y] = Vector2(0.f, 1.f);
 	
 	SetInheritRotZ(true);
-
 	SetUpdatePosZ(true);
 
 	return true;

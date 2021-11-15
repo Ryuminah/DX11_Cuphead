@@ -21,6 +21,7 @@ protected:
     bool        m_bIsFire;      // 발사 됐는지
     bool        m_bIsHit;        // 대상에 맞았는지
     float       m_Speed;
+    Direction   m_BulletDirection;
 
 public:
     void SetRange(float Range)
@@ -46,5 +47,6 @@ public:
     void CollisionBegin(const HitResult& result, CCollider* Collider);
     void CollisionEnd(const HitResult& result, CCollider* Collider);
     void AnimationFrameEnd(const std::string& Name);
+    void SetBulletDirection(Direction FirstDirection);
 };
 

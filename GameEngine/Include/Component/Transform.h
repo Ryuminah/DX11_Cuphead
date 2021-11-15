@@ -59,7 +59,7 @@ private:
 	float	m_GravityAccel;
 	float	m_Gravity;
 	bool	m_PhysicsSimulate;
-	bool	m_bUseBlockMovement;
+	bool	m_bUseBlockMovement;		// 충돌을 잠깐 해제하고싶을때
 
 public:
 	float GetGravity() const

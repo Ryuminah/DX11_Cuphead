@@ -18,6 +18,11 @@ CStepCloud::~CStepCloud()
 {
 }
 
+float CStepCloud::GetMoveDistance()
+{
+	return m_MoveDistance;
+}
+
 void CStepCloud::Start()
 {
 	CGameObject::Start();
@@ -122,9 +127,9 @@ void CStepCloud::CollisionBegin(const HitResult& result, CCollider* Collider)
 void CStepCloud::CollisionOverlap(const HitResult& result, CCollider* Collider)
 {
 	// 캐릭터 콜리전과 닿았을때 캐릭터 콜리전을 이동시키고, 키입력이 들어왔을 시 리턴.
-	if (result.DestCollider->GetName() == "MugmanCollider")
-	{
-		CMugman* pMugman = (CMugman*)result.DestCollider->GetOwner();
-		pMugman->OnStepCloud(m_MoveDistance, GetWorldPos().y);
-	}
+	//if (result.DestCollider->GetName() == "MugmanCollider")
+	//{
+	//	CMugman* pMugman = (CMugman*)result.DestCollider->GetOwner();
+	//	pMugman->OnStepCloud(m_MoveDistance, GetWorldPos().y);
+	//}
 }

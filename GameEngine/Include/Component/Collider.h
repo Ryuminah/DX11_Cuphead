@@ -99,6 +99,13 @@ public:
 		m_HitResult = result;
 	}
 
+	void SetHitResult(CCollider* DestCollider, Vector3 HitPoint = {0.f,0.f,0.f})
+	{
+		m_HitResult.DestCollider = DestCollider;
+		m_HitResult.DestObject = DestCollider->GetOwner();
+		m_HitResult.HitPoint= HitPoint;
+	}
+
 public:
 	void SetColliderType(Collider_Type type)
 	{
@@ -119,6 +126,7 @@ public:
 	bool CheckPrevCollision(CCollider* Collider);
 	bool CheckCurrentFrameCollision(CCollider* Collider);
 	void AddCurrentFrameCollision(CCollider* Collider);
+	bool CheckEndCollision(CCollider* Collider);
 
 public:
 	void CallCollisionCallback(Collision_State State);

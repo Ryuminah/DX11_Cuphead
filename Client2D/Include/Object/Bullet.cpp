@@ -3,7 +3,7 @@
 #include "../Animation2D/BulletAnimation.h"
 
 CBullet::CBullet() :
-    m_Range(1920.f), m_Speed(500.f)
+    m_Range(1280.f), m_Speed(800.f)
 {
     m_bIsFire = false;
     m_bIsHit = false;
@@ -25,16 +25,19 @@ CBullet::~CBullet()
 void CBullet::Start()
 {
     CGameObject::Start();
-
-    if (m_PrevDirection == Direction::RIGHT)
+    
+    // 처음 셋팅한 방향대로만 이동
+    if (m_BulletDirection== Direction::RIGHT)
     {
         m_Animation->ChangeAnimation("Bullet_Loop_R");
     }
 
-    if (m_PrevDirection == Direction::LEFT)
+    if (m_BulletDirection == Direction::LEFT)
     {
         m_Animation->ChangeAnimation("Bullet_Loop_L");
     }
+
+    SetPrevWorldPos(GetPrevWorldPos());
 }
 
 bool CBullet::Init()
@@ -48,14 +51,14 @@ bool CBullet::Init()
 
     SetRootComponent(m_Sprite);
 
-    m_Sprite->SetRelativeScale(500.f, 500.f, 1.f);
+    m_Sprite->SetRelativeScale(180.f, 180.f, 1.f);
     m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
     //m_Sprite->GetMaterial(0)->SetBaseColor(1.f, 1.f, 1.f, 0.01f);
 
     m_Collider->SetExtent(30,10);
     m_Collider->SetPivot(0.5f, 0.5f, 0.5f);
 
-    m_Collider->SetColliderType(Collider_Type::Trigger);
+    m_Collider->SetColliderType(Collider_Type::Static);
     m_Collider->SetCollisionProfile("Bullet");
 
     m_Sprite->AddChild(m_Collider);
@@ -81,17 +84,22 @@ void CBullet::Update(float DeltaTime)
     {
         float Distance = m_Speed * DeltaTime;
 
-        if (m_PrevDirection == Direction::RIGHT)
+        if (m_BulletDirection == Direction::RIGHT)
         {
             AddRelativePos(GetAxis(AXIS_X) * Distance);
         }
-
-        else
+        
+        if (m_BulletDirection == Direction::LEFT)
         {
             AddRelativePos(GetAxis(AXIS_X) * -Distance);
         }
 
-        m_Range -= Distance;
+        m_Range -= abs(Distance);
+
+        if (GetWorldPos().x < GetPrevWorldPos().x)
+        {
+            int a = 0;
+        }
 
         // 사정거리를 벗어나면
         if (m_Range <= 0.f)
@@ -139,4 +147,9 @@ void CBullet::CollisionEnd(const HitResult& result, CCollider* Collider)
 void CBullet::AnimationFrameEnd(const std::string& Name)
 {
  
+}
+
+void CBullet::SetBulletDirection(Direction FirstDirection)
+{
+    m_BulletDirection = FirstDirection;
 }

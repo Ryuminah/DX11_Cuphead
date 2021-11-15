@@ -5,24 +5,25 @@
 #include "Resource/Material.h"
 #include "Engine.h"
 #include "Bullet.h"
+#include "StepCloud.h"
 
 CMugman::CMugman() :
 	m_bIsGround(true),
-	m_bCanJump(true),
 	m_bIsJump(false),
-	m_bCanDash(true),
-	m_bIsDash(false),
 	m_bIsFall(false),
+	m_bIsDash(false),
+	m_bCanJump(true),
+	m_bCanDash(true),
 	m_JumpTime(0.f),
 	m_JumpVelocity(50.f),
 	m_JumpAccel(90.f),
 	m_DashSpeed(50.f),
 	m_DashTime(0.0f),
-	m_ShootTime(0.1f),
+	m_ShootTime(0.2f),
 	m_State(Mugman_State::Idle)
 	
 {
-
+	m_BulletCount = 1;
 }
 
 CMugman::CMugman(const CMugman& obj) : CFightObject(obj)
@@ -108,11 +109,13 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
 
 	SetDefaultZ(0.1f);
-	SetPhysicsSimulate(true);
+	SetPhysicsSimulate(false);
 	SetUseBlockMovement(true);
 	SetPrevDirection(Direction::RIGHT);
 
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
+	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Overlap, this, &CMugman::CollisionOverlap);
+	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::End, this, &CMugman::CollisionEnd);
 
 
 	return true;
@@ -122,63 +125,14 @@ void CMugman::Update(float DeltaTime)
 {
 	CFightObject::Update(DeltaTime);
 
+	// 떨어지는 중일 경우
+	FallCheck(DeltaTime);
+
 	// 점프 중일 경우
-	if (m_bIsJump)
-	{
-		//y=-GA*V+b에서 (a: 중력가속도, b: 초기 점프속도)
-		//적분 : y = (-GA/2)*t*t + (V*t) 공식을 얻는다.(t: 점프시간, y: 오브젝트의 높이)
-		//변화된 높이 height를 기존 높이 m_posY에 더한다.
-		
-		m_JumpTime += GetGravityAccel() * DeltaTime;
-
-			// 처음 뛸 경우 힘을 강하게 적용함.
-		if (m_JumpAccel == 90.f)
-		{
-			AddRelativePos(GetAxis(AXIS_Y) * 100);
-		}
-
-		float jumpHeight = (m_JumpTime * m_JumpTime * GetGravity() * -0.5f) + (m_JumpTime * m_JumpVelocity) + (m_JumpAccel* m_JumpTime);
-		AddRelativePos(GetAxis(AXIS_Y) * (jumpHeight)* DeltaTime);
-		
-		m_JumpAccel -= GetGravityAccel() * DeltaTime;
-
-		// 땅일 경우 점프가 끝난 것으로 간주
-		if (m_bIsGround)
-		{ 
-			JumpEnd();
-		}
-	}
+	JumpCheck(DeltaTime);
 
 	// 대쉬 중일 경우
-	if (m_bIsDash)
-	{
-		m_DashTime += GetGravityAccel() * DeltaTime;
-
-		float DashVelocity = (m_DashTime * m_DashTime * GetGravity() * -0.5) + (m_DashSpeed * m_DashTime);
-
-		if (m_PrevDirection == Direction::RIGHT)
-		{
-			AddRelativePos(GetAxis(AXIS_X) * (m_Speed + DashVelocity) * DeltaTime);
-		}
-
-		if (m_PrevDirection == Direction::LEFT)
-		{
-			AddRelativePos(GetAxis(AXIS_X) * -(m_Speed + DashVelocity) * DeltaTime);
-		}
-
-		m_DashSpeed -= GetGravityAccel() * DeltaTime;
-
-		if (DashVelocity <= 0.f)
-		{
-			DashEnd();
-			SetPhysicsSimulate(false);
-
-			m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
-
-
-			m_State = Mugman_State::Idle;
-		}
-	}
+	DashCheck(DeltaTime);
 
 	CheckShootTime(DeltaTime);
 }
@@ -210,7 +164,7 @@ void CMugman::Animation2DNotify(const std::string& Name)
 
 void CMugman::MoveUp(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsJump)
+	if (m_bIsDash || m_bIsJump || !m_bIsGround)
 	{
 		return;
 	}
@@ -222,7 +176,7 @@ void CMugman::MoveUp(float DeltaTime)
 
 void CMugman::MoveDown(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsJump)
+	if (m_bIsDash || m_bIsJump || !m_bIsGround)
 	{
 		return;
 	}
@@ -241,7 +195,7 @@ void CMugman::MoveRight(float DeltaTime)
 
 	m_State = Mugman_State::Run;
 
-	if (!m_bIsJump)
+	if (!m_bIsJump && m_bIsGround)
 	{
 		m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
 	}
@@ -260,7 +214,7 @@ void CMugman::MoveLeft(float DeltaTime)
 	m_State = Mugman_State::Run;
 	
 	// 점프중이 아닐 때만
-	if (!m_bIsJump)
+	if (!m_bIsJump && m_bIsGround)
 	{
 		m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
 	}
@@ -281,6 +235,8 @@ void CMugman::Jump(float DeltaTime)
 	m_PosY = GetRelativePos().y; // 처음 Y를 저장
 	m_bCanAttack = false;
 	m_bCanJump = false;
+
+	m_bIsFall = false;
 	m_bIsJump = true;
 	m_bIsGround = false;
 	SetPhysicsSimulate(true);
@@ -306,24 +262,33 @@ void CMugman::Shoot(float DeltaTime)
 		return;
 	}
 
-	CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
-
-	if (m_PrevDirection == Direction::RIGHT)
+	if (m_BulletCount > 0 )
 	{
-		m_Animation->ChangeAnimation("Mugman_Shoot_R");
-		pBullet->SetPrevDirection(Direction::RIGHT);
+		m_bCanAttack = false;
+		--m_BulletCount;
+
+		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
+
+		if (m_PrevDirection == Direction::RIGHT)
+		{
+			m_Muzzle->SetRelativePos(20.f, 80.f, 0.f);
+			m_Animation->ChangeAnimation("Mugman_Shoot_R");
+			pBullet->SetBulletDirection(Direction::RIGHT);
+		}
+
+		if (m_PrevDirection == Direction::LEFT)
+		{
+			m_Muzzle->SetRelativePos(-20.f, 80.f, 0.f);
+			m_Animation->ChangeAnimation("Mugman_Shoot_L");
+			pBullet->SetBulletDirection(Direction::LEFT);
+		}
+
+		pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
 	}
 
-	if (m_PrevDirection == Direction::LEFT)
-	{
-		m_Animation->ChangeAnimation("Mugman_Shoot_L");
-		pBullet->SetPrevDirection(Direction::LEFT);
-	}
-
-	pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
+	
 	//pBullet->SetRelativeRotation(GetWorldRotation());
 
-	m_bCanAttack = false;
 }
 
 void CMugman::Dash(float DeltaTime)
@@ -386,20 +351,87 @@ void CMugman::AnimationFrameEnd(const std::string& Name)
 	// 현재 애니메이션이 Dash일 경우
 }
 
-void CMugman::CheckJump()
+void CMugman::JumpCheck(float DeltaTime)
 {
-	// 땅일때만 점프 가능.
-	
+	if (m_bIsJump)
+	{
+		//y=-GA*V+b에서 (a: 중력가속도, b: 초기 점프속도)
+		//적분 : y = (-GA/2)*t*t + (V*t) 공식을 얻는다.(t: 점프시간, y: 오브젝트의 높이)
+		//변화된 높이 height를 기존 높이 m_posY에 더한다.
+
+		m_JumpTime += GetGravityAccel() * DeltaTime;
+
+		// 처음 뛸 경우 힘을 강하게 적용함.
+		if (m_JumpAccel == 90.f)
+		{
+			AddRelativePos(GetAxis(AXIS_Y) * 100);
+		}
+
+		float jumpHeight = (m_JumpTime * m_JumpTime * GetGravity() * -0.5f) + (m_JumpTime * m_JumpVelocity) + (m_JumpAccel * m_JumpTime);
+		AddRelativePos(GetAxis(AXIS_Y) * (jumpHeight)*DeltaTime);
+
+		m_JumpAccel -= GetGravityAccel() * DeltaTime;
+
+		// 땅일 경우 점프가 끝난 것으로 간주
+		if (m_bIsGround)
+		{
+			OnGround();
+		}
+	}
 }
+
+void CMugman::FallCheck(float DeltaTime)
+{
+	if (!m_bIsGround && !m_bIsJump)
+	{
+		m_bCanAttack = false;
+		m_bCanJump = false;
+
+		m_JumpTime += GetGravityAccel() * DeltaTime;
+		float FallHeight = (GetGravityAccel()) * m_JumpTime * DeltaTime * 5;
+		AddRelativePos(GetAxis(AXIS_Y) * -FallHeight);
+	}
+}
+
+void CMugman::DashCheck(float DeltaTime)
+{
+	if (m_bIsDash)
+	{
+		m_DashTime += GetGravityAccel() * DeltaTime;
+
+		float DashVelocity = (m_DashTime * m_DashTime * GetGravity() * -0.5) + (m_DashSpeed * m_DashTime);
+
+		if (m_PrevDirection == Direction::RIGHT)
+		{
+			AddRelativePos(GetAxis(AXIS_X) * (m_Speed + DashVelocity) * DeltaTime);
+		}
+
+		if (m_PrevDirection == Direction::LEFT)
+		{
+			AddRelativePos(GetAxis(AXIS_X) * -(m_Speed + DashVelocity) * DeltaTime);
+		}
+
+		m_DashSpeed -= GetGravityAccel() * DeltaTime;
+
+		if (DashVelocity <= 0.f)
+		{
+			DashEnd();
+			SetPhysicsSimulate(false);
+
+			m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
+
+
+			m_State = Mugman_State::Idle;
+		}
+	}
+
+}
+
 
 void CMugman::JumpEnd()
 {
+	// 땅에 닿았을 시 점프 종료
 	m_State = Mugman_State::Idle;
-	m_bCanJump = true;
-	m_bCanAttack = true;
-
-	m_bIsGround = true;
-	m_bIsJump = false;
 	m_JumpVelocity = 50.f;
 	m_JumpTime = 0.0f;
 	m_JumpAccel = 90.f;
@@ -414,8 +446,6 @@ void CMugman::JumpEnd()
 	{
 		m_Animation->ChangeAnimation("Mugman_Idle_L");
 	}
-
-	SetUseBlockMovement(true);
 }
 
 void CMugman::DashEnd()
@@ -426,7 +456,6 @@ void CMugman::DashEnd()
 	m_bCanMove = true;
 	m_bCanAttack = true;
 	m_bIsDash = false;
-	m_bIsGround = true;
 	m_DashSpeed = 80.f;
 	m_DashTime = 0.f;
 
@@ -446,32 +475,46 @@ void CMugman::DashEnd()
 
 }
 
+void CMugman::OnGround()
+{
+	// 땅에 닿았을때 정지해야할 모든 행동을 처리
+
+	m_bIsFall = false;
+	m_bIsJump = false;
+	m_bIsGround = true;
+
+	m_bCanJump = true;
+	m_bCanAttack = true;
+	m_bCanDash = true;
+	
+	JumpEnd();
+	SetPhysicsSimulate(false);
+	SetUseBlockMovement(true);
+}
+
 void CMugman::CheckShootTime(float DeltaTime)
 {
 	m_ShootTime -= DeltaTime;
 
-	if (m_ShootTime <= 0.0f)
+	if (m_ShootTime < 0.0f)
 	{
 		m_bCanAttack = true;
-		m_ShootTime = 0.1f;
+		m_ShootTime = 0.2f;
+		m_BulletCount = 1.f;
 	}
 }
 
 void CMugman::OnStepCloud(float MoveZ, float CloudY)
 {
-	// 충돌체의 옆인지 위인지 판단한 후, 옆에 부딪쳤다면 return, 위에 부딪쳤다면 멈추는 처리
-	// 점프중이라면 움직이지 않음.
 	if (m_bIsJump)
 	{
 		return; 
 	}
 
-	// 구름보다 내 위치가 더 높을때만 움직임
 	if (CloudY < GetWorldPos().y)
 	{
 		AddRelativePos(-MoveZ, 0.f, 0.f);
 	}
-	
 	
 }
 
@@ -481,26 +524,77 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 {	
 	if (result.DestCollider->GetName() == "StepCloudCollider")
 	{
+		CStepCloud* pStepCloud = (CStepCloud*)result.DestCollider->GetOwner();
+
 		// 올라가고 있는 중이라면 충돌하지 않음
 		if (GetWorldPos().y - GetPrevWorldPos().y > 0)
 		{
 			return;
 		}
-		
-		m_bIsGround = true;
-		SetPhysicsSimulate(false);
+
+		// 구름보다 내 위치가 더 높을때만 움직임 닿은것으로 판단.
+		if (pStepCloud->GetWorldPos().y < GetWorldPos().y)
+		{
+			OnStepCloud(pStepCloud->GetMoveDistance(), pStepCloud->GetWorldPos().y);
+			OnGround();
+		}
+	
 	}
 
 	// 낙사 방지용 콜리전
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
 		SetUseBlockMovement(true);
-		JumpEnd();
+		OnGround();
+	}
+}
+
+void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
+{
+	// 구름 콜리전과 닿았을때 캐릭터 콜리전을 이동시킴
+	if (result.DestCollider->GetName() == "StepCloudCollider")
+	{
+		CStepCloud* pStepCloud = (CStepCloud*)result.DestCollider->GetOwner();
+		OnStepCloud(pStepCloud->GetMoveDistance(), pStepCloud->GetWorldPos().y);
+	}
+
+	if (result.DestCollider->GetName() == "GroundCollider")
+	{
+		SetUseBlockMovement(true);
+		SetPhysicsSimulate(false);
+		m_bIsGround = true;
+		m_bCanJump = true;
+		m_bCanDash = true;
+		m_bCanAttack = true;
 	}
 }
 
 void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
+	// 점프중이 아닐때만 떨어지는 것으로 간주
+	if (result.DestCollider->GetName() == "StepCloudCollider")
+	{
+		if (!m_bIsJump)
+		{
+			m_bIsGround = false;
+			m_bIsFall = true;
+			SetPhysicsSimulate(true);
+			SetUseBlockMovement(true);
+
+			if (m_PrevDirection == Direction::RIGHT)
+			{
+				m_Animation->ChangeAnimation("Mugman_Jump_R");
+
+			}
+
+			if (m_PrevDirection == Direction::LEFT)
+			{
+				m_Animation->ChangeAnimation("Mugman_Jump_L");
+			}
+		}
+	}
+
+	
 }
 
 

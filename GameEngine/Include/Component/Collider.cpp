@@ -46,8 +46,8 @@ CCollider::~CCollider()
 	for (; iter != iterEnd; ++iter)
 	{
 		(*iter)->DeletePrevCollider(this);
-		(*iter)->CallCollisionCallback(Collision_State::End);
-		CallCollisionCallback(Collision_State::End);
+		/*(*iter)->CallCollisionCallback(Collision_State::End);
+		CallCollisionCallback(Collision_State::End);*/
 	}
 
 	SAFE_DELETE(m_CBuffer);
@@ -91,6 +91,9 @@ void CCollider::CheckPrevColliderSection()
 		// 충돌체끼리 서로 겹치는 충돌영역이 없다면 충돌 되었다가 떨어지는 처리를 한다.
 		if (!Check)
 		{
+			SetHitResult(*iter), (*iter)->GetWorldPos();
+			(*iter)->SetHitResult(this, this->GetWorldPos());
+
 			CallCollisionCallback(Collision_State::End);
 			(*iter)->CallCollisionCallback(Collision_State::End);
 
@@ -125,6 +128,7 @@ void CCollider::DeletePrevCollider(CCollider* Collider)
 		}
 	}
 }
+
 
 bool CCollider::EmptyPrevCollision()
 {
@@ -164,6 +168,7 @@ void CCollider::AddCurrentFrameCollision(CCollider* Collider)
 	if (!CheckCurrentFrameCollision(Collider))
 		m_CurrentCollisionList.push_back(Collider);
 }
+
 
 void CCollider::CallCollisionCallback(Collision_State State)
 {

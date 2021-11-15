@@ -19,16 +19,14 @@ private:
 
 	class CAnimation2D*			m_Animation;
 
-public:
+private:
+	// Move
 	float m_MoveTime;
 	float m_MoveDistance;
 	Vector3 m_FirstPosition;
 
-private: // Move
-
-
-private:
-
+public:
+	float GetMoveDistance();
 
 public:
 	virtual void Start();
