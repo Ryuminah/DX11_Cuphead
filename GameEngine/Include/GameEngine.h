@@ -203,7 +203,6 @@ struct ColliderCBuffer
 };
 
 
-
 struct Box2DInfo
 {
 	Vector2 Center;

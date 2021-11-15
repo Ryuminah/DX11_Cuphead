@@ -3,12 +3,8 @@
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderBox2D.h"
 
-// 전투를 하는 유닛에게 필요한 데이터와 기능을 제공 및 관리 클래스
 
-enum class Direction
-{
-	RIGHT, LEFT, NONE
-};
+// 전투를 하는 유닛에게 필요한 데이터와 기능을 제공 및 관리 클래스
 
 class CFightObject :
     public CGameObject
@@ -35,13 +31,14 @@ public:
 	virtual CFightObject* Clone();
 
 protected:
-	Direction m_Direction;
 	int m_HP;
 	int m_Attack;
 
 	// 나중에 움직임 전용으로 빼기
 	float m_Speed;
-	bool bIsAttack;	// 공격중인지
+	bool m_bCanAttack;	// 공격중인지
+	bool m_bCanMove;	// 움직일 수 있는 상황인지
+
 
 
 public:

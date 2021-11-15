@@ -1550,6 +1550,14 @@ void CTransform::CaculateMatWorld()
     m_matWorld = m_matScale * m_matRot * m_matPos;
 }
 
+Vector3 CTransform::Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time)
+{
+    // 시작점과 끝점을 기준으로 현재 위치를 0 ~ 1 비율로 환산하여 계산한다.
+    Vector3 LerpPosition = StartTargetPosition * (1.f - Time) + LastTargetPosition * Time;
+
+    return LerpPosition;
+}
+
 void CTransform::Start()
 {
     m_VelocityScale = Vector3::Zero;

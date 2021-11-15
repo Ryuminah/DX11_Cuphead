@@ -7,6 +7,8 @@
 #include "../Object/Mugman.h"
 #include "../Object/DragonMap.h"
 #include "../Object/StepCloud.h"
+#include "../Object/GroundCollider.h"
+
 
 CMainScene::CMainScene()
 {
@@ -28,10 +30,10 @@ bool CMainScene::Init()
 		"TeemoStartClicck.mp3");
 
 	// Create GameObject
-	CDragonMap* pDragonMap = m_pScene->SpawnObject<CDragonMap>("DragonMap");
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
-	CStepCloud* pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-
+	CDragonMap* pDragonMap = m_pScene->SpawnObject<CDragonMap>("DragonMap");
+	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
+	CreateStepCloud();
 
 	return true;
 }
@@ -51,6 +53,7 @@ void CMainScene::CreateAnimationSequence2D()
 {
 	CreateMugmanAnim();
 	CreateStepCloudAnim();
+	CreateWeaponAnim();
 }
 
 void CMainScene::CreateParticle()
@@ -205,4 +208,56 @@ void CMainScene::CreateStepCloudAnim()
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Cloud_Up",
 			Vector2(i * 250, 0), Vector2((i + 1) * 250.f, 250.f));
 	}
+}
+
+void CMainScene::CreateWeaponAnim()
+{
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_R");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_R",
+		"Bullet_Loop_R", TEXT("Weapon/Bullet_Loop_R.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_R",
+			Vector2(i * 180, 0), Vector2((i + 1) * 180.f, 180.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_L");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_L",
+		"Bullet_Loop_L", TEXT("Weapon/Bullet_Loop_L.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_L",
+			Vector2(i * 180, 0), Vector2((i + 1) * 180.f, 180.f));
+	}
+}
+
+void CMainScene::CreateStepCloud()
+{
+	CStepCloud* pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(150.f, 190.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(170.f, 530.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(420.f, 390.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(460.f, 120.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(690.f, 530.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(810.f, 170.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(1000.f, 360.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(1200.f, 615.f, 0.f);
+
+	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetWorldPos(1450.f, 400.f, 0.f);
+
 }

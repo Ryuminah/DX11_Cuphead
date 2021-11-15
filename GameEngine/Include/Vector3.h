@@ -19,6 +19,8 @@ struct Vector3
     // operator ==, !=
     bool operator == (const Vector3& v) const;
     bool operator == (const XMVECTOR& v) const;
+    bool operator == (const float f) const;
+
     bool operator != (const Vector3& v) const;
     bool operator != (const XMVECTOR& v) const;
 

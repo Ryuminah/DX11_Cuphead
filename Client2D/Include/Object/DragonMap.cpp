@@ -30,11 +30,12 @@ bool CDragonMap::Init()
 
 	SetRootComponent(m_BackGround);
 	m_BackGround->SetPivot(0.0f, 0.0f, 0.0f);
-	m_BackGround->SetRelativePos(0.f, 0.f, 0.f);
+	m_BackGround->SetRelativePos(0.f, 0.0f, 0.f);
 	m_BackGround->SetRelativeScale(1280.f, 720.f, 1.f);
 	m_BackGround->SetMaterial(0,"BG_Normal");
 
-	SetDefaultZ(0.99f);
+	//SetUpdatePosZ(false);
+	SetDefaultZ(1.2f);
 
 	return true;
 }

@@ -1,7 +1,7 @@
 #include "FightObject.h"
 
-CFightObject::CFightObject() :m_HP(3), m_Attack(1), bIsAttack(false),
-							m_Speed(500.f), m_Direction(Direction::RIGHT)
+CFightObject::CFightObject() :m_HP(3), m_Attack(1), m_bCanAttack(true),
+							m_Speed(500.f), m_bCanMove(true)
 {
 
 }

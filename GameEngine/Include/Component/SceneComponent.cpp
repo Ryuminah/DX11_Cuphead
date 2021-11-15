@@ -725,3 +725,15 @@ void CSceneComponent::ClearTransformState()
 {
     m_pTransform->ClearState();
 }
+
+Vector3 CSceneComponent::Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time)
+{
+    size_t  Size = m_vecChild.size();
+
+    for (size_t i = 0; i < Size; ++i)
+    {
+        m_vecChild[i]->Lerp2D(LastTargetPosition, StartTargetPosition, Time);
+    }
+    return m_pTransform->Lerp2D(LastTargetPosition, StartTargetPosition, Time);
+
+}

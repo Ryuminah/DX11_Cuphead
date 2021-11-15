@@ -5,6 +5,11 @@
 #include "Component/Camera.h"
 #include "Component/ObjectComponent.h"
 
+enum class Direction
+{
+	RIGHT, LEFT, UP, DOWN, NONE
+};
+
 class CGameObject :
 	public CRef
 {
@@ -16,13 +21,19 @@ protected:
 	virtual ~CGameObject();
 
 protected:
-	class CScene* m_pScene;
+	class CScene*	m_pScene;
 	bool            m_Start;
 	float			m_LifeTime;
 	bool			m_LifeTimeEnable;
+	Direction		m_PrevDirection;
 	
 
 public:
+	void SetPrevDirection(Direction _PrevDirection)
+	{
+		m_PrevDirection = _PrevDirection;
+	}
+
 	void SetLifeTime(float Time)
 	{
 		if (Time > 0.f)
@@ -35,6 +46,11 @@ public:
 	bool IsStart()  const
 	{
 		return m_Start;
+	}
+
+	Direction GetPrevDirection()
+	{
+		return m_PrevDirection;
 	}
 
 protected:
@@ -85,6 +101,8 @@ public:
 public:
 	void Move(const Vector2& Target);
 	void Move(const Vector3& Target);
+	Vector3 Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time);
+	void CheckDirection();
 
 public:
 	Vector3 GetVelocityScale()  const;

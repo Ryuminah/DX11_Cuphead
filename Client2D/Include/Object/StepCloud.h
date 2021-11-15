@@ -16,9 +16,13 @@ protected:
 private:
 	CSharedPtr<CSpriteComponent> m_Sprite;
 	CSharedPtr<CColliderBox2D>	m_Collider;
-	CSharedPtr<CColliderBox2D>	m_TestCollider;
 
 	class CAnimation2D*			m_Animation;
+
+public:
+	float m_MoveTime;
+	float m_MoveDistance;
+	Vector3 m_FirstPosition;
 
 private: // Move
 
@@ -42,5 +46,7 @@ public:
 
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
+	void CollisionOverlap(const HitResult& result, CCollider* Collider);
+
 };
 

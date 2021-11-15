@@ -20,9 +20,12 @@ private:
     void CreateParticle();
 
 private:
-    // 局聪皋捞记 积己
+    // Anim 积己
     void CreateMugmanAnim();
     void CreateStepCloudAnim();
-
+    void CreateWeaponAnim();
+    
+    // Game Object 积己
+    void CreateStepCloud();
 };
 

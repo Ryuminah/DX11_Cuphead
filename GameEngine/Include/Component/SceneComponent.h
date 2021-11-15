@@ -158,5 +158,6 @@ public:
 
 public:
     void ClearTransformState();
+    Vector3 Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time);
 };
 

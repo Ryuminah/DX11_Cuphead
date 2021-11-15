@@ -96,7 +96,7 @@ void CCollisionSection::Collision(float DeltaTime)
 				// 이전충돌체에 없다면 지금 막 충돌을 시작한다는 의미이다.
 				if (!Src->CheckPrevCollision(Dest))
 				{
-					// 충돌을 막음
+					// 이전 충돌 목록에 추가
 					Src->AddPrevCollider(Dest);
 					Dest->AddPrevCollider(Src);
 
@@ -108,6 +108,10 @@ void CCollisionSection::Collision(float DeltaTime)
 				// 충돌 중 일 경우,
 				else
 				{
+					// 겹칠때의 함수 실행
+					Src->CallCollisionCallback(Collision_State::Overlap);
+					Dest->CallCollisionCallback(Collision_State::Overlap);
+
 					// 부딪치는 콜리전이 캐릭터이고, 충돌을 사용할 때
 					if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement())
 					{
@@ -142,7 +146,7 @@ void CCollisionSection::Collision(float DeltaTime)
 						if (abs(Vertical) > abs(Horizontal))
 						{
 							// 가로이동 이라면 block 확인
-							if (MovePos.x > 0 || MovePos.x < 0)
+							if (MovePos.x > 0 || MovePos.x < 0 || MovePos.x == 0)
 							{
 								// 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
 								if (abs(PrevDistance.x) > abs(Distance.x))
@@ -165,9 +169,24 @@ void CCollisionSection::Collision(float DeltaTime)
 
 								}
 							}
-
 						}
+
+						// 끝지점에 걸렸을 경우 가로 이동을 막는다/
+						//else
+						//{
+						//	if (MovePos.x > 0 || MovePos.x < 0 || MovePos.x == 0)
+						//	{
+						//		// 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
+						//		if (abs(PrevDistance.x) > abs(Distance.x))
+						//		{
+						//			Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
+
+						//		}
+						//	}
+						//}
 					}
+
+				
 				}
 			}
 

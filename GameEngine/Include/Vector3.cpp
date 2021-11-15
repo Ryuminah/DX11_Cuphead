@@ -72,6 +72,11 @@ bool Vector3::operator==(const XMVECTOR& v) const
     return (x == v1.x && y == v1.y && z == v1.z);
 }
 
+bool Vector3::operator==(const float f) const
+{
+    return (x == f && y == f && z == f);
+}
+
 bool Vector3::operator!=(const Vector3& v) const
 {
     return (x != v.x || y != v.y || z != v.z);

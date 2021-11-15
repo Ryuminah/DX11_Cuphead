@@ -4,9 +4,9 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "Engine.h"
+#include "Bullet.h"
 
 CMugman::CMugman() :
-	m_ChildFire(false),
 	m_bIsGround(true),
 	m_bCanJump(true),
 	m_bIsJump(false),
@@ -18,6 +18,7 @@ CMugman::CMugman() :
 	m_JumpAccel(90.f),
 	m_DashSpeed(50.f),
 	m_DashTime(0.0f),
+	m_ShootTime(0.1f),
 	m_State(Mugman_State::Idle)
 	
 {
@@ -26,14 +27,11 @@ CMugman::CMugman() :
 
 CMugman::CMugman(const CMugman& obj) : CFightObject(obj)
 {
-	m_ChildFire = false;
 
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Mugman");
 	m_Collider = (CColliderBox2D*)FindSceneComponent("MugmanCollider");
 	m_Rotation = FindSceneComponent("Rotation");
 	m_Muzzle = FindSceneComponent("Muzzle");
-	m_LeftMuzzle = FindSceneComponent("LeftMuzzle");
-	m_RightMuzzle = FindSceneComponent("RightMuzzle");
 	//m_Arm = (CSpringArm2D*)FindSceneComponent("Arm");
 	//m_Camera = (CCamera*)FindSceneComponent("Camera");
 }
@@ -55,26 +53,27 @@ bool CMugman::Init()
 	m_Collider = CreateSceneComponent<CColliderBox2D>("MugmanCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 	m_Muzzle = CreateSceneComponent<CSceneComponent>("Muzzle");
-
-	m_LeftMuzzle = CreateSceneComponent<CSceneComponent>("LeftMuzzle");
-	m_RightMuzzle = CreateSceneComponent<CSceneComponent>("RightMuzzle");
-
-
 	//m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
 	//m_Camera = CreateSceneComponent<CCamera>("Camera");
 
 	SetRootComponent(m_Sprite);
-
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 	m_Sprite->SetRelativePos(640.f, 100.f, 0.f);
+
+	m_Sprite->AddChild(m_Collider);
+	m_Sprite->AddChild(m_Muzzle);
 	//m_Sprite->SetRelativeRotationZ(30.f);
 	//m_Sprite->SetPivot(0.5f, 0.f, 0.f);
 
 
 	m_Collider->SetExtent(45.f, 70.f);
 	m_Collider->SetCollisionProfile("Player");
+	m_Collider->SetColliderType(Collider_Type::Character);
 
-	m_Sprite->AddChild(m_Collider);
+
+	m_Muzzle->SetInheritRotZ(true);
+	m_Muzzle->SetRelativePos(Vector3(20.f, 80.f, 0.f));
+	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
 
 	//m_Arm->SetOffset(0.f, 0.f, 0.f);
 	//m_Arm->SetInheritPosZ(false);
@@ -92,26 +91,13 @@ bool CMugman::Init()
 	m_Animation->SetFrameEndFunction<CMugman>(this, &CMugman::AnimationFrameEnd);
 	m_Animation->ChangeAnimation("Mugman_Idle_R");
 
-	// 프레임 종료 콜백 설정
-
 	//m_Sprite->AddChild(m_Rotation);
 	//m_Sprite->AddChild(m_Muzzle);
 
-	m_Muzzle->SetInheritRotZ(true);
-	m_Muzzle->SetRelativePos(Vector3(0.f, 75.f, 0.f));
-	m_Muzzle->SetPivot(0.5f, 0.f, 0.f);
+	
 
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
-
-	m_LeftMuzzle->SetInheritRotZ(true);
-	m_LeftMuzzle->SetRelativePos(Vector3(0.f, 50.f, 0.f));
-	m_LeftMuzzle->SetPivot(0.5f, 0.5f, 0.f);
-
-
-	m_RightMuzzle->SetInheritRotZ(true);
-	m_RightMuzzle->SetRelativePos(Vector3(0.f, 50.f, 0.f));
-	m_RightMuzzle->SetPivot(0.0f, 0.0f, 0.f);
 
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Push, this, &CMugman::MoveUp);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Push, this, &CMugman::MoveDown);
@@ -123,8 +109,9 @@ bool CMugman::Init()
 
 	SetDefaultZ(0.1f);
 	SetPhysicsSimulate(true);
+	SetUseBlockMovement(true);
+	SetPrevDirection(Direction::RIGHT);
 
-	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
 
 
@@ -134,7 +121,6 @@ bool CMugman::Init()
 void CMugman::Update(float DeltaTime)
 {
 	CFightObject::Update(DeltaTime);
-
 
 	// 점프 중일 경우
 	if (m_bIsJump)
@@ -160,19 +146,6 @@ void CMugman::Update(float DeltaTime)
 		if (m_bIsGround)
 		{ 
 			JumpEnd();
-
-			// 높이 원래대로 되돌려줌
-			//SetRelativePos(GetRelativePos().x, m_PosY, GetRelativePos().z);
-			if (m_Direction == Direction::RIGHT)
-			{
-				m_Animation->ChangeAnimation("Mugman_Idle_R");
-
-			}
-
-			if (m_Direction == Direction::LEFT)
-			{
-				m_Animation->ChangeAnimation("Mugman_Idle_L");
-			}
 		}
 	}
 
@@ -183,12 +156,12 @@ void CMugman::Update(float DeltaTime)
 
 		float DashVelocity = (m_DashTime * m_DashTime * GetGravity() * -0.5) + (m_DashSpeed * m_DashTime);
 
-		if (m_Direction == Direction::RIGHT)
+		if (m_PrevDirection == Direction::RIGHT)
 		{
 			AddRelativePos(GetAxis(AXIS_X) * (m_Speed + DashVelocity) * DeltaTime);
 		}
 
-		if (m_Direction == Direction::LEFT)
+		if (m_PrevDirection == Direction::LEFT)
 		{
 			AddRelativePos(GetAxis(AXIS_X) * -(m_Speed + DashVelocity) * DeltaTime);
 		}
@@ -202,21 +175,12 @@ void CMugman::Update(float DeltaTime)
 
 			m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 
-			if (m_Direction == Direction::RIGHT)
-			{
-				m_Animation->ChangeAnimation("Mugman_Idle_R");
-			}
-
-			if (m_Direction == Direction::LEFT)
-			{
-				m_Animation->ChangeAnimation("Mugman_Idle_L");
-			}
 
 			m_State = Mugman_State::Idle;
 		}
 	}
 
-
+	CheckShootTime(DeltaTime);
 }
 
 void CMugman::PostUpdate(float DeltaTime)
@@ -253,7 +217,7 @@ void CMugman::MoveUp(float DeltaTime)
 
 	m_Animation->ChangeAnimation("Mugman_AimUp_R");
 
-	AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
+	//AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
 }
 
 void CMugman::MoveDown(float DeltaTime)
@@ -263,20 +227,19 @@ void CMugman::MoveDown(float DeltaTime)
 		return;
 	}
 
-	AddRelativePos(GetAxis(AXIS_Y) * -m_Speed * DeltaTime);
+	//AddRelativePos(GetAxis(AXIS_Y) * -m_Speed * DeltaTime);
 }
 
 void CMugman::MoveRight(float DeltaTime)
 {
 	// 점프 중이라면 애니메이션을 교체하지 않는다.
 	// 대시중이라면 키 입력을 받지 않는다.
-	if (m_bIsDash)
+	if (m_bIsDash || !m_bCanMove)
 	{
 		return;
 	}
 
 	m_State = Mugman_State::Run;
-	m_Direction = Direction::RIGHT;
 
 	if (!m_bIsJump)
 	{
@@ -289,13 +252,12 @@ void CMugman::MoveRight(float DeltaTime)
 
 void CMugman::MoveLeft(float DeltaTime)
 {
-	if (m_bIsDash)
+	if (m_bIsDash || !m_bCanMove)
 	{
 		return;
 	}
 
 	m_State = Mugman_State::Run;
-	m_Direction = Direction::LEFT;
 	
 	// 점프중이 아닐 때만
 	if (!m_bIsJump)
@@ -317,19 +279,20 @@ void CMugman::Jump(float DeltaTime)
 	// 점프가 가능한 경우
 	m_State = Mugman_State::Jump;
 	m_PosY = GetRelativePos().y; // 처음 Y를 저장
+	m_bCanAttack = false;
 	m_bCanJump = false;
 	m_bIsJump = true;
 	m_bIsGround = false;
 	SetPhysicsSimulate(true);
 	SetUseBlockMovement(false);
 
-	if (m_Direction == Direction::RIGHT)
+	if (m_PrevDirection == Direction::RIGHT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Jump_R");
 
 	}
 
-	if (m_Direction == Direction::LEFT)
+	if (m_PrevDirection == Direction::LEFT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Jump_L");
 	}
@@ -338,8 +301,29 @@ void CMugman::Jump(float DeltaTime)
 
 void CMugman::Shoot(float DeltaTime)
 {
-	bIsAttack = true;
-	m_Animation->ChangeAnimation("Mugman_Shoot_R");
+	if (!m_bCanAttack)
+	{
+		return;
+	}
+
+	CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
+
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Shoot_R");
+		pBullet->SetPrevDirection(Direction::RIGHT);
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Shoot_L");
+		pBullet->SetPrevDirection(Direction::LEFT);
+	}
+
+	pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
+	//pBullet->SetRelativeRotation(GetWorldRotation());
+
+	m_bCanAttack = false;
 }
 
 void CMugman::Dash(float DeltaTime)
@@ -359,17 +343,21 @@ void CMugman::Dash(float DeltaTime)
 
 	m_State = Mugman_State::Dash;
 	m_bIsDash = true;
+	m_bCanMove = false;
+	m_bCanAttack = false;
 	m_bCanDash = false;
 	m_bCanJump = false;
 	SetPhysicsSimulate(true);
+
+	// 원래 스프라이트 크기로 맞춰줌
 	m_Sprite->SetRelativeScale(330.f, 330.f, 1.f);
 
-	if (m_Direction == Direction::RIGHT)
+	if (m_PrevDirection == Direction::RIGHT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Dash_R");
 	}
 
-	if (m_Direction == Direction::LEFT)
+	if (m_PrevDirection == Direction::LEFT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Dash_L");
 	}
@@ -401,23 +389,31 @@ void CMugman::AnimationFrameEnd(const std::string& Name)
 void CMugman::CheckJump()
 {
 	// 땅일때만 점프 가능.
-	/*if (!bIsGround)
-	{
-		m_Animation->ChangeAnimation("Mugman_Jump_R");
-	}
-
-	AddRelativePos(GetAxis(AXIS_Y) * 5 * 10);*/
+	
 }
 
 void CMugman::JumpEnd()
 {
 	m_State = Mugman_State::Idle;
-	m_bIsGround = true;
 	m_bCanJump = true;
+	m_bCanAttack = true;
+
+	m_bIsGround = true;
 	m_bIsJump = false;
 	m_JumpVelocity = 50.f;
 	m_JumpTime = 0.0f;
 	m_JumpAccel = 90.f;
+
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_L");
+	}
 
 	SetUseBlockMovement(true);
 }
@@ -425,60 +421,61 @@ void CMugman::JumpEnd()
 void CMugman::DashEnd()
 {
 	m_State = Mugman_State::Idle;
-	m_bIsDash = false;
 	m_bCanDash = true;
 	m_bCanJump = true;
+	m_bCanMove = true;
+	m_bCanAttack = true;
+	m_bIsDash = false;
 	m_bIsGround = true;
 	m_DashSpeed = 80.f;
 	m_DashTime = 0.f;
+
+	Vector2 CurDirection = { GetWorldPos().x - GetPrevWorldPos().x , GetWorldPos().y - GetPrevWorldPos().y };
+	if (CurDirection.x > 0)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+	}
+
+	if (CurDirection.x < 0)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_L");
+	}
+
+	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
+
 }
 
-void CMugman::ChangeAnimDirection()
+void CMugman::CheckShootTime(float DeltaTime)
 {
-	if (m_Direction == Direction::RIGHT)
+	m_ShootTime -= DeltaTime;
+
+	if (m_ShootTime <= 0.0f)
 	{
-		switch (m_State)
-		{
-		case Mugman_State::Idle:
-			m_Animation->ChangeAnimation("Mugman_Idle_R");
-			break;
-
-		case Mugman_State::Dash:
-			m_Animation->ChangeAnimation("Mugman_Dash_R");
-			break;
-
-		case Mugman_State::Jump:
-			m_Animation->ChangeAnimation("Mugman_Jump_R");
-			break;
-
-		case Mugman_State::Run:
-			m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
-			break;
-		}
-	}
-
-	if (m_Direction == Direction::LEFT)
-	{
-		switch (m_State)
-		{
-		case Mugman_State::Idle:
-			m_Animation->ChangeAnimation("Mugman_Idle_L");
-			break;
-
-		case Mugman_State::Dash:
-			m_Animation->ChangeAnimation("Mugman_Dash_L");
-			break;
-
-		case Mugman_State::Jump:
-			m_Animation->ChangeAnimation("Mugman_Jump_L");
-			break;
-
-		case Mugman_State::Run:
-			m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
-			break;
-		}
+		m_bCanAttack = true;
+		m_ShootTime = 0.1f;
 	}
 }
+
+void CMugman::OnStepCloud(float MoveZ, float CloudY)
+{
+	// 충돌체의 옆인지 위인지 판단한 후, 옆에 부딪쳤다면 return, 위에 부딪쳤다면 멈추는 처리
+	// 점프중이라면 움직이지 않음.
+	if (m_bIsJump)
+	{
+		return; 
+	}
+
+	// 구름보다 내 위치가 더 높을때만 움직임
+	if (CloudY < GetWorldPos().y)
+	{
+		AddRelativePos(-MoveZ, 0.f, 0.f);
+	}
+	
+	
+}
+
+
 
 void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 {	
@@ -493,6 +490,17 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		m_bIsGround = true;
 		SetPhysicsSimulate(false);
 	}
+
+	// 낙사 방지용 콜리전
+	if (result.DestCollider->GetName() == "GroundCollider")
+	{
+		SetUseBlockMovement(true);
+		JumpEnd();
+	}
+}
+
+void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
+{
 }
 
 

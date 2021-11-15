@@ -38,10 +38,24 @@ bool CClientManager::Init()
     CInput::GetInst()->SetControlKey("Skill2", true);
 
     // 예제 코드
-    //CCollisionManager::GetInst()->CreateChannel("PlayerAttack", Collision_Interaction::Block);
-    //CCollisionManager::GetInst()->CreateProfile("PlayerAttack", Collision_Channel::Custom1);
-    //CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Custom1,
-    //    Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->CreateChannel("Bullet", Collision_Interaction::Block);
+    CCollisionManager::GetInst()->CreateProfile("Bullet", Collision_Channel::Bullet);
+
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Player ,Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Static, Collision_Interaction::Ignore);
+
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Static, Collision_Interaction::Block);
+
+    CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Player, Collision_Interaction::Block);
+
+
+    
+    CCollisionManager::GetInst()->SetProfileChannelState("Monster", Collision_Channel::Bullet, Collision_Interaction::Block);
+
+
 
     CSceneManager::GetInst()->SetSceneMode<CMainScene>();
 

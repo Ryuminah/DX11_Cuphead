@@ -158,7 +158,8 @@ enum class Collider_Shape
 enum class Collider_Type
 {
     Character,
-    Static
+    Static,
+    Trigger
 };
 
 enum class Render_Space
@@ -172,8 +173,8 @@ enum class Collision_Channel
     Static,
     Player,
     Monster,
-    Custom1,
-    Custom2,
+    Character,
+    Bullet,
     Custom3,
     Custom4,
     Custom5,
@@ -202,6 +203,7 @@ enum class Collision_Interaction
 enum class Collision_State
 {
     Begin,
+    Overlap,
     End,
     Max
 };

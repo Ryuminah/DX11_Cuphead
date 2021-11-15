@@ -314,6 +314,9 @@ public:
 	void CaculateMatWorld();
 
 public:
+	Vector3 Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time);
+
+public:
 	void Start();
 	bool Init();
 	void Update(float DeltaTime);

@@ -24,8 +24,6 @@ protected:
 private:
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
-	CSharedPtr<CSceneComponent> m_LeftMuzzle;
-	CSharedPtr<CSceneComponent> m_RightMuzzle;
 	/*CSharedPtr<CSpringArm2D> m_Arm;
 	CSharedPtr<CCamera> m_Camera;*/
 
@@ -52,9 +50,10 @@ private:
 
 
 
+
 private:
 	// Shooting
-	bool    m_ChildFire;
+	float	m_ShootTime;
 
 
 public:
@@ -93,9 +92,16 @@ public:
 	void JumpEnd();
 	void DashEnd();
 
-	// 편의성
+// Shoot 관련
 public:
-	void ChangeAnimDirection();
+	void CheckShootTime(float DeltaTime);
+	void OnStepCloud(float MoveZ, float CloudY);
+
+	
+public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
+	void CollisionEnd(const HitResult& result, CCollider* Collider);
+
+
 };
 

@@ -2,11 +2,12 @@
 #include "Scene/Scene.h"
 #include "Scene/CameraManager.h"
 
-CGameObject::CGameObject()  :
+CGameObject::CGameObject() :
 	m_Start(false),
 	m_pScene(nullptr),
 	m_LifeTime(0.f),
-	m_LifeTimeEnable(false)
+	m_LifeTimeEnable(false),
+	m_PrevDirection(Direction::NONE)
 {
 	m_RootComponent = CreateSceneComponent<CSceneComponent>("DefaultRoot");
 
@@ -162,6 +163,8 @@ void CGameObject::PostUpdate(float DeltaTime)
 	{
 		m_vecObjectComponent[i]->PostUpdate(DeltaTime);
 	}
+
+	CheckDirection();
 }
 
 void CGameObject::Collision(float DeltaTime)
@@ -174,6 +177,7 @@ void CGameObject::Collision(float DeltaTime)
 	{
 		m_vecObjectComponent[i]->Collision(DeltaTime);
 	}
+
 }
 
 void CGameObject::PrevRender(float DeltaTime)
@@ -229,6 +233,30 @@ void CGameObject::Move(const Vector2& Target)
 void CGameObject::Move(const Vector3& Target)
 {
 	m_RootComponent->Move(Target);
+}
+
+Vector3 CGameObject::Lerp2D(Vector3 LastTargetPosition, Vector3 StartTargetPosition, float Time)
+{
+	return m_RootComponent->Lerp2D(LastTargetPosition, StartTargetPosition, Time);
+}
+
+void CGameObject::CheckDirection()
+{
+	// 모든 움직임 계산이 끝난 이후, 현재 위치와 이전 프레임의 위치를 비교하여 현재 움직인 방향을 체크함
+	Vector2 currentDir = { GetWorldPos().x - GetPrevWorldPos().x , GetWorldPos().y - GetPrevWorldPos().y };
+
+	// 방향 설정
+	if (currentDir.x > 0.f)
+	{
+		m_PrevDirection = Direction::RIGHT;
+	}
+
+	if (currentDir.x < 0.f)
+	{
+		m_PrevDirection = Direction::LEFT;
+	}
+
+	// 이동하지 않았다면 처음 방향을 그대로 둔다.
 }
 
 Vector3 CGameObject::GetVelocityScale() const
