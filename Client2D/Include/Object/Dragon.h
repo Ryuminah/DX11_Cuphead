@@ -23,7 +23,7 @@ private:
 
 private:
 	// Shooting
-	float	m_ShootTime;
+	float	m_ShootCool;
 
 
 public:

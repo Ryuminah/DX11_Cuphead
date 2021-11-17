@@ -229,6 +229,9 @@
     <Filter Include="01. Engine\12. Navigation">
       <UniqueIdentifier>{ab998863-f145-40c7-ba3a-2d768a8a2573}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. FSM">
+      <UniqueIdentifier>{d7ba50fb-fcdb-40e3-9f6a-3fd66c84e440}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -654,6 +657,9 @@
     <ClInclude Include="ThreadNavigation.h">
       <Filter>01. Engine\10. Thread</Filter>
     </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1036,6 +1042,9 @@
     </ClCompile>
     <ClCompile Include="ThreadNavigation.cpp">
       <Filter>01. Engine\10. Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

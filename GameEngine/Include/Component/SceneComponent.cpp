@@ -631,6 +631,11 @@ float CSceneComponent::GetGravity()
     return m_pTransform->GetGravity();
 }
 
+void CSceneComponent::ResetPhysicsSimulate()
+{
+    m_pTransform->ResetPhysicsSimulate();
+}
+
 void CSceneComponent::SetWorldScale(const Vector3& Scale)
 {
     m_pTransform->SetWorldScale(Scale);

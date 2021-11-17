@@ -540,6 +540,11 @@ bool CGameObject::GetUseBlockMovement()
 	return m_RootComponent.Get()->GetUseBlockMovement();
 }
 
+void CGameObject::ResetPhysicsSimulate()
+{
+	m_RootComponent->ResetPhysicsSimulate();
+}
+
 void CGameObject::SetWorldScale(const Vector3& Scale)
 {
 	m_RootComponent->SetWorldScale(Scale);

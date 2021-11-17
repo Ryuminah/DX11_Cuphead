@@ -145,6 +145,12 @@ void CTransform::InheritPos()
     }
 }
 
+void CTransform::ResetPhysicsSimulate()
+{
+    m_Gravity = 5.f;
+    m_GravityAccel = 25.f;
+}
+
 CTransform* CTransform::Clone()
 {
     return new CTransform(*this);

@@ -297,6 +297,7 @@
     <ClInclude Include="Scene\SceneResource.h" />
     <ClInclude Include="Scene\Viewport.h" />
     <ClInclude Include="SharedPtr.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Sync.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -427,6 +428,7 @@
     <ClCompile Include="Scene\SceneMode.cpp" />
     <ClCompile Include="Scene\SceneResource.cpp" />
     <ClCompile Include="Scene\Viewport.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="ThreadNavigation.cpp" />

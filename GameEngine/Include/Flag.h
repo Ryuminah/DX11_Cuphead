@@ -173,8 +173,8 @@ enum class Collision_Channel
     Static,
     Player,
     Enemy,
-    Character,
     Bullet,
+    Character,
     Custom3,
     Custom4,
     Custom5,
@@ -207,6 +207,15 @@ enum class Collision_State
     End,
     Max
 };
+
+enum class FSM_State
+{
+    Start,
+    Stay,
+    End,
+    Max
+};
+
 
 enum class PixelCollision_Type
 {

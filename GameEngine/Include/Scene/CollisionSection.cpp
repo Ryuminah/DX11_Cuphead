@@ -112,7 +112,7 @@ void CCollisionSection::Collision(float DeltaTime)
                     Src->CallCollisionCallback(Collision_State::Overlap);
                     Dest->CallCollisionCallback(Collision_State::Overlap);
 
-                    // 부딪치는 콜리전이 캐릭터이고, 충돌을 사용하고, CollisionInteraction이 
+                    // 부딪치는 콜리전이 캐릭터이고, xz충돌을 사용하고, CollisionInteraction이 
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                         && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     {
@@ -121,7 +121,9 @@ void CCollisionSection::Collision(float DeltaTime)
                         Vector3 Distance = Src->GetWorldPos() - Dest->GetWorldPos();
                         Vector3 PrevDistance = Src->GetPrevWorldPos() - Dest->GetPrevWorldPos();
 
+                        //Vector2 ComparePivot = { abs(Src->GetMax().x - Src->GetMin().x) *0.5f , abs(Src->GetMax().y- Src->GetMin().y) *0.5f};
                         Vector2 ComparePivot = { Src->GetMax().x - Src->GetWorldPos().x ,Src->GetMax().y - Src->GetWorldPos().y };
+
                         Vector2 TopRight = { Dest->GetMax().x , Dest->GetMax().y };
                         Vector2 TopLeft = { Dest->GetMin().x , Dest->GetMax().y };
                         Vector2 BottomRight = { Dest->GetMax().x , Dest->GetMin().y };

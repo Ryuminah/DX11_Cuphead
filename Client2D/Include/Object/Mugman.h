@@ -35,7 +35,9 @@ private:
 	bool m_bCanJump;
 	bool m_bIsJump;
 	bool m_bIsGround;
+
 	bool m_bIsFall;
+	float m_FallTime;
 
 	bool m_bIsDash;
 	bool m_bCanDash;
@@ -55,7 +57,8 @@ private:
 
 private:
 	// Shooting
-	float	m_ShootTime;
+	float	m_ShootCool;
+	float	m_DashCool;
 
 
 public:
@@ -92,17 +95,19 @@ public:
 	void FallCheck(float DeltaTime);
 	void JumpCheck(float DeltaTime);
 	void DashCheck(float DeltaTime);
+	void TimeCheck(float DeltaTime);
 
 	// Move 관련
 public:
 	void JumpEnd();
 	void DashEnd();
+
 	void OnGround();
+	void OnStepCloud(float MoveZ, float CloudY);
+	void InAir();
 
 	// Shoot 관련
 public:
-	void CheckShootTime(float DeltaTime);
-	void OnStepCloud(float MoveZ, float CloudY);
 
 
 public:

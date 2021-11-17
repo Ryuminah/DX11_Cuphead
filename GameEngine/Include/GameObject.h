@@ -175,6 +175,7 @@ public:
 	float GetGravityAccel();
 	float GetGravity();
 	bool GetUseBlockMovement();
+	void ResetPhysicsSimulate();
 
 public:
 	void SetWorldScale(const Vector3& Scale);

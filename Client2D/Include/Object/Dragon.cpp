@@ -47,6 +47,7 @@ bool CDragon::Init()
 	m_Collider->SetExtent(250.f, 400.f);
 	m_Collider->SetCollisionProfile("Enemy");
 	m_Collider->SetColliderType(Collider_Type::Character);
+	//m_Collider->SetPivot(0.5f, 0.f, 0.f);
 
 	m_Muzzle->SetInheritRotZ(true);
 	m_Muzzle->SetRelativePos(Vector3(20.f, 80.f, 0.f));

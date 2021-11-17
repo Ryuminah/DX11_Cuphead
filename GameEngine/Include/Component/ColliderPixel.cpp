@@ -178,8 +178,6 @@ void CColliderPixel::PostUpdate(float DeltaTime)
 {
 	CCollider::PostUpdate(DeltaTime);
 
-
-
 	m_Info.Box.Center.x = GetWorldPos().x;
 	m_Info.Box.Center.y = GetWorldPos().y;
 

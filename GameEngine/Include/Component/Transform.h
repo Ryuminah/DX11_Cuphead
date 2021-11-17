@@ -146,6 +146,7 @@ public:
 	void InheritScale();
 	void InheritRot();
 	void InheritPos();
+	void ResetPhysicsSimulate();
 
 public:
 	bool GetInheritPosZ()	const
