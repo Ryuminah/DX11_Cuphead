@@ -172,7 +172,7 @@ enum class Collision_Channel
 {
     Static,
     Player,
-    Monster,
+    Enemy,
     Character,
     Bullet,
     Custom3,

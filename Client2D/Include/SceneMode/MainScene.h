@@ -24,6 +24,7 @@ private:
     void CreateMugmanAnim();
     void CreateStepCloudAnim();
     void CreateWeaponAnim();
+    void CreateDragonAnim();
     
     // Game Object »ý¼º
     void CreateStepCloud();

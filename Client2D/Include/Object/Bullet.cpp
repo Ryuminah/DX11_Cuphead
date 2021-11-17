@@ -3,7 +3,7 @@
 #include "../Animation2D/BulletAnimation.h"
 
 CBullet::CBullet() :
-    m_Range(1280.f), m_Speed(800.f)
+    m_Range(1280.f), m_Speed(900.f)
 {
     m_bIsFire = false;
     m_bIsHit = false;
@@ -133,13 +133,14 @@ CBullet* CBullet::Clone()
 
 void CBullet::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
-
+    
     m_bIsHit = true;
-    m_bIsFire = false;
 }
 
 void CBullet::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
+    Active(false);
+
     m_bIsHit = false;
     m_bIsFire = false;
 }

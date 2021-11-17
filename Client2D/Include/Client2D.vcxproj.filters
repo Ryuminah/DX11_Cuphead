@@ -93,6 +93,12 @@
     <ClCompile Include="Object\GroundCollider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Dragon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\DragonAnimation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -150,6 +156,12 @@
       <Filter>03. Animation2D\02. Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Object\GroundCollider.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Dragon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\DragonAnimation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

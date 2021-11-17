@@ -36,7 +36,7 @@ bool CCollisionManager::Init()
 
 	CreateProfile("Static", Collision_Channel::Static);
 	CreateProfile("Player", Collision_Channel::Player);
-	CreateProfile("Enemyr", Collision_Channel::Monster);
+	CreateProfile("Enemy", Collision_Channel::Enemy);
 
 	SetProfileChannelState("Player", Collision_Channel::Player, 
 		Collision_Interaction::Ignore);
