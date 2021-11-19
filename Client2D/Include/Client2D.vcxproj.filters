@@ -34,6 +34,9 @@
     <Filter Include="03. Animation2D\02. Weapon">
       <UniqueIdentifier>{423f13be-3367-47f6-b965-df2ebbe1c6fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\Skill">
+      <UniqueIdentifier>{28b0637d-d1f0-412a-a53c-69441bbbf74f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,20 +87,23 @@
     <ClCompile Include="Animation2D\MugmanAnimation2D.cpp">
       <Filter>03. Animation2D\01. Character</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Bullet.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D\BulletAnimation.cpp">
       <Filter>03. Animation2D\02. Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Object\GroundCollider.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Object</Filter>
     </ClCompile>
     <ClCompile Include="Object\Dragon.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Object</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\DragonAnimation.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>03. Animation2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Bullet.cpp">
+      <Filter>03. Animation2D\02. Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Skill.cpp">
+      <Filter>02. Object\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,20 +155,23 @@
     <ClInclude Include="Animation2D\MugmanAnimation2D.h">
       <Filter>03. Animation2D\01. Character</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Bullet.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D\BulletAnimation.h">
       <Filter>03. Animation2D\02. Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="Object\GroundCollider.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Dragon.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Bullet.h">
+      <Filter>03. Animation2D\02. Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\GroundCollider.h">
+      <Filter>02. Object</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\DragonAnimation.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>03. Animation2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Skill.h">
+      <Filter>02. Object\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

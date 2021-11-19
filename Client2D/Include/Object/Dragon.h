@@ -1,6 +1,11 @@
 #pragma once
 #include "FightObject.h"
 
+enum class Phase
+{
+	Phase1, Phase2, Phase3
+};
+
 class CDragon :
     public CFightObject
 {
@@ -16,6 +21,7 @@ private:
 	CSharedPtr<CSceneComponent> m_Muzzle;
 
 private:
+	Phase	m_CurrentPhase;
 
 private:
 	// basic Movement
@@ -37,13 +43,6 @@ public:
 	virtual void Animation2DNotify(const std::string& Name);
 
 public:
-	void MoveUp(float DeltaTime);
-	void MoveDown(float DeltaTime);
-	void MoveRight(float DeltaTime);
-	void MoveLeft(float DeltaTime);
-	void Jump(float DeltaTime);
-	void Shoot(float DeltaTime);
-	void Dash(float DeltaTime);
 
 
 public:

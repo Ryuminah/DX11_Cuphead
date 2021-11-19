@@ -17,12 +17,10 @@ CMugman::CMugman() :
 	m_JumpTime(0.f), m_FallTime(0.f),
 	m_JumpVelocity(50.f),
 	m_JumpAccel(90.f),
-	m_DashSpeed(50.f),
+	m_DashSpeed(100.f),
 	m_DashTime(0.0f),
 	m_ShootCool(0.2f),
-	m_DashCool(0.5f),
-	m_State(Mugman_State::Idle)
-	
+	m_DashCool(0.5f)	
 {
 	m_BulletCount = 1;
 }
@@ -444,7 +442,7 @@ void CMugman::JumpEnd()
 void CMugman::DashEnd()
 {
 	m_State = Mugman_State::Idle;
-	m_DashSpeed = 80.f;
+	m_DashSpeed = 100.f;
 	m_DashTime = 0.f;
 
 	m_bIsDash = false;

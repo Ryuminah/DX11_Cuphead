@@ -173,6 +173,7 @@
     <ClCompile Include="Object\FightObject.cpp" />
     <ClCompile Include="Object\GroundCollider.cpp" />
     <ClCompile Include="Object\Mugman.cpp" />
+    <ClCompile Include="Object\Skill.cpp" />
     <ClCompile Include="Object\StepCloud.cpp" />
     <ClCompile Include="SceneMode\LoadingScene.cpp" />
     <ClCompile Include="SceneMode\LoadingThread.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Object\FightObject.h" />
     <ClInclude Include="Object\GroundCollider.h" />
     <ClInclude Include="Object\Mugman.h" />
+    <ClInclude Include="Object\Skill.h" />
     <ClInclude Include="Object\StepCloud.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SceneMode\LoadingScene.h" />
