@@ -3,18 +3,17 @@
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderBox2D.h"
 
-
 // 전투를 하는 유닛에게 필요한 데이터와 기능을 제공 및 관리 클래스
 
-class CFightObject :
+class CCharacter :
     public CGameObject
 {
 	friend class CScene;
 
 protected:
-	CFightObject();
-	CFightObject(const CFightObject& obj);
-	virtual ~CFightObject();
+	CCharacter();
+	CCharacter(const CCharacter& obj);
+	virtual ~CCharacter();
 
 protected:
 	CSharedPtr<CSpriteComponent> m_Sprite;
@@ -28,21 +27,16 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual CFightObject* Clone();
+	virtual CCharacter* Clone();
 
 protected:
-	int m_HP;
-	int m_Attack;
-
-	// 나중에 움직임 전용으로 빼기
-	float m_Speed;
-	bool m_bCanAttack;	// 공격중인지
-	bool m_bCanMove;	// 움직일 수 있는 상황인지
-
-
+	int		m_HitCount;		// 모든 캐릭터들은 체력 대신 타수로 계산함
+	float	m_Speed;		
+	bool	m_bCanAttack;	// 공격중인지
+	bool	m_bCanMove;	// 움직일 수 있는 상황인지
 
 public:
-	// 전투에 필요한 함수
+	virtual void HitCheck();
 
 };
 

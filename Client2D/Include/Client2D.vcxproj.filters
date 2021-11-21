@@ -72,7 +72,7 @@
     <ClCompile Include="Object\DragonMap.cpp">
       <Filter>02. Object</Filter>
     </ClCompile>
-    <ClCompile Include="Object\FightObject.cpp">
+    <ClCompile Include="Object\Character.cpp">
       <Filter>02. Object</Filter>
     </ClCompile>
     <ClCompile Include="Object\Mugman.cpp">
@@ -140,7 +140,7 @@
     <ClInclude Include="Object\DragonMap.h">
       <Filter>02. Object</Filter>
     </ClInclude>
-    <ClInclude Include="Object\FightObject.h">
+    <ClInclude Include="Object\Character.h">
       <Filter>02. Object</Filter>
     </ClInclude>
     <ClInclude Include="Object\Mugman.h">

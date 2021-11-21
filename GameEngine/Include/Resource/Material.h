@@ -41,6 +41,7 @@ protected:
 protected:
 	class CScene* m_pScene;
 	class CMaterialConstantBuffer* m_pCBuffer;
+	Vector4     m_TimerBaseColor;
 	Vector4     m_BaseColor;
 	Vector4     m_EmissiveColor;
 	std::vector<MaterialTextureInfo*>	m_vecTexture;
@@ -50,6 +51,9 @@ protected:
 	float		m_Opacity;
 	bool		m_PaperBurnEnable;
 	bool		m_DistortionEnable;
+
+	bool		m_bUseTimer;
+	float		m_MaterialTimer;
 
 	std::list<MaterialCallback*>	m_SetMaterialList;
 	std::list<MaterialCallback*>	m_ResetMaterialList;
@@ -78,6 +82,12 @@ public:
 	void SetBaseColor(float r, float g, float b, float a);
 	void SetBaseColor(unsigned char r, unsigned char g, unsigned char b,
 		unsigned char a);
+
+	void SetMaterialTimerBaseColor(float r, float g, float b, float a);
+	float GetMaterialTimer();
+	bool GetUseTimer();
+	void UseMaterialTimer(float ActiveTime, bool bUseTimer = true);
+	void MaterialTimerEvent(float DeltaTime);
 
 	void SetEmissiveColor(const Vector4& Color);
 	void SetEmissiveColor(float r, float g, float b, float a);

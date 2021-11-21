@@ -174,11 +174,11 @@ void CRenderManager::Render(float DeltaTime)
 
 	// 만들어진 Diffuse Target을 Distortion Target에 그려낸다.
 	// 이때 깊이버퍼에 영향이 가지 않도록 깊이는 꺼준다.
-	m_DistortionTarget->ClearTarget();
+	m_DistortionTarget->ClearTarget();				// 이거 끄면 반투명이 잘된다 왜지,,?
 	m_DistortionTarget->SetTarget(nullptr);
 
-	m_DepthDisable->SetState();
 	m_AlphaBlend->SetState();
+	m_DepthDisable->SetState();
 	
 	m_DiffuseTargetMaterial->SetMaterial();	
 

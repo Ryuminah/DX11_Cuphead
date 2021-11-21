@@ -5,12 +5,12 @@
 #include "../Animation2D/DragonAnimation.h"
 #include "Engine.h"
 
-CDragon::CDragon()
+CDragon::CDragon() : m_CurrentPhase(Phase::Phase1)
 {
 
 }
 
-CDragon::CDragon(const CDragon& obj) : CFightObject(obj)
+CDragon::CDragon(const CDragon& obj) : CCharacter(obj)
 {
 
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Dragon");
@@ -30,7 +30,7 @@ void CDragon::Start()
 
 bool CDragon::Init()
 {
-	CFightObject::Init();
+	CCharacter::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Dragon");
 	m_Collider = CreateSceneComponent<CColliderBox2D>("DragonCollider");
@@ -64,7 +64,7 @@ bool CDragon::Init()
 	SetUseBlockMovement(false);
 	SetPrevDirection(Direction::LEFT);
 
-	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::Begin, this, &CDragon::CollisionBegin);
+	m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::Begin, this, &CDragon::CollisionBegin);
 	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::Overlap, this, &CDragon::CollisionOverlap);
 	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::End, this, &CDragon::CollisionEnd);
 
@@ -74,22 +74,22 @@ bool CDragon::Init()
 
 void CDragon::Update(float DeltaTime)
 {
-	CFightObject::Update(DeltaTime);
+	CCharacter::Update(DeltaTime);
 }
 
 void CDragon::PostUpdate(float DeltaTime)
 {
-	CFightObject::PostUpdate(DeltaTime);
+	CCharacter::PostUpdate(DeltaTime);
 }
 
 void CDragon::Collision(float DeltaTime)
 {
-	CFightObject::Collision(DeltaTime);
+	CCharacter::Collision(DeltaTime);
 }
 
 void CDragon::Render(float DeltaTime)
 {
-	CFightObject::Render(DeltaTime);
+	CCharacter::Render(DeltaTime);
 }
 
 CDragon* CDragon::Clone()
@@ -99,12 +99,25 @@ CDragon* CDragon::Clone()
 
 void CDragon::Animation2DNotify(const std::string& Name)
 {
-	CFightObject::Animation2DNotify(Name);
+	CCharacter::Animation2DNotify(Name);
 }
 
 void CDragon::AnimationFrameEnd(const std::string& Name)
 {
 	// 현재 애니메이션이 Dash일 경우
+}
+
+void CDragon::CollisionBegin(const HitResult& result, CCollider* Collider)
+{
+	if (result.DestCollider->GetName() == "BulletCollider")
+	{
+		HitCheck();
+		m_Sprite->GetMaterial(0)->SetMaterialTimerBaseColor(1.f, 0.f, 0.f, 0.5f);
+		m_Sprite->GetMaterial(0)->UseMaterialTimer(0.01f);
+
+		int check = m_HitCount;
+		
+	}
 }
 
 

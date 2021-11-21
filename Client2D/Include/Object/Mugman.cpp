@@ -1,8 +1,8 @@
 #include "Mugman.h"
-#include "../Animation2D/MugmanAnimation2D.h"
 #include "Input.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
+#include "../Animation2D/MugmanAnimation2D.h"
 #include "Engine.h"
 #include "Bullet.h"
 #include "StepCloud.h"
@@ -25,7 +25,7 @@ CMugman::CMugman() :
 	m_BulletCount = 1;
 }
 
-CMugman::CMugman(const CMugman& obj) : CFightObject(obj)
+CMugman::CMugman(const CMugman& obj) : CCharacter(obj)
 {
 
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Mugman");
@@ -47,7 +47,7 @@ void CMugman::Start()
 
 bool CMugman::Init()
 {
-	CFightObject::Init();
+	CCharacter::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Mugman");
 	m_Collider = CreateSceneComponent<CColliderBox2D>("MugmanCollider");
@@ -64,7 +64,6 @@ bool CMugman::Init()
 	m_Sprite->AddChild(m_Muzzle);
 	//m_Sprite->SetRelativeRotationZ(30.f);
 	//m_Sprite->SetPivot(0.5f, 0.f, 0.f);
-
 
 	m_Collider->SetExtent(45.f, 70.f);
 	m_Collider->SetCollisionProfile("Player");
@@ -122,7 +121,7 @@ bool CMugman::Init()
 
 void CMugman::Update(float DeltaTime)
 {
-	CFightObject::Update(DeltaTime);
+	CCharacter::Update(DeltaTime);
 
 	// ¶¥ÀÌ ¾Æ´Ò °æ¿ì ¶³¾îÁö°í ÀÖ´ÂÁö Ã¼Å©
 	if (!m_bIsGround)
@@ -141,17 +140,17 @@ void CMugman::Update(float DeltaTime)
 
 void CMugman::PostUpdate(float DeltaTime)
 {
-	CFightObject::PostUpdate(DeltaTime);
+	CCharacter::PostUpdate(DeltaTime);
 }
 
 void CMugman::Collision(float DeltaTime)
 {
-	CFightObject::Collision(DeltaTime);
+	CCharacter::Collision(DeltaTime);
 }
 
 void CMugman::Render(float DeltaTime)
 {
-	CFightObject::Render(DeltaTime);
+	CCharacter::Render(DeltaTime);
 }
 
 CMugman* CMugman::Clone()
@@ -161,7 +160,7 @@ CMugman* CMugman::Clone()
 
 void CMugman::Animation2DNotify(const std::string& Name)
 {
-	CFightObject::Animation2DNotify(Name);
+	CCharacter::Animation2DNotify(Name);
 }
 
 void CMugman::MoveUp(float DeltaTime)

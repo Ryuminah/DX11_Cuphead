@@ -119,6 +119,12 @@ void CSpriteComponent::Update(float DeltaTime)
 
 	if (m_Animation)
 		m_Animation->Update(DeltaTime);
+
+	// MaterialTimer가 설정 되어있을 경우
+	if (GetMaterial(0)->GetUseTimer())
+	{
+		GetMaterial(0)->MaterialTimerEvent(DeltaTime);
+	}
 }
 
 void CSpriteComponent::PostUpdate(float DeltaTime)

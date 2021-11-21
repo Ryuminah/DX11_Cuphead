@@ -5,12 +5,12 @@
 #include "../Animation2D/DragonAnimation.h"
 #include "Engine.h"
 
-CSkill::CSkill() : m_bIsFired(false), m_PhaseNumber(1)
+CSkill::CSkill() : m_bIsFired(false), m_PhaseNumber(Phase::Phase1), m_CoolTime(0.f)
 {
 
 }
 
-CSkill::CSkill(const CSkill& obj) : CSkill(obj)
+CSkill::CSkill(const CSkill& obj) : CGameObject(obj)
 {
 	m_Collider = (CColliderBox2D*)FindSceneComponent("ColliderBox");
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Sprite");

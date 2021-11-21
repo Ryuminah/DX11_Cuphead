@@ -16,9 +16,11 @@ CMaterial::CMaterial()  :
 	m_pCBuffer(nullptr),
 	m_pScene(nullptr),
 	m_BaseColor(1.f, 1.f, 1.f, 1.f),
+	m_MaterialTimer(0.01),
 	m_EmissiveColor(0.f, 0.f, 0.f, 0.f),
 	m_RenderState{},
-	m_Opacity(1.f)
+	m_Opacity(1.f),
+	m_bUseTimer(false)
 {
 }
 
@@ -114,6 +116,54 @@ void CMaterial::SetBaseColor(unsigned char r, unsigned char g,
 	m_BaseColor = Vector4(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
 
 	m_pCBuffer->SetBaseColor(m_BaseColor);
+}
+
+void CMaterial::SetMaterialTimerBaseColor(float r, float g, float b, float a)
+{
+	m_TimerBaseColor = Vector4(r, g, b, a);
+}
+
+bool CMaterial::GetUseTimer()
+{
+	return m_bUseTimer;
+}
+
+float CMaterial::GetMaterialTimer()
+{
+	return m_MaterialTimer;
+}
+
+void CMaterial::UseMaterialTimer(float ActiveTime, bool bUseTimer /*= true*/)
+{
+	// 이미 사용하고 있다면 해당 이벤트가 끝난뒤에 다시 활성화 시킴
+	if (m_bUseTimer)
+	{
+		return;
+	}
+
+	Vector4 currentBaseColor = m_BaseColor;
+	// 둘이 바꿔줌
+	m_BaseColor = m_TimerBaseColor;
+	m_TimerBaseColor = currentBaseColor;
+
+	m_MaterialTimer = ActiveTime;
+	m_bUseTimer = bUseTimer;
+}
+
+void CMaterial::MaterialTimerEvent(float DeltaTime)
+{
+	if (m_MaterialTimer < 0.f)
+	{
+		// 타이머가 종료되었을 시 원래의 컬러로 변경해준다.
+		m_MaterialTimer = 0.f;
+		m_bUseTimer = false;
+		m_BaseColor = m_TimerBaseColor;
+		m_TimerBaseColor = Vector4(1.f, 1.f, 1.f, 1.f);
+
+		return;
+	}
+
+	m_MaterialTimer -= DeltaTime;
 }
 
 void CMaterial::SetEmissiveColor(const Vector4& Color)

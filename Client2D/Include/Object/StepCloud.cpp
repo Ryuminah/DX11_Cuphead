@@ -59,6 +59,7 @@ bool CStepCloud::Init()
 	m_Collider->AddCollisionCallbackFunction<CStepCloud>(Collision_State::Overlap, this, &CStepCloud::CollisionOverlap);
 
 	SetUseBlockMovement(false);
+	SetDefaultZ(0.5);
 
 	return true;
 }

@@ -1,13 +1,9 @@
 #pragma once
-#include "FightObject.h"
-
-enum class Phase
-{
-	Phase1, Phase2, Phase3
-};
+#include "Character.h"
+#include "Skill.h"
 
 class CDragon :
-    public CFightObject
+    public CCharacter
 {
 	friend class CScene;
 
@@ -23,13 +19,13 @@ private:
 private:
 	Phase	m_CurrentPhase;
 
-private:
-	// basic Movement
-	bool m_bIsFall;
 
 private:
-	// Shooting
-	float	m_ShootCool;
+	// basic Movement
+
+
+private:
+
 
 
 public:
@@ -47,8 +43,6 @@ public:
 
 public:
 	void AnimationFrameEnd(const std::string& Name);
-
-public: //Get Set
 
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);

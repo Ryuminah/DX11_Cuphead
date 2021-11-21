@@ -69,11 +69,13 @@ void CRenderTarget::SetTarget(ID3D11DepthStencilView* DepthView)
 {
 	CONTEXT->OMGetRenderTargets(1, &m_PrevTargetView, &m_PrevDepthView);
 
+	// 이전 깊이버퍼의 값을 저장
 	ID3D11DepthStencilView* Depth = m_PrevDepthView;
 
 	if (DepthView)
 		Depth = DepthView;
 
+	// 렌더타겟을 현재 뷰로 설정
 	CONTEXT->OMSetRenderTargets(1, &m_TargetView, Depth);
 }
 

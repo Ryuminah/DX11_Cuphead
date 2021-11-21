@@ -1,5 +1,5 @@
 #pragma once
-#include "FightObject.h"
+#include "Character.h"
 #include "Component/SpriteComponent.h"
 #include "Component/Camera.h"
 #include "Component/SpringArm2D.h"
@@ -12,7 +12,7 @@ enum class Mugman_State
 };
 
 class CMugman :
-	public CFightObject
+	public CCharacter
 {
 	friend class CScene;
 

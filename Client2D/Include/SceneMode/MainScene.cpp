@@ -238,10 +238,10 @@ void CMainScene::CreateWeaponAnim()
 
 void CMainScene::CreateDragonAnim()
 {
+	//Phase1
 	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Idle");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Idle",
 		"Dragon_Idle", TEXT("Enemy/Dragon_Idle.png"));
-
 	for (int y = 0; y < 2; ++y)
 	{
 		for (int i = 0; i < 8; ++i)
@@ -250,7 +250,107 @@ void CMainScene::CreateDragonAnim()
 				Vector2(i * 870.f, y * 870.f), Vector2((i + 1) * 870.f, (y + 1) * 870.f));
 		}
 	}
+
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_Start");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_Start",
+		"Dragon_Peashot_Start", TEXT("Enemy/Dragon_Peashot_Start.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_Start",
+			Vector2(i * 900.f, 0), Vector2((i + 1) * 900.f, 900.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_Attack");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_Attack",
+		"Dragon_Peashot_Attack", TEXT("Enemy/Dragon_Peashot_Attack.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_Attack",
+				Vector2(i * 900.f, y * 870.f), Vector2((i + 1) * 900.f, (y + 1) * 900.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_End");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_End",
+		"Dragon_Peashot_End", TEXT("Enemy/Dragon_Peashot_End.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_End",
+			Vector2(i * 900.f, 0), Vector2((i + 1) * 900.f, 900.f));
+	}
 	
+	
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tail");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tail",
+		"Dragon_Tail", TEXT("Enemy/Dragon_Tail.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Tail",
+			Vector2(i * 300.f, 0), Vector2((i + 1) * 300.f, 870.f));
+	}
+
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Meteor_Start");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Meteor_Start",
+		"Dragon_Meteor_Start", TEXT("Enemy/Dragon_Meteor_Start.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Meteor_Start",
+				Vector2(i * 900.f, y * 870.f), Vector2((i + 1) * 900.f, (y + 1) * 900.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Meteor_Attack");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Meteor_Attack",
+		"Dragon_Meteor_Attack", TEXT("Enemy/Dragon_Meteor_Attack.png"));
+	for (int i = 0; i < 7; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Meteor_Attack",
+			Vector2(i * 900.f, 0), Vector2((i + 1) * 900.f, 900.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Meteor_End");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Meteor_End",
+		"Dragon_Meteor_End", TEXT("Enemy/Dragon_Meteor_End.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Meteor_End",
+			Vector2(i * 900.f, 0), Vector2((i + 1) * 900.f, 900.f));
+	}
+
+
+	// Dragon sfx
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_Ring");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_Ring",
+		"Dragon_Peashot_Ring", TEXT("Enemy/Dragon_Peashot_Ring.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_Ring",
+			Vector2(i * 100.f, 0), Vector2((i + 1) * 100.f, 140.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_Ring_Pink");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_Ring_Pink",
+		"Dragon_Peashot_Ring_Pink", TEXT("Enemy/Dragon_Peashot_Ring_Pink.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_Ring_Pink",
+			Vector2(i * 100.f, 0), Vector2((i + 1) * 100.f, 140.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Meteor");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Meteor",
+		"Dragon_Meteor", TEXT("Enemy/Dragon_Meteor.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Meteor",
+			Vector2(i * 240.f, 0), Vector2((i + 1) * 240.f, 240.f));
+	}
 }
 
 void CMainScene::CreateStepCloud()

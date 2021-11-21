@@ -44,14 +44,14 @@ bool CBullet::Init()
 {
     CGameObject::Init();
 
+    m_Sprite = CreateSceneComponent<CSpriteComponent>("Bullet");
     m_Collider = CreateSceneComponent<CColliderBox2D>("BulletCollider");
-    m_Sprite = CreateSceneComponent<CSpriteComponent>("Sprite");
     m_Sprite->CreateAnimation2D<CBulletAnimation>();
     m_Animation = m_Sprite->GetAnimation2D();
 
     SetRootComponent(m_Sprite);
 
-    m_Sprite->SetRelativeScale(700.f, 700.f, 1.f);
+    m_Sprite->SetRelativeScale(180.f, 180.f, 1.f);
     m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
     //m_Sprite->GetMaterial(0)->SetBaseColor(1.f, 1.f, 1.f, 0.01f);
 

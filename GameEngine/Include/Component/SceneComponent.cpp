@@ -255,6 +255,7 @@ void CSceneComponent::Update(float DeltaTime)
         ++iter;
         ++iterTr;
     }
+
 }
 
 void CSceneComponent::PostUpdate(float DeltaTime)

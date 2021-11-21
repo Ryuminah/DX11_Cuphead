@@ -170,7 +170,7 @@
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\Dragon.cpp" />
     <ClCompile Include="Object\DragonMap.cpp" />
-    <ClCompile Include="Object\FightObject.cpp" />
+    <ClCompile Include="Object\Character.cpp" />
     <ClCompile Include="Object\GroundCollider.cpp" />
     <ClCompile Include="Object\Mugman.cpp" />
     <ClCompile Include="Object\Skill.cpp" />
@@ -193,7 +193,7 @@
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\Dragon.h" />
     <ClInclude Include="Object\DragonMap.h" />
-    <ClInclude Include="Object\FightObject.h" />
+    <ClInclude Include="Object\Character.h" />
     <ClInclude Include="Object\GroundCollider.h" />
     <ClInclude Include="Object\Mugman.h" />
     <ClInclude Include="Object\Skill.h" />
