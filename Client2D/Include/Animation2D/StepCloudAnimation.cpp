@@ -27,10 +27,12 @@ bool CStepCloudAnimation::Init()
 	AddAnimationSequence2D("Cloud_Down");
 	AddAnimationSequence2D("Cloud_Down_Idle");
 	AddAnimationSequence2D("Cloud_Idle");
-	AddAnimationSequence2D("Cloud_Up");
+	AddAnimationSequence2D("Cloud_Up",false);
 
-	SetSequencePlayRate("Cloud_Idle", 4.0f);
-	SetSequencePlayRate("Cloud_Down_Idle", 4.0f);
+	SetSequencePlayRate("Cloud_Idle", 3.5f);
+
+	SetSequencePlayRate("Cloud_Down_Idle", 3.5f);
+	SetSequencePlayRate("Cloud_Up", 3.5f);
 
 	ChangeAnimation("Cloud_Idle");
 

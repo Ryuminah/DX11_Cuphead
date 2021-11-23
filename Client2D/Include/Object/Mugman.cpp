@@ -7,6 +7,10 @@
 #include "Bullet.h"
 #include "StepCloud.h"
 
+Vector3 CMugman::PlayerPos = {0.f,0.f,0.f};
+Vector3 CMugman::PlayerPrevPos = { 0.f, 0.f, 0.f };
+
+
 CMugman::CMugman() :
 	m_bIsGround(true),
 	m_bIsJump(false),
@@ -97,7 +101,6 @@ bool CMugman::Init()
 
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
-
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Push, this, &CMugman::MoveUp);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Push, this, &CMugman::MoveDown);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
@@ -135,7 +138,10 @@ void CMugman::Update(float DeltaTime)
 	// 대쉬
 	DashCheck(DeltaTime);
 
+	// 시간 체크
 	TimeCheck(DeltaTime);
+
+	SavePlayerPos();
 }
 
 void CMugman::PostUpdate(float DeltaTime)
@@ -530,6 +536,13 @@ void CMugman::TimeCheck(float DeltaTime)
 		m_bCanDash = true;
 		m_DashCool = 1.f;
 	}
+}
+
+void CMugman::SavePlayerPos()
+{
+	PlayerPos = GetWorldPos();
+	PlayerPrevPos = GetPrevWorldPos();
+
 }
 
 void CMugman::OnStepCloud(float MoveZ, float CloudY)

@@ -21,6 +21,20 @@ protected:
 	CMugman(const CMugman& obj);
 	virtual ~CMugman();
 
+public:
+	static Vector3	PlayerPos;
+	static Vector3	PlayerPrevPos;
+
+	static Vector3 GetPlayerPos()
+	{
+		return PlayerPos;
+	}
+
+	static Vector3 GetPlayerPrevPos()
+	{
+		return PlayerPrevPos;
+	}
+
 private:
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
@@ -96,6 +110,8 @@ public:
 	void JumpCheck(float DeltaTime);
 	void DashCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
+	void SavePlayerPos();
+
 
 	// Move ฐüทร
 public:

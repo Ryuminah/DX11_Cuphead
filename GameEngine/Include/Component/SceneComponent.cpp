@@ -15,6 +15,7 @@ CSceneComponent::CSceneComponent()
     m_SceneComponentType = SceneComponent_Type::Scene;
 
     m_MoveSpeed = 300.f;
+    m_bUseForceRender = false;
 }
 
 CSceneComponent::CSceneComponent(const CSceneComponent& com)    :
@@ -602,6 +603,18 @@ void CSceneComponent::SetUseBlockMovement(bool bUseBlockMovement)
     for (size_t i = 0; i < Size; ++i)
     {
         m_vecChild[i]->SetUseBlockMovement(bUseBlockMovement);
+    }
+}
+
+void CSceneComponent::SetUseForceRender(bool UseForceRender)
+{
+    m_bUseForceRender = UseForceRender;
+
+    size_t  Size = m_vecChild.size();
+
+    for (size_t i = 0; i < Size; ++i)
+    {
+        m_vecChild[i]->SetUseForceRender(UseForceRender);
     }
 }
 

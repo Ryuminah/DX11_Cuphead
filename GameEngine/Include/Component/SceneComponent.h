@@ -19,6 +19,7 @@ protected:
     SceneComponent_Type m_SceneComponentType;
     std::vector<Vector3>        m_vecNavPath;
     float       m_MoveSpeed;
+    bool        m_bUseForceRender;
 
 public:
     void SetMoveSpeed(float Speed)
@@ -34,6 +35,12 @@ public:
     void StopMovement()
     {
         m_vecNavPath.clear();
+    }
+
+
+    bool GetUseForceRender()
+    {
+        return m_bUseForceRender;
     }
 
     void Move(const Vector2& Target);
@@ -129,6 +136,7 @@ public:
     void SetPhysicsSimulate(bool Simulate);
     void SetDefaultZ(float Z);
     void SetUseBlockMovement(bool bUseBlockMovement);
+    void SetUseForceRender(bool UseForceRender);
     void SetPrevWorldPos(const Vector3& PrevWorldPos);
 
  public:

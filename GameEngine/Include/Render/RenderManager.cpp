@@ -174,7 +174,7 @@ void CRenderManager::Render(float DeltaTime)
 
 	// 만들어진 Diffuse Target을 Distortion Target에 그려낸다.
 	// 이때 깊이버퍼에 영향이 가지 않도록 깊이는 꺼준다.
-	m_DistortionTarget->ClearTarget();				// 이거 끄면 반투명이 잘된다 왜지,,?
+	//m_DistortionTarget->ClearTarget();				// 이거 끄면 반투명이 잘된다 왜지,,?
 	m_DistortionTarget->SetTarget(nullptr);
 
 	m_AlphaBlend->SetState();
@@ -282,7 +282,8 @@ void CRenderManager::Render3D(float DeltaTime)
 
 void CRenderManager::AddPrimitiveComponent(CPrimitiveComponent* pPrimitive)
 {
-	if (pPrimitive->GetPrimitiveType() == PrimitiveComponent_Type::Primitive2D)
+	if (pPrimitive->GetPrimitiveType() == PrimitiveComponent_Type::Primitive2D 
+		&& !pPrimitive->GetUseForceRender())
 	{
 		// 화면에 그려져야 하는지 판단한다.
 		CScene* Scene = CSceneManager::GetInst()->GetScene();

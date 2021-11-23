@@ -14,6 +14,7 @@ protected:
     bool        m_Enable;
     bool        m_Active;
 
+
 public:
     void Enable(bool bEnable)
     {
@@ -25,6 +26,7 @@ public:
         m_Active = bActive;
     }
 
+
     bool IsActive() const
     {
         return m_Active;
@@ -34,6 +36,7 @@ public:
     {
         return m_Enable;
     }
+
 
     void SetName(const std::string& Name)
     {

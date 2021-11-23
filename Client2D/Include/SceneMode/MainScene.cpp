@@ -286,10 +286,10 @@ void CMainScene::CreateDragonAnim()
 	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tail");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tail",
 		"Dragon_Tail", TEXT("Enemy/Dragon_Tail.png"));
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 12; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Tail",
-			Vector2(i * 300.f, 0), Vector2((i + 1) * 300.f, 870.f));
+			Vector2(i * 330.f, 0), Vector2((i + 1) * 330.f, 870.f));
 	}
 
 
@@ -359,7 +359,7 @@ void CMainScene::CreateStepCloud()
 	pStepCloud->SetWorldPos(150.f, 190.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(170.f, 530.f, 0.f);
+	pStepCloud->SetWorldPos(160.f, 570.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetWorldPos(420.f, 390.f, 0.f);
@@ -368,16 +368,16 @@ void CMainScene::CreateStepCloud()
 	pStepCloud->SetWorldPos(460.f, 120.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(690.f, 530.f, 0.f);
+	pStepCloud->SetWorldPos(690.f, 540.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(810.f, 170.f, 0.f);
+	pStepCloud->SetWorldPos(810.f, 180.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(1000.f, 360.f, 0.f);
+	pStepCloud->SetWorldPos(1000.f, 370.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(1200.f, 615.f, 0.f);
+	pStepCloud->SetWorldPos(1200.f, 600.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetWorldPos(1450.f, 400.f, 0.f);

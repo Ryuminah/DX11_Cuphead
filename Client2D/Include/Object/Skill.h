@@ -19,20 +19,22 @@ protected:
 	virtual ~CSkill();
 
 protected:
-	CSharedPtr<CSpriteComponent> m_Sprite;
-	CSharedPtr<CSceneComponent>	m_Rotation;
-	CSharedPtr<CColliderBox2D> m_Collider;
-	class CAnimation2D* m_Animation;
+	static int RepeatCount;		// 반복 횟수
 
 protected:
-	bool	m_bIsFired;			// 이미 나간 패턴인지
+	class CCharacter* m_pSkillOwner;
+
+protected:
+	//std::string	m_SkillName;
+	bool	m_bIsStarted;		// 시작한 적이 있는지
+	bool	m_bIsActive;		// 현재 활성화 중인 스킬인지
 	float	m_CoolTime;			// 몇 초뒤에 다시 사용 가능한지
-	Phase	m_PhaseNumber;		// 현재 페이즈에 해당하는지
+	Phase	m_PhaseNumber;		// 몇 페이즈에 사용하는 스킬인지
 
 public:
 	bool GetIsFired()
 	{
-		return m_bIsFired;
+		return m_bIsActive;
 	}
 
 	float GetCoolTime()
@@ -46,20 +48,42 @@ public:
 	}
 
 public:
-	void SetIsFired(bool _isFired)
+	void SetIsActive(bool IsActive)
 	{
-		m_bIsFired = _isFired;
+		m_bIsActive = IsActive;
 	}
 
 	void SetCoolTime(float _coolTime)
 	{
-		m_bIsFired = _coolTime;
+		m_bIsActive = _coolTime;
 	}
 
 	void SetPhaseNumber(Phase _phaseNumber)
 	{
 		m_PhaseNumber = _phaseNumber;
 	}
+
+	void SetSkillInfo(float CoolTime, Phase PhaseNumber)
+	{
+		m_CoolTime = CoolTime;
+		m_PhaseNumber = PhaseNumber;
+	}
+
+	void SetSkillOwner(CCharacter* SkillOwner)
+	{
+		m_pSkillOwner = SkillOwner;
+	}
+
+	void SetRepeatCount(int repeatCount)
+	{
+		RepeatCount = repeatCount;
+	}
+
+public:
+	virtual void SkillStart(float DeltaTime);
+	virtual void SkillActive(float DeltaTime);
+	virtual void SkillEnd(float DeltaTime);
+
 
 public:
 	virtual void Start();
@@ -70,5 +94,7 @@ public:
 	virtual void Render(float DeltaTime);
 	virtual CSkill* Clone();
 
+public:
+	void ResetSkillInfo();
 };
 

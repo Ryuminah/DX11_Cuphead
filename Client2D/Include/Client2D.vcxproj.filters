@@ -105,6 +105,12 @@
     <ClCompile Include="Object\Skill.cpp">
       <Filter>02. Object\Skill</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Skill\Peashot.cpp">
+      <Filter>02. Object\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Skill\Tail.cpp">
+      <Filter>02. Object\Skill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -171,6 +177,12 @@
       <Filter>03. Animation2D</Filter>
     </ClInclude>
     <ClInclude Include="Object\Skill.h">
+      <Filter>02. Object\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Skill\Peashot.h">
+      <Filter>02. Object\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Skill\Tail.h">
       <Filter>02. Object\Skill</Filter>
     </ClInclude>
   </ItemGroup>

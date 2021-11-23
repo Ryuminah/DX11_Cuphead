@@ -3,7 +3,9 @@
 #include "Mugman.h"
 
 
-CStepCloud::CStepCloud() :m_MoveTime(0.f){
+CStepCloud::CStepCloud() :m_MoveTime(0.f), m_MoveDistance(0.f),
+						m_bIsPlayerOn(false)
+{
 
 }
 
@@ -52,11 +54,13 @@ bool CStepCloud::Init()
 	
 	m_Sprite->CreateAnimation2D<CStepCloudAnimation>();
 	m_Animation = m_Sprite->GetAnimation2D();
-	//m_Animation->SetFrameEndFunction<CStepCloud>(this, &CStepCloud::AnimationFrameEnd);
+	m_Animation->SetFrameEndFunction<CStepCloud>(this, &CStepCloud::AnimationFrameEnd);
 
 
 	m_Collider->AddCollisionCallbackFunction<CStepCloud>(Collision_State::Begin, this, &CStepCloud::CollisionBegin);
 	m_Collider->AddCollisionCallbackFunction<CStepCloud>(Collision_State::Overlap, this, &CStepCloud::CollisionOverlap);
+	m_Collider->AddCollisionCallbackFunction<CStepCloud>(Collision_State::End, this, &CStepCloud::CollisionEnd);
+
 
 	SetUseBlockMovement(false);
 	SetDefaultZ(0.5);
@@ -117,7 +121,11 @@ void CStepCloud::Animation2DNotify(const std::string& Name)
 
 void CStepCloud::AnimationFrameEnd(const std::string& Name)
 {
+	if (Name == "Cloud_Up" && !m_bIsPlayerOn)
+	{
+		m_Animation->ChangeAnimation("Cloud_Idle");
 
+	}
 }
 
 void CStepCloud::CollisionBegin(const HitResult& result, CCollider* Collider)
@@ -133,4 +141,13 @@ void CStepCloud::CollisionOverlap(const HitResult& result, CCollider* Collider)
 	//	CMugman* pMugman = (CMugman*)result.DestCollider->GetOwner();
 	//	pMugman->OnStepCloud(m_MoveDistance, GetWorldPos().y);
 	//}
+}
+
+void CStepCloud::CollisionEnd(const HitResult& result, CCollider* Collider)
+{
+	if (result.DestCollider->GetName() == "MugmanCollider")
+	{
+		m_Animation->ChangeAnimation("Cloud_Up");
+		m_bIsPlayerOn = false;
+	}
 }

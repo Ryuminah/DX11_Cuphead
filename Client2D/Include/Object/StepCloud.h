@@ -24,6 +24,8 @@ private:
 	float m_MoveTime;
 	float m_MoveDistance;
 	Vector3 m_FirstPosition;
+	
+	bool	m_bIsPlayerOn;
 
 public:
 	float GetMoveDistance();
@@ -45,6 +47,8 @@ public:
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
 	void CollisionOverlap(const HitResult& result, CCollider* Collider);
+	void CollisionEnd(const HitResult& result, CCollider* Collider);
+
 
 };
 

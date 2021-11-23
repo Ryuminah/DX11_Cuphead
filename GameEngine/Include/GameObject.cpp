@@ -519,6 +519,11 @@ void CGameObject::SetPrevWorldPos(const Vector3& PrevWorldPos)
 	m_RootComponent->SetPrevWorldPos(PrevWorldPos);
 }
 
+void CGameObject::SetUseForceRender(bool UseForceRender)
+{
+	m_RootComponent->SetUseForceRender(UseForceRender);
+}
+
 void CGameObject::SetPhysicsSimulate(bool Simulate)
 {
 	m_RootComponent->SetPhysicsSimulate(Simulate);

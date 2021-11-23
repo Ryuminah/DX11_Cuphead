@@ -169,6 +169,8 @@ public:
 	void SetDefaultZ(float Z);
 	void SetUseBlockMovement(bool bUseBlockMovement);
 	void SetPrevWorldPos(const Vector3& PrevWorldPos);
+	void SetUseForceRender(bool UseForceRender);
+
 
 public:
 	void SetPhysicsSimulate(bool Simulate);

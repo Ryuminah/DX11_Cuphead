@@ -20,6 +20,7 @@ protected:
 	CSharedPtr<CColliderBox2D> m_Collider;
 	class CAnimation2D* m_Animation;
 
+
 public:
 	virtual void Start();
 	virtual bool Init();
@@ -32,11 +33,13 @@ public:
 protected:
 	int		m_HitCount;		// 모든 캐릭터들은 체력 대신 타수로 계산함
 	float	m_Speed;		
-	bool	m_bCanAttack;	// 공격중인지
+	bool	m_bCanAttack;	// 공격할 수 있는지
 	bool	m_bCanMove;	// 움직일 수 있는 상황인지
+
+	bool	m_bIsAttack;
 
 public:
 	virtual void HitCheck();
-
+	virtual void SkillEnd(std::string SkillName);
 };
 

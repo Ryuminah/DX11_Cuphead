@@ -1,6 +1,6 @@
 #include "Character.h"
 
-CCharacter::CCharacter() :m_HitCount(0), m_bCanAttack(true),
+CCharacter::CCharacter() :m_HitCount(0), m_bCanAttack(true), m_bIsAttack(false),
 							m_Speed(500.f), m_bCanMove(true)
 {
 
@@ -58,4 +58,9 @@ CCharacter* CCharacter::Clone()
 void CCharacter::HitCheck()
 {
 	m_HitCount += 1;
+}
+
+void CCharacter::SkillEnd(std::string SkillName)
+{
+	
 }
