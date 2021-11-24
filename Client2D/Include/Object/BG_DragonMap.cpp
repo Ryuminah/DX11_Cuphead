@@ -36,6 +36,9 @@ bool BG_CDragonMap::Init()
 
 	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_MAP);
 	m_BackGround->SetAnimation2DEnable(false);
+	//m_BackGround->SetUVFlow2DEnable(true);
+
+	//m_BackGround->SetUVFlow2DEnable(true);
 
 	return true;
 }

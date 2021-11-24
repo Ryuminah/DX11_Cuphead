@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Animation2D\BulletAnimation.cpp" />
     <ClCompile Include="Animation2D\DragonAnimation.cpp" />
+    <ClCompile Include="Animation2D\ForeGroundAnim.cpp" />
     <ClCompile Include="Animation2D\MugmanAnimation2D.cpp" />
     <ClCompile Include="Animation2D\StepCloudAnimation.cpp" />
     <ClCompile Include="ClientManager.cpp" />
@@ -192,6 +193,7 @@
   <ItemGroup>
     <ClInclude Include="Animation2D\BulletAnimation.h" />
     <ClInclude Include="Animation2D\DragonAnimation.h" />
+    <ClInclude Include="Animation2D\ForeGroundAnim.h" />
     <ClInclude Include="Animation2D\MugmanAnimation2D.h" />
     <ClInclude Include="Animation2D\StepCloudAnimation.h" />
     <ClInclude Include="ClientManager.h" />

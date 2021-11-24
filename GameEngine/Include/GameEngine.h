@@ -160,6 +160,7 @@ struct TransformCBuffer
 	Matrix  matWVP;
 	Vector3 Pivot;
 	int     Animation2DEnable;
+	int     UVFlow2DEnable;
 	Vector3 MeshSize;
 	float   Empty2;
 };

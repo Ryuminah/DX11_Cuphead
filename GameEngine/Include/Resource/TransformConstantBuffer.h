@@ -48,5 +48,10 @@ public:
     {
         m_BufferData.Animation2DEnable = Enable ? 1 : 0;
     }
+
+    void SetUVFlow2DEnable(bool Enable)
+    {
+        m_BufferData.UVFlow2DEnable = Enable ? 1 : 0;
+    }
 };
 

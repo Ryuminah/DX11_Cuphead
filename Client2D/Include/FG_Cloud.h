@@ -14,6 +14,8 @@ protected:
 
 protected:
 	CSharedPtr<CSpriteComponent> m_BackGround;
+	class CAnimation2D* m_AnimImage;
+
 
 public:
 	virtual void Start();

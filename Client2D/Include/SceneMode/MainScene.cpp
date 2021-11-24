@@ -6,6 +6,7 @@
 #include "Scene/Viewport.h"
 #include "../Object/Mugman.h"
 #include "../Object/BG_DragonMap.h"
+#include "../FG_Cloud.h"
 #include "../Object/StepCloud.h"
 #include "../Object/GroundCollider.h"
 #include "../Object/Dragon.h"
@@ -34,6 +35,7 @@ bool CMainScene::Init()
 	// Create GameObject
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
 	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("DragonMap");
+	FG_Cloud* pFGCloud = m_pScene->SpawnObject<FG_Cloud>("FG_Cloud");
 	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
 
@@ -55,7 +57,7 @@ void CMainScene::CreateMaterial()
 
 	m_pScene->GetResource()->CreateMaterial("FG_Cloud");
 	m_pScene->GetResource()->AddMaterialTexture("FG_Cloud", "FG_Cloud",
-		TEXT("FG_Normal_Cloud1.png"));
+		TEXT("BackGround/FG_Normal_Cloud1.png"));
 }
 
 void CMainScene::CreateAnimationSequence2D()
@@ -64,6 +66,7 @@ void CMainScene::CreateAnimationSequence2D()
 	CreateStepCloudAnim();
 	CreateWeaponAnim();
 	CreateDragonAnim();
+	CreateBackGround();
 }
 
 void CMainScene::CreateParticle()
@@ -387,4 +390,18 @@ void CMainScene::CreateStepCloud()
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetWorldPos(1450.f, 400.f, 0.f);
 
+}
+
+void CMainScene::CreateBackGround()
+{
+	//m_pScene->GetResource()->CreateMaterial("FG_Cloud");
+	//m_pScene->GetResource()->AddMaterialTexture("FG_Cloud", "FG_Cloud",
+	//	TEXT("BackGround/FG_Normal_Cloud1.png"));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Cloud");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Cloud",
+		"FG_Cloud", TEXT("BackGround /FG_Normal_Cloud1.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Cloud",
+		Vector2(0.f, 0.f), Vector2(1381.f, 84.f));
+	
 }

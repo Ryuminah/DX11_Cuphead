@@ -339,6 +339,16 @@ void CSceneComponent::SetAnimation2DEnable(bool Enable)
     m_pTransform->SetAnimation2DEnable(Enable);
 }
 
+void CSceneComponent::SetUVFlow2DEnable(bool Enable)
+{
+    m_pTransform->SetUVFlow2DEnable(Enable);
+}
+
+void CSceneComponent::SetUVFlowSpeed(float UVFlowSpeed)
+{
+    //m_pTransform->SetUVFlowSpeed(UVFlowSpeed);
+}
+
 Vector3 CSceneComponent::GetVelocityScale() const
 {
     return m_pTransform->GetVelocityScale();

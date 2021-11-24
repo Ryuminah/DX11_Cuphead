@@ -8,6 +8,7 @@
 
 CTransform::CTransform()    :
     m_Animation2DEnable(false),
+    m_UVFlow2DEnable(false),
     m_pParent(nullptr),
     m_InheritScale(false),
     m_InheritRotX(false),
@@ -1658,6 +1659,8 @@ void CTransform::PostUpdate(float DeltaTime)
 void CTransform::SetTransform()
 {
     m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
+    m_pCBuffer->SetUVFlow2DEnable(m_UVFlow2DEnable);
+
 
     CaculateMatWorld();
 

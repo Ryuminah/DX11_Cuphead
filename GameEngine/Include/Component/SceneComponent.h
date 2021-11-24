@@ -68,6 +68,10 @@ public:
 
 public:
     void SetAnimation2DEnable(bool Enable);
+    void SetUVFlow2DEnable(bool Enable);
+    void SetUVFlowSpeed(float UVFlowSpeed);
+
+
 
 public:
     Vector3 GetVelocityScale()  const;

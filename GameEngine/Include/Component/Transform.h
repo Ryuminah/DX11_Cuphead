@@ -24,6 +24,7 @@ private:
 
 private:
 	bool    m_Animation2DEnable;
+	bool	m_UVFlow2DEnable;
 
 public:
 	void SetDefaultZ(float Z)
@@ -39,6 +40,11 @@ public:
 	void SetAnimation2DEnable(bool Enable)
 	{
 		m_Animation2DEnable = Enable;
+	}
+
+	void SetUVFlow2DEnable(bool Enable)
+	{
+		m_UVFlow2DEnable = Enable;
 	}
 
 private:

@@ -43,11 +43,11 @@ bool CMeteor::Init()
 	m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_Rotation);
 
-	m_Collider->SetExtent(30.f, 30.f);
+	m_Collider->SetExtent(80.f, 80.f);
 	m_Collider->SetCollisionProfile("Skill");
 	m_Collider->SetColliderType(Collider_Type::Static);
 
-	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
+	//m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
 	m_Sprite->CreateAnimation2D<CDragonAnimation>();
 	m_Animation = m_Sprite->GetAnimation2D();

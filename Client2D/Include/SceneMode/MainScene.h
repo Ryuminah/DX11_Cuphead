@@ -28,5 +28,8 @@ private:
     
     // Game Object 생성
     void CreateStepCloud();
+
+    // 배경 생성 마사카...?
+    void CreateBackGround();
 };
 

@@ -1,6 +1,7 @@
 #include "FG_Cloud.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
+#include "Animation2D/ForeGroundAnim.h"
 
 FG_Cloud::FG_Cloud()
 {
@@ -27,13 +28,18 @@ bool FG_Cloud::Init()
 	CGameObject::Init();
 
 	m_BackGround = CreateSceneComponent<CSpriteComponent>("FG_Cloud");
+	m_BackGround->CreateAnimation2D<CForeGroundAnim>();
+	m_AnimImage = m_BackGround->GetAnimation2D();
 
 	SetRootComponent(m_BackGround);
-	m_BackGround->SetRelativePos(720.f, 0.0f, 0.f);
-	m_BackGround->SetRelativeScale(1565.f, 279.f, 1.f);
-	m_BackGround->SetMaterial(0, "FG_Cloud");
+	m_BackGround->SetRelativePos(640.f, 0.0f, 0.f);
+	m_BackGround->SetRelativeScale(1381.f, 84.f, 1.f);
+	m_BackGround->SetAnimation2DEnable(false);
+	m_BackGround->SetUVFlow2DEnable(true);
+	//m_BackGround->SetUVFlowSpeed(10.f);
+	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_Particle);
 
-	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_MAP);
+	m_AnimImage->ChangeAnimation("FG_Cloud");
 
 	return true;
 }

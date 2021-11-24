@@ -34,12 +34,22 @@ struct VS_OUTPUT_COLOR
 
 float2 ComputeAnimation2DUV(float2 UV)
 {
-	if (g_Animation2DEnable == 0)
+	if (g_Animation2DEnable == 0 && g_UVFlow2DEnable == 0)
 		return UV;
 
 	if (g_Animation2DType == Animation2DFrame ||
 		g_Animation2DType == Animation2DArray)
 		return UV;
+	
+	// 이미지가 UV 애니메이션을 사용할 경우
+	if (g_Animation2DEnable == 0 && g_UVFlow2DEnable == 1)
+	{
+		float2	ResultUV;
+		ResultUV = UV;
+		ResultUV.x += g_AccTime;
+
+		return ResultUV;
+	}
 
 	float2	ResultUV;
 

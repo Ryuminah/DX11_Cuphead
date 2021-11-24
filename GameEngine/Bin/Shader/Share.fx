@@ -17,6 +17,7 @@ cbuffer Transform : register(b0)
 	matrix  g_matWVP;
 	float3  g_vPivot;
 	int		g_Animation2DEnable;
+	int		g_UVFlow2DEnable;
 	float3  g_vMeshSize;
 	float   g_fTrEmpty2;
 };

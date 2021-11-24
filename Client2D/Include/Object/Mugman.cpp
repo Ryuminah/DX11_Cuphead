@@ -73,7 +73,7 @@ bool CMugman::Init()
 	m_Collider->SetCollisionProfile("Player");
 	m_Collider->SetColliderType(Collider_Type::Character);
 
-
+	
 	m_Muzzle->SetInheritRotZ(true);
 	m_Muzzle->SetRelativePos(Vector3(20.f, 80.f, 0.f));
 	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
@@ -96,9 +96,7 @@ bool CMugman::Init()
 
 	//m_Sprite->AddChild(m_Rotation);
 	//m_Sprite->AddChild(m_Muzzle);
-
 	
-
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Push, this, &CMugman::MoveUp);
@@ -109,10 +107,10 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
 
-	SetDefaultZ(0.1f);
 	SetPhysicsSimulate(true);
 	SetUseBlockMovement(true);
 	SetPrevDirection(Direction::RIGHT);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
 
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Overlap, this, &CMugman::CollisionOverlap);
@@ -374,7 +372,7 @@ void CMugman::JumpCheck(float DeltaTime)
 		// 처음 뛸 경우 힘을 강하게 적용함.
 		if (m_JumpAccel == 90.f)
 		{
-			AddRelativePos(GetAxis(AXIS_Y) * 100);
+			AddRelativePos(GetAxis(AXIS_Y) * 100.f);
 		}
 
 		float jumpHeight = (m_JumpTime * m_JumpTime * GetGravity() * -0.5f) + (m_JumpTime * m_JumpVelocity) + (m_JumpAccel * m_JumpTime);
