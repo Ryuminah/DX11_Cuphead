@@ -232,6 +232,9 @@
     <Filter Include="08. FSM">
       <UniqueIdentifier>{d7ba50fb-fcdb-40e3-9f6a-3fd66c84e440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\02. ConstantBuffer\10. UVFlowCBuffer">
+      <UniqueIdentifier>{8b2341d7-ac7b-459f-81bf-ac9e9d6260c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -660,6 +663,9 @@
     <ClInclude Include="StateMachine.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\UVFlowCBuffer.h">
+      <Filter>02. Resource\02. Shader\02. ConstantBuffer\10. UVFlowCBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1045,6 +1051,9 @@
     </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\UVFlowCBuffer.cpp">
+      <Filter>02. Resource\02. Shader\02. ConstantBuffer\10. UVFlowCBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

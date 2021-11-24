@@ -1,28 +1,28 @@
-#include "DragonMap.h"
+#include "BG_DragonMap.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 
-CDragonMap::CDragonMap()
+BG_CDragonMap::BG_CDragonMap()
 {
 
 }
 
-CDragonMap::CDragonMap(const CDragonMap& obj) :
+BG_CDragonMap::BG_CDragonMap(const BG_CDragonMap& obj) :
 	CGameObject(obj)
 {
 	m_BackGround = (CSpriteComponent*)FindSceneComponent("DragonMap");
 }
 
-CDragonMap::~CDragonMap()
+BG_CDragonMap::~BG_CDragonMap()
 {
 }
 
-void CDragonMap::Start()
+void BG_CDragonMap::Start()
 {
 	CGameObject::Start();
 }
 
-bool CDragonMap::Init()
+bool BG_CDragonMap::Init()
 {
 	CGameObject::Init();
 
@@ -34,34 +34,33 @@ bool CDragonMap::Init()
 	m_BackGround->SetRelativeScale(1280.f, 720.f, 1.f);
 	m_BackGround->SetMaterial(0,"BG_Normal");
 
-	//SetUpdatePosZ(false);
-	//SetDefaultZ(0.9f);
 	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_MAP);
+	m_BackGround->SetAnimation2DEnable(false);
 
 	return true;
 }
 
-void CDragonMap::Update(float DeltaTime)
+void BG_CDragonMap::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 }
 
-void CDragonMap::PostUpdate(float DeltaTime)
+void BG_CDragonMap::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
 }
 
-void CDragonMap::Collision(float DeltaTime)
+void BG_CDragonMap::Collision(float DeltaTime)
 {
 	CGameObject::Collision(DeltaTime);
 }
 
-void CDragonMap::Render(float DeltaTime)
+void BG_CDragonMap::Render(float DeltaTime)
 {
 	CGameObject::Render(DeltaTime);
 }
 
-CDragonMap* CDragonMap::Clone()
+BG_CDragonMap* BG_CDragonMap::Clone()
 {
-	return new CDragonMap(*this);
+	return new BG_CDragonMap(*this);
 }

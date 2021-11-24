@@ -166,11 +166,12 @@
     <ClCompile Include="Animation2D\MugmanAnimation2D.cpp" />
     <ClCompile Include="Animation2D\StepCloudAnimation.cpp" />
     <ClCompile Include="ClientManager.cpp" />
+    <ClCompile Include="FG_Cloud.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\Dragon.cpp" />
     <ClCompile Include="Object\DragonCollider.cpp" />
-    <ClCompile Include="Object\DragonMap.cpp" />
+    <ClCompile Include="Object\BG_DragonMap.cpp" />
     <ClCompile Include="Object\Character.cpp" />
     <ClCompile Include="Object\GroundCollider.cpp" />
     <ClCompile Include="Object\Mugman.cpp" />
@@ -194,10 +195,11 @@
     <ClInclude Include="Animation2D\MugmanAnimation2D.h" />
     <ClInclude Include="Animation2D\StepCloudAnimation.h" />
     <ClInclude Include="ClientManager.h" />
+    <ClInclude Include="FG_Cloud.h" />
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\Dragon.h" />
     <ClInclude Include="Object\DragonCollider.h" />
-    <ClInclude Include="Object\DragonMap.h" />
+    <ClInclude Include="Object\BG_DragonMap.h" />
     <ClInclude Include="Object\Character.h" />
     <ClInclude Include="Object\GroundCollider.h" />
     <ClInclude Include="Object\Mugman.h" />

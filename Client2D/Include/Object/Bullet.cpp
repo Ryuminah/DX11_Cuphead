@@ -53,6 +53,7 @@ bool CBullet::Init()
 
     m_Sprite->SetRelativeScale(180.f, 180.f, 1.f);
     m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+    m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
     //m_Sprite->GetMaterial(0)->SetBaseColor(1.f, 1.f, 1.f, 0.01f);
 
     m_Collider->SetExtent(30,10);

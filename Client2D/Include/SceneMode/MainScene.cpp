@@ -5,7 +5,7 @@
 #include "../UI/MainHUDWidget.h"
 #include "Scene/Viewport.h"
 #include "../Object/Mugman.h"
-#include "../Object/DragonMap.h"
+#include "../Object/BG_DragonMap.h"
 #include "../Object/StepCloud.h"
 #include "../Object/GroundCollider.h"
 #include "../Object/Dragon.h"
@@ -33,7 +33,7 @@ bool CMainScene::Init()
 
 	// Create GameObject
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
-	CDragonMap* pDragonMap = m_pScene->SpawnObject<CDragonMap>("DragonMap");
+	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("DragonMap");
 	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
 
@@ -48,9 +48,14 @@ void CMainScene::CreateMaterial()
 	m_pScene->GetResource()->AddMaterialTexture("PlayerChild", "PlayerChild",
 		TEXT("Teemo.jpg"));
 
+	// 배경 머터리얼 생성
 	m_pScene->GetResource()->CreateMaterial("BG_Normal");
 	m_pScene->GetResource()->AddMaterialTexture("BG_Normal", "BG_Normal",
 		TEXT("BG_Normal.png"));
+
+	m_pScene->GetResource()->CreateMaterial("FG_Cloud");
+	m_pScene->GetResource()->AddMaterialTexture("FG_Cloud", "FG_Cloud",
+		TEXT("FG_Normal_Cloud1.png"));
 }
 
 void CMainScene::CreateAnimationSequence2D()

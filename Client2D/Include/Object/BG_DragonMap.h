@@ -2,15 +2,15 @@
 #include "GameObject.h"
 #include "Component/SpriteComponent.h"
 
-class CDragonMap :
+class BG_CDragonMap :
     public CGameObject
 {
 	friend class CScene;
 
 protected:
-	CDragonMap();
-	CDragonMap(const CDragonMap& obj);
-	virtual ~CDragonMap();
+	BG_CDragonMap();
+	BG_CDragonMap(const BG_CDragonMap& obj);
+	virtual ~BG_CDragonMap();
 
 protected:
 	CSharedPtr<CSpriteComponent> m_BackGround;
@@ -22,6 +22,6 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual CDragonMap* Clone();
+	virtual BG_CDragonMap* Clone();
 };
 

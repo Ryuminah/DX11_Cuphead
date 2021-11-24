@@ -150,7 +150,7 @@ void CRenderManager::Render(float DeltaTime)
 	// 렌더타겟을 백버퍼에서 우리가 만들어둔 DiffuseTarget으로 교체가 된다.
 	// 깊이버퍼는 nullptr을 넣어주었기 때문에 기존에 사용하던 깊이버퍼가
 	// 그대로 들어가게 된다.
-	m_DiffuseTarget->ClearTarget();
+	//m_DiffuseTarget->ClearTarget();
 	m_DiffuseTarget->SetTarget(nullptr);
 
 	for (int i = 0; i < RST_End; ++i)
@@ -174,10 +174,10 @@ void CRenderManager::Render(float DeltaTime)
 
 	// 만들어진 Diffuse Target을 Distortion Target에 그려낸다.
 	// 이때 깊이버퍼에 영향이 가지 않도록 깊이는 꺼준다.
-	//m_DistortionTarget->ClearTarget();				// 이거 끄면 반투명이 잘된다 왜지,,?
+	m_DistortionTarget->ClearTarget();				
 	m_DistortionTarget->SetTarget(nullptr);
 
-	m_AlphaBlend->SetState();
+	//m_AlphaBlend->SetState();
 	m_DepthDisable->SetState();
 	
 	m_DiffuseTargetMaterial->SetMaterial();	
@@ -193,8 +193,8 @@ void CRenderManager::Render(float DeltaTime)
 
 	m_DiffuseTargetMaterial->ResetMaterial();
 
-
-	m_AlphaBlend->ResetState();
+	// 이 개같은 색기 블렌드 ㄴ
+	//m_AlphaBlend->ResetState();
 	m_DepthDisable->ResetState();
 
 	m_DiffuseTarget->SetShader(104, TST_PIXEL);

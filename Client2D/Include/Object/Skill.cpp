@@ -43,6 +43,8 @@ bool CSkill::Init()
 void CSkill::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
+	srand(DeltaTime);
+
 
 	if (m_bIsActive)
 	{

@@ -37,8 +37,20 @@
     <Filter Include="02. Object\Skill">
       <UniqueIdentifier>{28b0637d-d1f0-412a-a53c-69441bbbf74f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Object\Collider">
+    <Filter Include="02. Object\Character">
+      <UniqueIdentifier>{770be430-51a7-4400-9434-fea9f69af841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. Collider">
       <UniqueIdentifier>{d2f4e67c-3897-46e6-8390-b381174d9b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\2. BackGround">
+      <UniqueIdentifier>{8a17646e-c85f-4d06-a65c-1a347d05e88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\2. BackGround\Back">
+      <UniqueIdentifier>{f6186c00-113d-4586-bbb8-bdb4dac26927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\2. BackGround\Fore">
+      <UniqueIdentifier>{d1a9dfb9-e79a-4a79-825a-b79c044ebce5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,18 +84,6 @@
     <ClCompile Include="UI\LoadingUI.cpp">
       <Filter>04. UI</Filter>
     </ClCompile>
-    <ClCompile Include="Object\DragonMap.cpp">
-      <Filter>02. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Character.cpp">
-      <Filter>02. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Mugman.cpp">
-      <Filter>02. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\StepCloud.cpp">
-      <Filter>02. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D\StepCloudAnimation.cpp">
       <Filter>03. Animation2D\02. StepObj</Filter>
     </ClCompile>
@@ -92,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="Animation2D\BulletAnimation.cpp">
       <Filter>03. Animation2D\02. Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Dragon.cpp">
-      <Filter>02. Object</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\DragonAnimation.cpp">
       <Filter>03. Animation2D</Filter>
@@ -112,13 +109,31 @@
       <Filter>02. Object\Skill</Filter>
     </ClCompile>
     <ClCompile Include="Object\GroundCollider.cpp">
-      <Filter>02. Object\Collider</Filter>
+      <Filter>02. Object\1. Collider</Filter>
     </ClCompile>
     <ClCompile Include="Object\DragonCollider.cpp">
-      <Filter>02. Object\Collider</Filter>
+      <Filter>02. Object\1. Collider</Filter>
     </ClCompile>
     <ClCompile Include="Object\Skill\Meteor.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character.cpp">
+      <Filter>02. Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Dragon.cpp">
+      <Filter>02. Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Mugman.cpp">
+      <Filter>02. Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\StepCloud.cpp">
+      <Filter>02. Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BG_DragonMap.cpp">
+      <Filter>02. Object\2. BackGround\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="FG_Cloud.cpp">
+      <Filter>02. Object\2. BackGround\Fore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,18 +167,6 @@
     <ClInclude Include="UI\LoadingUI.h">
       <Filter>04. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Object\DragonMap.h">
-      <Filter>02. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Character.h">
-      <Filter>02. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Mugman.h">
-      <Filter>02. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\StepCloud.h">
-      <Filter>02. Object</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D\StepCloudAnimation.h">
       <Filter>03. Animation2D\02. StepObj</Filter>
     </ClInclude>
@@ -172,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="Animation2D\BulletAnimation.h">
       <Filter>03. Animation2D\02. Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Dragon.h">
-      <Filter>02. Object</Filter>
     </ClInclude>
     <ClInclude Include="Object\Bullet.h">
       <Filter>03. Animation2D\02. Weapon</Filter>
@@ -192,13 +192,31 @@
       <Filter>02. Object\Skill</Filter>
     </ClInclude>
     <ClInclude Include="Object\GroundCollider.h">
-      <Filter>02. Object\Collider</Filter>
+      <Filter>02. Object\1. Collider</Filter>
     </ClInclude>
     <ClInclude Include="Object\DragonCollider.h">
-      <Filter>02. Object\Collider</Filter>
+      <Filter>02. Object\1. Collider</Filter>
     </ClInclude>
     <ClInclude Include="Object\Skill\Meteor.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character.h">
+      <Filter>02. Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Dragon.h">
+      <Filter>02. Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Mugman.h">
+      <Filter>02. Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\StepCloud.h">
+      <Filter>02. Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BG_DragonMap.h">
+      <Filter>02. Object\2. BackGround\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="FG_Cloud.h">
+      <Filter>02. Object\2. BackGround\Fore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
