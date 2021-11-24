@@ -37,6 +37,9 @@
     <Filter Include="02. Object\Skill">
       <UniqueIdentifier>{28b0637d-d1f0-412a-a53c-69441bbbf74f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\Collider">
+      <UniqueIdentifier>{d2f4e67c-3897-46e6-8390-b381174d9b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,9 +93,6 @@
     <ClCompile Include="Animation2D\BulletAnimation.cpp">
       <Filter>03. Animation2D\02. Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="Object\GroundCollider.cpp">
-      <Filter>02. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Dragon.cpp">
       <Filter>02. Object</Filter>
     </ClCompile>
@@ -110,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="Object\Skill\Tail.cpp">
       <Filter>02. Object\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\GroundCollider.cpp">
+      <Filter>02. Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\DragonCollider.cpp">
+      <Filter>02. Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Skill\Meteor.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +179,6 @@
     <ClInclude Include="Object\Bullet.h">
       <Filter>03. Animation2D\02. Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="Object\GroundCollider.h">
-      <Filter>02. Object</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D\DragonAnimation.h">
       <Filter>03. Animation2D</Filter>
     </ClInclude>
@@ -184,6 +190,15 @@
     </ClInclude>
     <ClInclude Include="Object\Skill\Tail.h">
       <Filter>02. Object\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\GroundCollider.h">
+      <Filter>02. Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\DragonCollider.h">
+      <Filter>02. Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Skill\Meteor.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

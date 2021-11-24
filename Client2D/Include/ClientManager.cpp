@@ -40,25 +40,51 @@ bool CClientManager::Init()
     // 예제 코드
     CCollisionManager::GetInst()->CreateChannel("Bullet", Collision_Interaction::Block);
     CCollisionManager::GetInst()->CreateProfile("Bullet", Collision_Channel::Bullet);
+    CCollisionManager::GetInst()->CreateChannel("StepCloud", Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->CreateProfile("StepCloud", Collision_Channel::StepCloud);
+
+    CCollisionManager::GetInst()->CreateChannel("Skill", Collision_Interaction::Trigger);
+    CCollisionManager::GetInst()->CreateProfile("Skill", Collision_Channel::Skill);
+
 
     CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Player ,Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Enemy, Collision_Interaction::Block);
     CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Bullet, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Static, Collision_Interaction::Ignore);
-    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Enemy, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Skill, Collision_Interaction::Ignore);
 
-    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
-    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Enemy, Collision_Interaction::Block);
+
     CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Static, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Enemy, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::StepCloud, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Player", Collision_Channel::Skill, Collision_Interaction::Trigger);
+
 
     CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Player, Collision_Interaction::Block);
     CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Static, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Enemy, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Static", Collision_Channel::Skill, Collision_Interaction::Ignore);
+
 
     CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Player, Collision_Interaction::Block);
     CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Enemy, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Static, Collision_Interaction::Ignore);
-    CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Bullet, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Bullet, Collision_Interaction::Trigger);
+    CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Enemy", Collision_Channel::Skill, Collision_Interaction::Ignore);
+
+
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Player, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Enemy, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Static, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Skill, Collision_Interaction::Ignore);
+
 
 
 

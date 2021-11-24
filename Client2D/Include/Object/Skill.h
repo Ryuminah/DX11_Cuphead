@@ -20,6 +20,8 @@ protected:
 
 protected:
 	static int RepeatCount;		// 반복 횟수
+	static int RepeatNumber;		// 몇번 반복했는지
+
 
 protected:
 	class CCharacter* m_pSkillOwner;
@@ -28,6 +30,8 @@ protected:
 	//std::string	m_SkillName;
 	bool	m_bIsStarted;		// 시작한 적이 있는지
 	bool	m_bIsActive;		// 현재 활성화 중인 스킬인지
+	bool	m_bIsEnd;			// 현재 끝나야하는지
+
 	float	m_CoolTime;			// 몇 초뒤에 다시 사용 가능한지
 	Phase	m_PhaseNumber;		// 몇 페이즈에 사용하는 스킬인지
 
@@ -74,9 +78,30 @@ public:
 		m_pSkillOwner = SkillOwner;
 	}
 
-	void SetRepeatCount(int repeatCount)
+	void SetRepeatNumber(int repeatNumber)
 	{
-		RepeatCount = repeatCount;
+		RepeatNumber = repeatNumber;
+	}
+
+	void SetbIsEnd(bool IsEnd)
+	{
+		m_bIsEnd = IsEnd;
+	}
+
+	static void AddRepeatCount()
+	{
+		++RepeatCount;
+	}
+	
+	static bool IsRepeatEnd()
+	{
+		return RepeatCount == RepeatNumber;
+	}
+
+	static void ResetRepeatInfo()
+	{
+		RepeatCount = 0;
+		RepeatNumber = 0;
 	}
 
 public:

@@ -36,6 +36,7 @@ protected:
 	Sequence2DInfo*	m_CurrentSequence;
 	float		m_FrameTime;
 	int			m_Frame;
+	bool		m_IsFrameEnd;
 
 protected:
 	std::function<void(const std::string&)>	m_FrameEndFunction;
@@ -76,6 +77,7 @@ public:
 	void SetSequencePlayRate(const std::string& Name, float PlayRate);
 	void AddSequencePlayRate(const std::string& Name, float PlayRate);
 	void ChangeAnimation(const std::string& Name);
+	bool GetIsFrameEnd();
 
 private:
 	Sequence2DInfo* FindSequence(const std::string& Name);

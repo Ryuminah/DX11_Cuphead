@@ -6,10 +6,12 @@
 #include "Engine.h"
 #include "Character.h"
 
-int CSkill::RepeatCount = 1;
+int CSkill::RepeatCount = 0;
+int CSkill::RepeatNumber= 1;
+
 
 CSkill::CSkill() : m_bIsActive(false), m_PhaseNumber(Phase::Phase1),
-	m_CoolTime(0.f), m_bIsStarted(false),
+	m_CoolTime(0.f), m_bIsStarted(false), m_bIsEnd(false),
 	m_pSkillOwner(nullptr)
 {
 
@@ -52,11 +54,17 @@ void CSkill::Update(float DeltaTime)
 
 		SkillActive(DeltaTime);
 
-		// 화면 밖을 나갔다면 스킬 종료
-		Vector2 Out = { -100.f, -900.f };
-		if (GetRelativePos().x < Out.x || GetRelativePos().y < Out.y)
+		if (m_bIsEnd)
 		{
 			SkillEnd(DeltaTime);
+		}
+
+		// 화면 밖을 나갔다면 알아서 삭제
+		Vector2 DefaultOut = { -100.f, -200.f };
+
+		if (GetRelativePos().x <= DefaultOut.x || GetRelativePos().y <= DefaultOut.y)
+		{
+			Active(false);
 		}
 	}
 
@@ -101,9 +109,7 @@ void CSkill::SkillActive(float DeltaTime)
 
 void CSkill::SkillEnd(float DeltaTime)
 {
-	// 현재 위치가 화면을 넘어간다면 삭제.
-	m_pSkillOwner->SkillEnd(GetName());
-	Active(false);
+	
 	
 }
 

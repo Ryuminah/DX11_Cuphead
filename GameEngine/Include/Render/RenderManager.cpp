@@ -282,14 +282,18 @@ void CRenderManager::Render3D(float DeltaTime)
 
 void CRenderManager::AddPrimitiveComponent(CPrimitiveComponent* pPrimitive)
 {
-	if (pPrimitive->GetPrimitiveType() == PrimitiveComponent_Type::Primitive2D 
-		&& !pPrimitive->GetUseForceRender())
+	if (pPrimitive->GetPrimitiveType() == PrimitiveComponent_Type::Primitive2D)
 	{
 		// 화면에 그려져야 하는지 판단한다.
 		CScene* Scene = CSceneManager::GetInst()->GetScene();
 
-		if (pPrimitive->GetRender2DType() != RT2D_MAP)
+		if (pPrimitive->GetRender2DType() != RT2D_MAP && !pPrimitive->GetUseForceRender())
 		{
+			if (pPrimitive->GetName() == "Tail")
+			{
+				int a = 0;
+			}
+
 			CCamera* Camera = Scene->GetCameraManager()->GetCurrentCamera();
 
 			Resolution	RS = CDevice::GetInst()->GetResolution();
@@ -322,6 +326,8 @@ void CRenderManager::AddPrimitiveComponent(CPrimitiveComponent* pPrimitive)
 
 				memset(m_pRenderListDistortion, 0, sizeof(CPrimitiveComponent*) * m_RenderListDistortionCapacity);
 			}
+
+
 
 			else if (m_RenderListDistortionCapacity == m_RenderListDistortionCount)
 			{

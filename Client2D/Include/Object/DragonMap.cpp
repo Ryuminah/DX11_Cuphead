@@ -35,7 +35,8 @@ bool CDragonMap::Init()
 	m_BackGround->SetMaterial(0,"BG_Normal");
 
 	//SetUpdatePosZ(false);
-	SetDefaultZ(0.9f);
+	//SetDefaultZ(0.9f);
+	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_MAP);
 
 	return true;
 }

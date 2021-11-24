@@ -31,8 +31,8 @@ bool CTail::Init()
 {
 	CSkill::Init();
 
-	m_Sprite = CreateSceneComponent<CSpriteComponent>("Peashot");
-	m_Collider = CreateSceneComponent<CColliderBox2D>("PeashotCollider");
+	m_Sprite = CreateSceneComponent<CSpriteComponent>("Tail");
+	m_Collider = CreateSceneComponent<CColliderBox2D>("TailCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 
 	SetRootComponent(m_Sprite);
@@ -44,7 +44,8 @@ bool CTail::Init()
 
 	m_Collider->SetExtent(100.f, 300.f);
 	m_Collider->SetCollisionProfile("Enemy");
-	m_Collider->SetColliderType(Collider_Type::Trigger);
+	m_Collider->SetColliderType(Collider_Type::Static);
+	m_Collider->SetCollisionProfile("Bullet");
 
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
@@ -90,6 +91,7 @@ void CTail::SkillStart(float DeltaTime)
 	// 플레이어의 X값을 가져온다
 	SetRelativePos({ CMugman::PlayerPos.x ,-400.f, 0.f});
 	SetUseForceRender(true);
+	m_Sprite->GetRender2DType();
 	m_bIsStarted = true;
 }
 

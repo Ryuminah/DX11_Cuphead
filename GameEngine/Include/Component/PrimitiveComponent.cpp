@@ -13,7 +13,7 @@ CPrimitiveComponent::CPrimitiveComponent()
     m_2DType = RT2D_None;
     m_3DType = RT3D_None;
 
-    m_pTransform->SetDefaultZ(0.3f);
+    m_pTransform->SetDefaultZ(0.5f);
 
     m_DistortionEnable = false;
 }

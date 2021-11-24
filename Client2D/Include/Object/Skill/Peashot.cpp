@@ -47,8 +47,8 @@ bool CPeashot::Init()
 
 
 	m_Collider->SetExtent(50.f, 70.f);
-	m_Collider->SetCollisionProfile("Enemy");
-	m_Collider->SetColliderType(Collider_Type::Trigger);
+	m_Collider->SetCollisionProfile("Skill");
+	m_Collider->SetColliderType(Collider_Type::Static);
 	//m_Collider->SetPivot(0.5f, 0.f, 0.f);
 
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
@@ -71,12 +71,7 @@ void CPeashot::Update(float DeltaTime)
 
 	// 화면 밖을 나갔다면 스킬 종료
 	Vector2 Out = { -100.f, -200.f };
-	if (GetRelativePos().x < Out.x || GetRelativePos().y < Out.y)
-	{
-		SkillEnd(DeltaTime);
-		Active(false);
 
-	}
 }
 
 void CPeashot::PostUpdate(float DeltaTime)
@@ -115,6 +110,8 @@ void CPeashot::SkillStart(float DeltaTime)
 		RingAngle = Angle;
 
 		CreateChildRing();
+
+		++RepeatCount;
 	}
 
 	else
@@ -150,29 +147,36 @@ void CPeashot::SkillActive(float DeltaTime)
 
 	AddRelativePos(GetAxis(AXIS_X) * -m_RingSpeed * DeltaTime);
 	
+
+	Vector2 DefaultOut = { -50.f, -50.f };
+
+	if (GetRelativePos().x <= DefaultOut.x || GetRelativePos().y <= DefaultOut.y)
+	{
+		m_bIsEnd = true;
+	}
 }
 
 void CPeashot::SkillEnd(float DeltaTime)
 {
+	// 머리가 끝났을 떄를 스킬 재사용의 기준으로 삼는다.
 	if (m_bIsHead)
 	{
 		// 반복횟수가 남았다면
-		if (RepeatCount > 0)
+		if (RepeatCount != RepeatNumber)
 		{
 			CDragon* pDragon = (CDragon*)m_pSkillOwner;
 			pDragon->Peashot();
 		}
 
 		// 반복횟수가 남지 않았을때만 완전종료함수를 호출한다.
-		else if (RepeatCount == 0 )
+		else if (RepeatCount == RepeatNumber)
 		{
 			m_pSkillOwner->SkillEnd(GetName());
 
 		}
-
-		--RepeatCount;
 	}
 
+	Active(false);
 }
 
 void CPeashot::SetIsHead(bool IsHead)

@@ -133,7 +133,6 @@ CBullet* CBullet::Clone()
 
 void CBullet::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
-    
     m_bIsHit = true;
 }
 

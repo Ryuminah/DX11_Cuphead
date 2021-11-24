@@ -1,21 +1,18 @@
 #pragma once
 #include "../Skill.h"
 
-// 눈깔빔
-class CPeashot :
+class CMeteor :
     public CSkill
 {
 	friend class CScene;
 
-private:
-	static float	RingAngle;
-	static int		AllRingCount;
-
+public:
+	static Vector3 StartPosition;
 
 protected:
-	CPeashot();
-	CPeashot(const CPeashot& obj);
-	virtual ~CPeashot();
+	CMeteor();
+	CMeteor(const CMeteor& obj);
+	virtual ~CMeteor();
 
 protected:
 	CSharedPtr<CSpriteComponent> m_Sprite;
@@ -24,11 +21,20 @@ protected:
 	class CAnimation2D* m_Animation;
 
 private:
-	float	m_RingSpeed;
-	float	m_TimeInterval;			// 링 사이의 간격
-	int		m_Number;				// 링 번호
-	bool	m_bIsHead;
-	
+	float	m_WaitTime;			// 링 사이의 간격
+	float	m_MaxY;
+	float	m_MinY;
+
+
+	// x축이동
+	Vector3 m_FirstPosition;
+
+	// Y축 이동
+	float	m_TimeToFrame;
+	float	m_MoveY;
+	float	m_Frame;
+	float	m_MoveTime;
+
 
 public:
 	virtual void Start();
@@ -37,19 +43,11 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual CPeashot* Clone();
+	virtual CMeteor* Clone();
 
 public:
 	virtual void SkillStart(float DeltaTime);
 	virtual void SkillActive(float DeltaTime);	// 스킬이 활성화 되었을때 어떤 동작을 해야하는지
 	virtual void SkillEnd(float DeltaTime);	// 스킬이 활성화 되었을때 어떤 동작을 해야하는지
-
-
-
-public:
-	void SetIsHead(bool IsHead);
-	void CreateChildRing();
-	static void SetAllRingCount(int _allRingCount);
-
 };
 

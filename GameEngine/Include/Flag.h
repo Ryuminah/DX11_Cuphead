@@ -157,9 +157,9 @@ enum class Collider_Shape
 
 enum class Collider_Type
 {
-    Character,
-    Static,
-    Trigger
+    Character,  // 충돌여부를 검출하고 물리적으로 막혀야 할 때,
+    Static,     // 충돌여부를 검출하나 (내가) 물리적으로 막히지 않아도 될 때    
+    Off         // 잠시 충돌을 체크하지 않음.
 };
 
 enum class Render_Space

@@ -20,6 +20,7 @@ class CDragon :
     public CCharacter
 {
 	friend class CScene;
+	friend class CDragonCollider;
 
 protected:
 	CDragon();
@@ -30,6 +31,8 @@ private:
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_GunPoint;		// 총구
 	std::vector<SkillData>		m_vecSkill;
+	class CDragonCollider*		m_pDragonCollider;
+	class CSkill* m_CurrentSkill;
 
 private:
 	Phase	m_CurrentPhase;
@@ -37,8 +40,8 @@ private:
 	float	m_NextAttackTime;
 	float	m_TailTime;				// 꼬리는 주기적으로 나옴
 
-	std::string	m_LastSkillName;	// 가장 마지막으로 사용한 스킬
-
+	std::string	m_LastPattern;	// 가장 마지막으로 사용한 스킬
+	bool	m_IsAnimEnd;
 
 private:
 	// basic Movement
@@ -58,11 +61,15 @@ public:
 
 public:
 	void AnimFrameEnd(const std::string& Name);
+	void ChangeAnimation(const std::string& Name);
+	std::string GetCurrentSequenceName();
+	bool GetIsFrameEnd();
 
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
 	void CollisionOverlap(const HitResult& result, CCollider* Collider);
 	void CollisionEnd(const HitResult& result, CCollider* Collider);
+	void CreateDragonCollider();
 
 public:
 	void PhaseOne();

@@ -22,7 +22,7 @@ CSceneComponent::CSceneComponent(const CSceneComponent& com)    :
     CComponent(com)
 {
     *this = com;
-
+    m_bUseForceRender = com.m_bUseForceRender;
     m_pTransform = com.m_pTransform->Clone();
 
     m_pTransform->m_pParent = nullptr;

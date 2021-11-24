@@ -14,7 +14,8 @@ CAnimation2D::CAnimation2D()	:
 	m_OwnerWidget(nullptr),
 	m_FrameTime(0.f),
 	m_Frame(0),
-	m_CurrentSequence(nullptr)
+	m_CurrentSequence(nullptr),
+	m_IsFrameEnd(false)
 {
 }
 
@@ -90,6 +91,7 @@ void CAnimation2D::Update(float DeltaTime)
 
 	if (m_FrameTime >= FrameTime)
 	{
+		m_IsFrameEnd = false;
 		m_FrameTime -= FrameTime;
 
 		++m_Frame;
@@ -111,7 +113,10 @@ void CAnimation2D::Update(float DeltaTime)
 				m_Frame = (int)m_CurrentSequence->Sequence->m_vecAnimFrame.size() - 1;
 
 			if (m_FrameEndFunction)
+			{
+				m_IsFrameEnd = true;
 				m_FrameEndFunction(m_CurrentSequence->Sequence->GetName());
+			}
 		}
 	}
 
@@ -255,6 +260,11 @@ void CAnimation2D::ChangeAnimation(const std::string& Name)
 	m_Frame = 0;
 
 	m_CurrentSequence = pInfo;
+}
+
+bool CAnimation2D::GetIsFrameEnd()
+{
+	return m_IsFrameEnd;
 }
 
 Sequence2DInfo* CAnimation2D::FindSequence(const std::string& Name)

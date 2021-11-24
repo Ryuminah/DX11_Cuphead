@@ -45,7 +45,7 @@ bool CStepCloud::Init()
 	m_Sprite->SetRelativeScale(250.f, 250.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.5f);
 	
-	m_Collider->SetExtent(100.f, 20.f);
+	m_Collider->SetExtent(90.f, 10.f);
 	m_Collider->SetPivot(0.5f, 0.5f, 0.f);
 	m_Collider->SetCollisionProfile("Static");
 	m_Collider->SetColliderType(Collider_Type::Static);
@@ -130,7 +130,11 @@ void CStepCloud::AnimationFrameEnd(const std::string& Name)
 
 void CStepCloud::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
-	m_Animation->ChangeAnimation("Cloud_Down_Idle");
+	if (GetWorldPos().y <= CMugman::PlayerPos.y)
+	{
+		m_Animation->ChangeAnimation("Cloud_Down_Idle");
+		m_bIsPlayerOn = true;
+	}
 }
 
 void CStepCloud::CollisionOverlap(const HitResult& result, CCollider* Collider)

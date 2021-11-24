@@ -31,22 +31,22 @@ bool CDragonAnimation::Init()
 	AddAnimationSequence2D("Dragon_Peashot_End", false);
 
 	AddAnimationSequence2D("Dragon_Meteor_Start",false);
-	AddAnimationSequence2D("Dragon_Meteor_Attack");
+	AddAnimationSequence2D("Dragon_Meteor_Attack",false);
 	AddAnimationSequence2D("Dragon_Meteor_End", false);
-
-	AddAnimationSequence2D("Dragon_Tail");
-
 
 	// sfx
 	AddAnimationSequence2D("Dragon_Peashot_Ring");
 	AddAnimationSequence2D("Dragon_Peashot_Ring_Pink");
+	AddAnimationSequence2D("Dragon_Meteor");
+	AddAnimationSequence2D("Dragon_Tail");
 
 
 
 	SetSequencePlayRate("Dragon_Idle", 1.5f);
-	SetSequencePlayRate("Dragon_Peashot_Start", 1.5f);
-	SetSequencePlayRate("Dragon_Peashot_Attack", 1.2f);
+	SetSequencePlayRate("Dragon_Peashot_Start", 1.2f);
+	SetSequencePlayRate("Dragon_Peashot_Attack", 1.5f);
 	SetSequencePlayRate("Dragon_Peashot_End", 1.5f);
+	SetSequencePlayRate("Dragon_Meteor", 1.5f);
 
 
 	ChangeAnimation("Dragon_Idle");
