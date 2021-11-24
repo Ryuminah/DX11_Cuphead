@@ -526,7 +526,7 @@ void CMugman::TimeCheck(float DeltaTime)
 	{
 		m_bCanAttack = true;
 		m_ShootCool = 0.2f;
-		m_BulletCount = 1.f;
+		m_BulletCount = 1;
 	}
 
 	if (m_DashCool < 0.0f)

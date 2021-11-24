@@ -344,9 +344,14 @@ void CSceneComponent::SetUVFlow2DEnable(bool Enable)
     m_pTransform->SetUVFlow2DEnable(Enable);
 }
 
-void CSceneComponent::SetUVFlowSpeed(float UVFlowSpeed)
+void CSceneComponent::SetUVFlow2DDirection(bool UVFlowDirection)
 {
-    //m_pTransform->SetUVFlowSpeed(UVFlowSpeed);
+    m_pTransform->SetUVFlow2DDirection(UVFlowDirection);
+}
+
+void CSceneComponent::SetUVFlow2DSpeed(float UVFlowSpeed)
+{
+    m_pTransform->SetUVFlow2DSpeed(UVFlowSpeed);
 }
 
 Vector3 CSceneComponent::GetVelocityScale() const

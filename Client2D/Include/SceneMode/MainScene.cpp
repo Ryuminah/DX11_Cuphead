@@ -6,7 +6,7 @@
 #include "Scene/Viewport.h"
 #include "../Object/Mugman.h"
 #include "../Object/BG_DragonMap.h"
-#include "../FG_Cloud.h"
+#include "../Object/FG_Cloud.h"
 #include "../Object/StepCloud.h"
 #include "../Object/GroundCollider.h"
 #include "../Object/Dragon.h"
@@ -96,19 +96,19 @@ void CMainScene::CreateMugmanAnim()
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Run_Shoot_R");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Run_Shoot_R",
 		"Mugman_Run_Shoot_R", TEXT("Mugman/Mugman_Run_Shoot_R.png"));
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < 16.f; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Run_Shoot_R",
-			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200, 200.f));
+			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200.f, 200.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Run_Shoot_L");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Run_Shoot_L",
 		"Mugman_Run_Shoot_L", TEXT("Mugman/Mugman_Run_Shoot_L.png"));
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < 16.f; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Run_Shoot_L",
-			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200, 200.f));
+			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200.f, 200.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Shoot_R");
@@ -117,7 +117,7 @@ void CMainScene::CreateMugmanAnim()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Shoot_R",
-			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200, 200.f));
+			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200.f, 200.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Shoot_L");
@@ -126,7 +126,7 @@ void CMainScene::CreateMugmanAnim()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Shoot_L",
-			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200, 200.f));
+			Vector2(i * 200.f, 0.f), Vector2((i + 1) * 200.f, 200.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Jump_R");
@@ -231,7 +231,7 @@ void CMainScene::CreateWeaponAnim()
 	for (int i = 0; i < 8; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_R",
-			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 180.f));
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_L");
@@ -240,7 +240,7 @@ void CMainScene::CreateWeaponAnim()
 	for (int i = 0; i < 8; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_L",
-			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 180.f));
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
 	}
 }
 

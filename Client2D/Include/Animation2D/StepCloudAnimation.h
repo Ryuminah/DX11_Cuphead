@@ -1,5 +1,5 @@
 #pragma once
-#include "Resource\Animation2D.h"
+#include "Resource/Animation2D.h"
 
 class CStepCloudAnimation :
     public CAnimation2D

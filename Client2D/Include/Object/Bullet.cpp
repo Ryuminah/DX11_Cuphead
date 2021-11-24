@@ -51,14 +51,15 @@ bool CBullet::Init()
 
     SetRootComponent(m_Sprite);
 
-    m_Sprite->SetRelativeScale(180.f, 180.f, 1.f);
-    m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+    m_Sprite->SetRelativeScale(180.f, 40.f, 1.f);
     m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
+    
+    m_Sprite->SetAnimation2DEnable(true);
+    m_Sprite->SetUVFlow2DEnable(false);
     //m_Sprite->GetMaterial(0)->SetBaseColor(1.f, 1.f, 1.f, 0.01f);
 
-    m_Collider->SetExtent(30,10);
-    m_Collider->SetPivot(0.5f, 0.5f, 0.5f);
-
+    m_Collider->SetExtent(40,10);
+    m_Collider->SetRelativePos(10.f, 10.f, 0.f);
     m_Collider->SetColliderType(Collider_Type::Static);
     m_Collider->SetCollisionProfile("Bullet");
 
@@ -71,7 +72,6 @@ bool CBullet::Init()
 
     SetUseBlockMovement(false);
     SetPhysicsSimulate(false);
-    SetDefaultZ(0.1f);
     m_bIsFire = true;
     
     return true;

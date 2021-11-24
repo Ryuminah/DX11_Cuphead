@@ -1,7 +1,7 @@
 #include "FG_Cloud.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
-#include "Animation2D/ForeGroundAnim.h"
+#include "../Animation2D/ForeGroundAnim.h"
 
 FG_Cloud::FG_Cloud()
 {
@@ -34,8 +34,13 @@ bool FG_Cloud::Init()
 	SetRootComponent(m_BackGround);
 	m_BackGround->SetRelativePos(640.f, 0.0f, 0.f);
 	m_BackGround->SetRelativeScale(1381.f, 84.f, 1.f);
+
+	//UV Flow
 	m_BackGround->SetAnimation2DEnable(false);
 	m_BackGround->SetUVFlow2DEnable(true);
+	m_BackGround->SetUVFlow2DSpeed(0.3f);
+	m_BackGround->SetUVFlow2DDirection(true);
+	
 	//m_BackGround->SetUVFlowSpeed(10.f);
 	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_Particle);
 

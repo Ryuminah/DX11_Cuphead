@@ -51,8 +51,6 @@ public:
 
         SetAnimation2DEnable(true);
         SetUVFlow2DEnable(false);
-        SetUVFlowSpeed(0.1f);
-
     }
 };
 

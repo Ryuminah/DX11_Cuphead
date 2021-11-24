@@ -174,6 +174,8 @@ enum class Collision_Channel
     Player,
     Enemy,
     Bullet,
+    StepCloud,
+    Skill,
     Character,
     Custom3,
     Custom4,
@@ -197,7 +199,8 @@ enum class Collision_Channel
 enum class Collision_Interaction
 {
     Ignore,
-    Block
+    Block,
+    Trigger
 };
 
 enum class Collision_State

@@ -7,8 +7,10 @@
 #include "Camera.h"
 
 CTransform::CTransform()    :
-    m_Animation2DEnable(false),
+    m_Animation2DEnable(true),
     m_UVFlow2DEnable(false),
+    m_UVFlow2DSpeed(0.1f),
+    m_UVFlow2DDirection(1),
     m_pParent(nullptr),
     m_InheritScale(false),
     m_InheritRotX(false),
@@ -1660,7 +1662,8 @@ void CTransform::SetTransform()
 {
     m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
     m_pCBuffer->SetUVFlow2DEnable(m_UVFlow2DEnable);
-
+    m_pCBuffer->SetUVFlow2DDirection(m_UVFlow2DDirection);
+    m_pCBuffer->SetUVFlow2DSpeed(m_UVFlow2DSpeed);
 
     CaculateMatWorld();
 

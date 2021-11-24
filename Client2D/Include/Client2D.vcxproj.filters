@@ -87,9 +87,6 @@
     <ClCompile Include="UI\LoadingUI.cpp">
       <Filter>04. UI</Filter>
     </ClCompile>
-    <ClCompile Include="Animation2D\StepCloudAnimation.cpp">
-      <Filter>03. Animation2D\02. StepObj</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D\MugmanAnimation2D.cpp">
       <Filter>03. Animation2D\01. Character</Filter>
     </ClCompile>
@@ -129,17 +126,20 @@
     <ClCompile Include="Object\Mugman.cpp">
       <Filter>02. Object\Character</Filter>
     </ClCompile>
-    <ClCompile Include="Object\StepCloud.cpp">
-      <Filter>02. Object\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Object\BG_DragonMap.cpp">
       <Filter>02. Object\2. BackGround\Back</Filter>
     </ClCompile>
-    <ClCompile Include="FG_Cloud.cpp">
-      <Filter>02. Object\2. BackGround\Fore</Filter>
-    </ClCompile>
     <ClCompile Include="Animation2D\ForeGroundAnim.cpp">
       <Filter>03. Animation2D\04 ForeGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\StepCloud.cpp">
+      <Filter>02. Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\StepCloudAnimation.cpp">
+      <Filter>03. Animation2D\02. StepObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\FG_Cloud.cpp">
+      <Filter>02. Object\2. BackGround\Fore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="UI\LoadingUI.h">
       <Filter>04. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation2D\StepCloudAnimation.h">
-      <Filter>03. Animation2D\02. StepObj</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\MugmanAnimation2D.h">
       <Filter>03. Animation2D\01. Character</Filter>
@@ -215,17 +212,20 @@
     <ClInclude Include="Object\Mugman.h">
       <Filter>02. Object\Character</Filter>
     </ClInclude>
-    <ClInclude Include="Object\StepCloud.h">
-      <Filter>02. Object\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Object\BG_DragonMap.h">
       <Filter>02. Object\2. BackGround\Back</Filter>
     </ClInclude>
-    <ClInclude Include="FG_Cloud.h">
-      <Filter>02. Object\2. BackGround\Fore</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D\ForeGroundAnim.h">
       <Filter>03. Animation2D\04 ForeGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\StepCloud.h">
+      <Filter>02. Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\StepCloudAnimation.h">
+      <Filter>03. Animation2D\02. StepObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FG_Cloud.h">
+      <Filter>02. Object\2. BackGround\Fore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -53,5 +53,15 @@ public:
     {
         m_BufferData.UVFlow2DEnable = Enable ? 1 : 0;
     }
+    
+    void SetUVFlow2DDirection(bool UVFlowDirection)
+    {
+        m_BufferData.UVFlow2DDirection = UVFlowDirection ? 1 : 0;
+    }
+
+    void SetUVFlow2DSpeed(float UVFlowSpeed)
+    {
+        m_BufferData.UVFlow2DSpeed = UVFlowSpeed;
+    }
 };
 

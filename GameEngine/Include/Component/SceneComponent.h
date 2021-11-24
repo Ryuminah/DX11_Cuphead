@@ -69,7 +69,9 @@ public:
 public:
     void SetAnimation2DEnable(bool Enable);
     void SetUVFlow2DEnable(bool Enable);
-    void SetUVFlowSpeed(float UVFlowSpeed);
+    void SetUVFlow2DDirection(bool UVFlowDirection);
+    void SetUVFlow2DSpeed(float UVFlowSpeed);
+
 
 
 

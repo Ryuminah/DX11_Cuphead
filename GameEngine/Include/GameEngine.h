@@ -161,6 +161,8 @@ struct TransformCBuffer
 	Vector3 Pivot;
 	int     Animation2DEnable;
 	int     UVFlow2DEnable;
+	int     UVFlow2DDirection;
+	float	UVFlow2DSpeed;
 	Vector3 MeshSize;
 	float   Empty2;
 };

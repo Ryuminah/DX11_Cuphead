@@ -34,6 +34,12 @@ bool BG_CDragonMap::Init()
 	m_BackGround->SetRelativeScale(1280.f, 720.f, 1.f);
 	m_BackGround->SetMaterial(0,"BG_Normal");
 
+	//UV Flow
+	m_BackGround->SetAnimation2DEnable(false);
+	m_BackGround->SetUVFlow2DEnable(true);
+	m_BackGround->SetUVFlow2DSpeed(0.05f);
+	m_BackGround->SetUVFlow2DDirection(false);
+
 	m_BackGround->SetRender2DType(Render_Type_2D::RT2D_MAP);
 	m_BackGround->SetAnimation2DEnable(false);
 	//m_BackGround->SetUVFlow2DEnable(true);

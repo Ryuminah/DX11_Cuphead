@@ -46,7 +46,16 @@ float2 ComputeAnimation2DUV(float2 UV)
 	{
 		float2	ResultUV;
 		ResultUV = UV;
-		ResultUV.x += g_AccTime;
+
+		if (g_UVFlow2DDirection == 0)
+		{
+			ResultUV.x -= g_AccTime * g_UVFlow2DSpeed;
+		}
+
+		else
+		{
+			ResultUV.x += g_AccTime * g_UVFlow2DSpeed;
+		}
 
 		return ResultUV;
 	}
