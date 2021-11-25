@@ -1,5 +1,5 @@
 #pragma once
-#include "../Skill.h"
+#include "../Skill/Tail.h"
 
 class CMeteor :
     public CSkill

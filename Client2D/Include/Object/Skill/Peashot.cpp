@@ -1,7 +1,7 @@
 #include "Peashot.h"
-#include "../Mugman.h"
+#include "../Character/Mugman.h"
+#include "../Character/Dragon.h"
 #include "../../Animation2D/DragonAnimation.h"
-#include "../Dragon.h"
 
 float CPeashot::RingAngle = 0.f;
 int	CPeashot::AllRingCount = 0;
@@ -36,7 +36,7 @@ bool CPeashot::Init()
 	CSkill::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Peashot");
-	m_Collider = CreateSceneComponent<CColliderBox2D>("PeashotCollider");
+	m_Collider = CreateSceneComponent<CColliderBox2D>("SkillCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 
 	SetRootComponent(m_Sprite);

@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Component/ColliderBox2D.h"
 
-// 낙사 방지용 콜리전
+// 낙사 방지용 콜리전이 ㄴ아니라 땅에닿으면 체력 플레이어 히트체크 ++
 class CGroundCollider :
     public CGameObject
 {

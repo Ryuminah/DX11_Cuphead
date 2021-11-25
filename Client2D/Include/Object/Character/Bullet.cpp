@@ -1,6 +1,6 @@
 #include "Bullet.h"
 #include "Scene/Scene.h"
-#include "../Animation2D/BulletAnimation.h"
+#include "../../Animation2D/BulletAnimation.h"
 
 CBullet::CBullet() :
     m_Range(1280.f), m_Speed(900.f)

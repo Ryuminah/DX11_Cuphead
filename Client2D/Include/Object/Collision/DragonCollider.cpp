@@ -1,6 +1,5 @@
 #include "DragonCollider.h"
-#include "Dragon.h"
-
+#include "../Character/Dragon.h"
 
 CDragonCollider::CDragonCollider(): m_pDragon(nullptr)
 {
@@ -73,14 +72,15 @@ CDragonCollider* CDragonCollider::Clone()
 
 void CDragonCollider::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
-	if (result.DestCollider->GetName() == "MugmanCollider")
+	if (result.DestCollider->GetName() == "BulletCollider")
 	{
+
 		/*result.DestObject->SetUseBlockMovement(true);
 		Vector3 prevPos = result.DestObject->GetPrevWorldPos();
 		result.DestObject->SetWorldPos(prevPos);*/
 	}
-
 	m_pDragon->CollisionBegin(result, Collider);
+
 }
 
 void CDragonCollider::CollisionOverlap(const HitResult& result, CCollider* Collider)

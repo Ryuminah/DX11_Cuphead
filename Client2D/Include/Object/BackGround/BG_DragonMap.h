@@ -1,21 +1,20 @@
 #pragma once
 #include "GameObject.h"
+#include "BackGround.h"
 #include "Component/SpriteComponent.h"
 
-class FG_Cloud :
-    public CGameObject
+class BG_CDragonMap :
+    public CBackGround
 {
 	friend class CScene;
 
-protected:
-	FG_Cloud();
-	FG_Cloud(const FG_Cloud& obj);
-	virtual ~FG_Cloud();
+public:
+	static bool bIsNight;
 
 protected:
-	CSharedPtr<CSpriteComponent> m_BackGround;
-	class CAnimation2D* m_AnimImage;
-
+	BG_CDragonMap();
+	BG_CDragonMap(const BG_CDragonMap& obj);
+	virtual ~BG_CDragonMap();
 
 public:
 	virtual void Start();
@@ -24,6 +23,6 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual FG_Cloud* Clone();
+	virtual BG_CDragonMap* Clone();
 };
 

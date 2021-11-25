@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Scene/SceneMode.h"
 
 class CMainScene    :
@@ -25,11 +24,13 @@ private:
     void CreateStepCloudAnim();
     void CreateWeaponAnim();
     void CreateDragonAnim();
+    void CreateBackGroundImage();
     
     // Game Object 생성
     void CreateStepCloud();
+    void CreateBackGround();
+
 
     // 배경 생성 마사카...?
-    void CreateBackGround();
 };
 

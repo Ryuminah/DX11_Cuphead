@@ -4,12 +4,13 @@
 #include "Render/RenderManager.h"
 #include "../UI/MainHUDWidget.h"
 #include "Scene/Viewport.h"
-#include "../Object/Mugman.h"
-#include "../Object/BG_DragonMap.h"
-#include "../Object/FG_Cloud.h"
-#include "../Object/StepCloud.h"
-#include "../Object/GroundCollider.h"
-#include "../Object/Dragon.h"
+#include "../Object/Character/Mugman.h"
+#include "../Object/Character/Dragon.h"
+#include "../Object/Static/StepCloud.h"
+#include "../Object/Collision/GroundCollider.h"
+#include "../Object/BackGround/BG_DragonMap.h"
+#include "../Object/BackGround/FG_Normal_Cloud1.h"
+#include "../Object/BackGround/FG_Normal_Cloud2.h"
 
 
 
@@ -32,11 +33,12 @@ bool CMainScene::Init()
 	m_pScene->GetResource()->LoadSound("UI", false, "ButtonClick",
 		"TeemoStartClicck.mp3");
 
+	// Create BackGround
+	CreateBackGround();
+
 	// Create GameObject
-	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
-	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("DragonMap");
-	FG_Cloud* pFGCloud = m_pScene->SpawnObject<FG_Cloud>("FG_Cloud");
 	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
+	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
 
 	CreateStepCloud();
@@ -49,15 +51,6 @@ void CMainScene::CreateMaterial()
 	m_pScene->GetResource()->CreateMaterial("PlayerChild");
 	m_pScene->GetResource()->AddMaterialTexture("PlayerChild", "PlayerChild",
 		TEXT("Teemo.jpg"));
-
-	// 배경 머터리얼 생성
-	m_pScene->GetResource()->CreateMaterial("BG_Normal");
-	m_pScene->GetResource()->AddMaterialTexture("BG_Normal", "BG_Normal",
-		TEXT("BG_Normal.png"));
-
-	m_pScene->GetResource()->CreateMaterial("FG_Cloud");
-	m_pScene->GetResource()->AddMaterialTexture("FG_Cloud", "FG_Cloud",
-		TEXT("BackGround/FG_Normal_Cloud1.png"));
 }
 
 void CMainScene::CreateAnimationSequence2D()
@@ -66,7 +59,7 @@ void CMainScene::CreateAnimationSequence2D()
 	CreateStepCloudAnim();
 	CreateWeaponAnim();
 	CreateDragonAnim();
-	CreateBackGround();
+	CreateBackGroundImage();
 }
 
 void CMainScene::CreateParticle()
@@ -192,7 +185,7 @@ void CMainScene::CreateStepCloudAnim()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Cloud_Down",
-			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 250.f));
+			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 70.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Cloud_Down_Idle");
@@ -201,7 +194,7 @@ void CMainScene::CreateStepCloudAnim()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Cloud_Down_Idle",
-			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 250.f));
+			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 70.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Cloud_Idle");
@@ -210,7 +203,7 @@ void CMainScene::CreateStepCloudAnim()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Cloud_Idle",
-			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 250.f));
+			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 70.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Cloud_Up");
@@ -219,7 +212,7 @@ void CMainScene::CreateStepCloudAnim()
 	for (int i = 0; i < 5; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Cloud_Up",
-			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 250.f));
+			Vector2(i * 250.f, 0), Vector2((i + 1) * 250.f, 70.f));
 	}
 }
 
@@ -364,44 +357,122 @@ void CMainScene::CreateDragonAnim()
 void CMainScene::CreateStepCloud()
 {
 	CStepCloud* pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(150.f, 190.f, 0.f);
+	pStepCloud->SetRelativePos(150.f, 190.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(160.f, 570.f, 0.f);
+	pStepCloud->SetRelativePos(160.f, 570.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(420.f, 390.f, 0.f);
+	pStepCloud->SetRelativePos(420.f, 390.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(460.f, 120.f, 0.f);
+	pStepCloud->SetRelativePos(460.f, 120.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(690.f, 540.f, 0.f);
+	pStepCloud->SetRelativePos(690.f, 540.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(810.f, 180.f, 0.f);
+	pStepCloud->SetRelativePos(810.f, 180.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(1000.f, 370.f, 0.f);
+	pStepCloud->SetRelativePos(1000.f, 370.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(1200.f, 600.f, 0.f);
+	pStepCloud->SetRelativePos(1200.f, 600.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetWorldPos(1450.f, 400.f, 0.f);
+	pStepCloud->SetRelativePos(1450.f, 400.f, 0.f);
 
 }
 
 void CMainScene::CreateBackGround()
 {
-	//m_pScene->GetResource()->CreateMaterial("FG_Cloud");
-	//m_pScene->GetResource()->AddMaterialTexture("FG_Cloud", "FG_Cloud",
-	//	TEXT("BackGround/FG_Normal_Cloud1.png"));
+	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("BG_DragonMap");
+	FG_Normal_Cloud1* pFGCloud1 = m_pScene->SpawnObject<FG_Normal_Cloud1>("FG_Cloud1");
+	FG_Normal_Cloud2* pFGCloud2 = m_pScene->SpawnObject<FG_Normal_Cloud2>("FG_Cloud2");
 
-	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Cloud");
-	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Cloud",
-		"FG_Cloud", TEXT("BackGround /FG_Normal_Cloud1.png"));
-	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Cloud",
+
+}
+
+void CMainScene::CreateBackGroundImage()
+{
+	// UV 애니메이션을 위해 Sequence로 생성함
+	// Foreground Normal 
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Normal_Cloud1");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Normal_Cloud1",
+		"FG_Normal_Cloud1", TEXT("BackGround/FG_Normal_Cloud1.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Normal_Cloud1",
 		Vector2(0.f, 0.f), Vector2(1381.f, 84.f));
 	
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Normal_Cloud2");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Normal_Cloud2",
+		"FG_Normal_Cloud2", TEXT("BackGround/FG_Normal_Cloud2.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Normal_Cloud2",
+		Vector2(0.f, 0.f), Vector2(1561.f, 185.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Normal_Cloud3");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Normal_Cloud3",
+		"FG_Normal_Cloud3", TEXT("BackGround/FG_Normal_Cloud3.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Normal_Cloud3",
+		Vector2(0.f, 0.f), Vector2(1513.f, 198.f));
+
+	// Night
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Night_Cloud1");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Night_Cloud1",
+		"FG_Night_Cloud1", TEXT("BackGround/FG_Night_Cloud1.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Night_Cloud1",
+		Vector2(0.f, 0.f), Vector2(859.f, 54.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Night_Cloud2");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Night_Cloud2",
+		"FG_Night_Cloud2", TEXT("BackGround/FG_Night_Cloud2.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Night_Cloud2",
+		Vector2(0.f, 0.f), Vector2(971.f, 114.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FG_Night_Cloud3");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FG_Night_Cloud3",
+		"FG_Night_Cloud3", TEXT("BackGround/FG_Night_Cloud3.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_Night_Cloud3",
+		Vector2(0.f, 0.f), Vector2(934.f, 124.f));
+
+
+	// BackGround
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_Cloud1");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_Cloud1",
+		"BG_Normal_Cloud1", TEXT("BackGround/BG_Normal_Cloud1.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud1",
+		Vector2(0.f, 0.f), Vector2(1565.f, 279.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_Cloud2");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_Cloud2",
+		"BG_Normal_Cloud2", TEXT("BackGround/BG_Normal_Cloud2.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud2",
+		Vector2(0.f, 0.f), Vector2(1945.f, 286.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_Cloud3");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_Cloud3",
+		"BG_Normal_Cloud3", TEXT("BackGround/BG_Normal_Cloud3.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud3",
+		Vector2(0.f, 0.f), Vector2(2047.f, 374.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_Cloud4");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_Cloud4",
+		"BG_Normal_Cloud4", TEXT("BackGround/BG_Normal_Cloud4.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud4",
+		Vector2(0.f, 0.f), Vector2(1931.f, 318.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_Cloud5");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_Cloud5",
+		"BG_Normal_Cloud5", TEXT("BackGround/BG_Normal_Cloud5.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud5",
+		Vector2(0.f, 0.f), Vector2(1870.f, 342.f));
+
+
+
+	
+	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_DragonMap");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_DragonMap",
+		"BG_Normal_DragonMap", TEXT("BackGround/BG_Normal_DragonMap.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_DragonMap",
+		Vector2(0.f, 0.f), Vector2(1280.f, 720.f));
 }

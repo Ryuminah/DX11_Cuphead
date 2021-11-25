@@ -1,7 +1,7 @@
 #include "Meteor.h"
-#include "../Mugman.h"
+#include "../Character/Mugman.h"
 #include "../../Animation2D/DragonAnimation.h"
-#include "../Dragon.h"
+#include "../Character/Dragon.h"
 
 Vector3	CMeteor::StartPosition = Vector3(0.f, 0.f, 0.f);
 
@@ -34,7 +34,7 @@ bool CMeteor::Init()
 	CSkill::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Meteor");
-	m_Collider = CreateSceneComponent<CColliderBox2D>("MeteorCollider");
+	m_Collider = CreateSceneComponent<CColliderBox2D>("SkillCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 
 	SetRootComponent(m_Sprite);

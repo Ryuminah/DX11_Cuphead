@@ -1,5 +1,5 @@
 #pragma once
-#include "../Skill.h"
+#include "../Skill/Tail.h"
 
 // ´«±òºö
 class CPeashot :

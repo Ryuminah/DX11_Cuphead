@@ -1,6 +1,6 @@
 #include "StepCloud.h"
-#include "../Animation2D/StepCloudAnimation.h"
-#include "Mugman.h"
+#include "../../Animation2D/StepCloudAnimation.h"
+#include "../Character/Mugman.h"
 
 
 CStepCloud::CStepCloud() :m_MoveTime(0.f), m_MoveDistance(0.f),
@@ -42,11 +42,12 @@ bool CStepCloud::Init()
 	
 	SetRootComponent(m_Sprite);
 
-	m_Sprite->SetRelativeScale(250.f, 250.f, 1.f);
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.5f);
-	
+	m_Sprite->SetRelativeScale(250.f, 75.f, 1.f);
+
+	m_Collider->SetPivot(0.5f,0.f,0.f);
+	m_Collider->SetRelativePos(0.f, 19.f, 0.f);
+
 	m_Collider->SetExtent(90.f, 10.f);
-	m_Collider->SetPivot(0.5f, 0.5f, 0.f);
 	m_Collider->SetCollisionProfile("Static");
 	m_Collider->SetColliderType(Collider_Type::Static);
 

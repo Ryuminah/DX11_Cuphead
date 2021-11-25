@@ -1,6 +1,6 @@
 #pragma once
-#include "Character.h"
-#include "Skill.h"
+#include "../Character/Character.h"
+#include "../Skill/Skill.h"
 
 enum PHASE1 {PEASHOT, METEOR, TAIL};
 

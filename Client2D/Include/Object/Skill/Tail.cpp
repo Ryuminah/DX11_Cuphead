@@ -1,7 +1,7 @@
 #include "Tail.h"
-#include "../Mugman.h"
+#include "../Character/Mugman.h"
 #include "../../Animation2D/DragonAnimation.h"
-#include "../Dragon.h"
+#include "../Character/Dragon.h"
 
 
 CTail::CTail() : m_WaitTime(2.f), m_MaxY(500.f), m_TailSpeed(800.f)

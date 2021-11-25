@@ -1,5 +1,5 @@
 #pragma once
-#include "../Skill.h"
+#include "../Skill/Skill.h"
 
 class CTail :
     public CSkill

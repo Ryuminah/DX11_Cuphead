@@ -2,16 +2,18 @@
 #include "Input.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
-#include "../Animation2D/DragonAnimation.h"
 #include "Engine.h"
-#include "Character.h"
+#include "../../Animation2D/DragonAnimation.h"
+#include "../Character/Character.h"
 
 int CSkill::RepeatCount = 0;
 int CSkill::RepeatNumber= 1;
 
 
-CSkill::CSkill() : m_bIsActive(false), m_PhaseNumber(Phase::Phase1),
-	m_CoolTime(0.f), m_bIsStarted(false), m_bIsEnd(false),
+CSkill::CSkill() : m_bIsActive(false),
+	m_PhaseNumber(Phase::Phase1),
+	m_CoolTime(0.f), 
+	m_bIsStarted(false), m_bIsEnd(false),
 	m_pSkillOwner(nullptr)
 {
 

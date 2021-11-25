@@ -57,7 +57,7 @@ CCharacter* CCharacter::Clone()
 
 void CCharacter::HitCheck()
 {
-	m_HitCount += 1;
+	m_HitCount ++;
 }
 
 void CCharacter::SkillEnd(std::string SkillName)

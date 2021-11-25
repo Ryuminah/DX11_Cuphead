@@ -3,13 +3,13 @@
 #include "Input.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
-#include "../Animation2D/DragonAnimation.h"
-#include "Engine.h"
 #include "Mugman.h"
-#include "Skill/Peashot.h"
-#include "Skill/Tail.h"
-#include "Skill/Meteor.h"
-#include "DragonCollider.h"
+#include "Engine.h"
+#include "../../Animation2D/DragonAnimation.h"
+#include "../Skill/Peashot.h"
+#include "../Skill/Tail.h"
+#include "../Skill/Meteor.h"
+#include "../Collision/DragonCollider.h"
 
 
 CDragon::CDragon() : m_CurrentPhase(Phase::Phase1), m_NextAttackTime(5.f),
@@ -171,7 +171,7 @@ void CDragon::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
 	if (result.DestCollider->GetName() == "BulletCollider")
 	{
-		HitCheck();
+		++m_HitCount;
 		m_Sprite->GetMaterial(0)->SetMaterialTimerBaseColor(1.f, 0.f, 0.f, 0.5f);
 		m_Sprite->GetMaterial(0)->UseMaterialTimer(0.01f);
 	}

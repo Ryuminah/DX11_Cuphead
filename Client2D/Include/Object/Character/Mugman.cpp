@@ -2,10 +2,10 @@
 #include "Input.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
-#include "../Animation2D/MugmanAnimation2D.h"
+#include "../../Animation2D/MugmanAnimation2D.h"
 #include "Engine.h"
 #include "Bullet.h"
-#include "StepCloud.h"
+#include "../Static/StepCloud.h"
 
 Vector3 CMugman::PlayerPos = {0.f,0.f,0.f};
 Vector3 CMugman::PlayerPrevPos = { 0.f, 0.f, 0.f };
@@ -409,7 +409,7 @@ void CMugman::DashCheck(float DeltaTime)
 	{
 		m_DashTime += GetGravityAccel() * DeltaTime;
 
-		float DashVelocity = (m_DashTime * m_DashTime * GetGravity() * -0.5) + (m_DashSpeed * m_DashTime);
+		float DashVelocity = static_cast<float>((m_DashTime * m_DashTime * GetGravity() * -0.5) + (m_DashSpeed * m_DashTime));
 
 		if (m_PrevDirection == Direction::RIGHT)
 		{
