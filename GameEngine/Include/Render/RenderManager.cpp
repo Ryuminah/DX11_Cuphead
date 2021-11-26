@@ -150,7 +150,7 @@ void CRenderManager::Render(float DeltaTime)
 	// 렌더타겟을 백버퍼에서 우리가 만들어둔 DiffuseTarget으로 교체가 된다.
 	// 깊이버퍼는 nullptr을 넣어주었기 때문에 기존에 사용하던 깊이버퍼가
 	// 그대로 들어가게 된다.
-	//m_DiffuseTarget->ClearTarget();
+	m_DiffuseTarget->ClearTarget();		
 	m_DiffuseTarget->SetTarget(nullptr);
 
 	for (int i = 0; i < RST_End; ++i)

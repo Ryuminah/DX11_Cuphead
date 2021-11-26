@@ -64,7 +64,7 @@ bool CStepCloud::Init()
 
 
 	SetUseBlockMovement(false);
-	SetDefaultZ(0.5);
+	SetDefaultZ(0.6f);
 
 	return true;
 }

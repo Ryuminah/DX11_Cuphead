@@ -28,7 +28,7 @@ void FG_Normal_Cloud2::Start()
 	m_Sprite->SetUVFlow2DEnable(true);
 	m_Sprite->SetUVFlow2DSpeed(0.1f);
 	m_Sprite->SetUVFlow2DDirection(true);
-	m_Sprite->GetMaterial(0)->SetOpacity(0.75f);
+	//m_Sprite->GetMaterial(0)->SetOpacity(0.75f);
 }
 
 bool FG_Normal_Cloud2::Init()
