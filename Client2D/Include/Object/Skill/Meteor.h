@@ -21,7 +21,7 @@ protected:
 	class CAnimation2D* m_Animation;
 
 private:
-	float	m_WaitTime;			// 링 사이의 간격
+	float	m_SmokeTime;			// 연기 생성 간격
 	float	m_MaxY;
 	float	m_MinY;
 

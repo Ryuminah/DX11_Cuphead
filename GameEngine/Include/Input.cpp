@@ -181,6 +181,7 @@ void CInput::UpdateWindowKeyState(float DeltaTime)
 	{
 		unsigned int	Index = m_vecAddIndexKey[i];
 
+		// 이전에 누른 적이 없고, 호출 시점에도 눌려있지 않은 상태
 		if (GetAsyncKeyState(m_vecKeyState[Index].Key) & 0x8000)
 		{
 			m_vecKeyState[Index].PushTime += DeltaTime;
@@ -545,6 +546,8 @@ bool CInput::SetShiftKey(const std::string& Name, bool State)
 
 	return true;
 }
+
+
 
 KeyInfo* CInput::FindKeyInfo(const std::string& Name)
 {

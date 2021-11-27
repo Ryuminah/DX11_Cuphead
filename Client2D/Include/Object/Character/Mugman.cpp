@@ -105,9 +105,15 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd);
-
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
+
+	// End CallBack Func
+	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd); 
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Up, this, &CMugman::MoveEnd);
+
 
 	SetPhysicsSimulate(true);
 	SetUseBlockMovement(true);
@@ -118,7 +124,7 @@ bool CMugman::Init()
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Overlap, this, &CMugman::CollisionOverlap);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::End, this, &CMugman::CollisionEnd);
 
-	SetDefaultZ(0.5);
+	SetDefaultZ(0.1);
 	return true;
 }
 
@@ -144,7 +150,9 @@ void CMugman::Update(float DeltaTime)
 	// 시간 체크
 	TimeCheck(DeltaTime);
 
+	//m_DirectInputKeyResult[DIK_LSHIFT] & 0x80
 	SavePlayerPos();
+
 }
 
 void CMugman::PostUpdate(float DeltaTime)
@@ -363,6 +371,12 @@ void CMugman::ShootEnd(float DeltaTime)
 	m_bIsAttack = false;
 }
 
+void CMugman::MoveEnd(float DeltaTime)
+{
+	m_bIsMove = false;
+}
+
+
 //void CMugman::Triple(float DeltaTime)
 //{
 //	float   Angle = GetWorldRotation().z - 30.f;
@@ -567,17 +581,15 @@ void CMugman::TimeCheck(float DeltaTime)
 
 void CMugman::AnimCheck(float DeltaTime)
 {
-	m_bIsMove = false;
-
 	// 조금이라도 이동했다면 종료
 	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
 	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
 
 	// 움직였다면
-	if (PrevWorldPos != WorldPos)
-	{
-		return;
-	}
+	//if (PrevWorldPos != WorldPos)
+	//{
+	//	return;
+	//}
 
 	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsMove)
 	{

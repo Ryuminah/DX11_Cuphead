@@ -11,7 +11,7 @@ BG_CDragonMap::BG_CDragonMap()
 }
 
 BG_CDragonMap::BG_CDragonMap(const BG_CDragonMap& obj) :
-	CBackGround(obj)
+	CEffect(obj)
 {
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("BG_DragonMap");
 }
@@ -22,7 +22,7 @@ BG_CDragonMap::~BG_CDragonMap()
 
 void BG_CDragonMap::Start()
 {
-	CBackGround::Start();
+	CEffect::Start();
 
 	//UV Flow
 	// FG : Direction(true)	BG : Direction (false)
@@ -34,7 +34,7 @@ void BG_CDragonMap::Start()
 
 bool BG_CDragonMap::Init()
 {
-	CBackGround::Init();
+	CEffect::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("BG_DragonMap");
 
@@ -54,22 +54,22 @@ bool BG_CDragonMap::Init()
 
 void BG_CDragonMap::Update(float DeltaTime)
 {
-	CBackGround::Update(DeltaTime);
+	CEffect::Update(DeltaTime);
 }
 
 void BG_CDragonMap::PostUpdate(float DeltaTime)
 {
-	CBackGround::PostUpdate(DeltaTime);
+	CEffect::PostUpdate(DeltaTime);
 }
 
 void BG_CDragonMap::Collision(float DeltaTime)
 {
-	CBackGround::Collision(DeltaTime);
+	CEffect::Collision(DeltaTime);
 }
 
 void BG_CDragonMap::Render(float DeltaTime)
 {
-	CBackGround::Render(DeltaTime);
+	CEffect::Render(DeltaTime);
 }
 
 BG_CDragonMap* BG_CDragonMap::Clone()

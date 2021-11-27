@@ -58,6 +58,9 @@
     <Filter Include="02. Object\5. Static">
       <UniqueIdentifier>{12a5dbfa-a545-4a52-a571-31f5c3723d36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\6 .Effect">
+      <UniqueIdentifier>{36f6bf9d-2cc7-4ea7-80b0-66c2c807a18b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,6 +156,12 @@
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp">
       <Filter>02. Object\1. BackGround\Fore</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Effect\Effect.cpp">
+      <Filter>02. Object\6 .Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -247,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h">
       <Filter>02. Object\1. BackGround\Fore</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\Effect.h">
+      <Filter>02. Object\6 .Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\MeteorSmoke.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

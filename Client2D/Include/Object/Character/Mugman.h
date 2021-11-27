@@ -96,6 +96,9 @@ public:
 
 public:
 	void ShootEnd(float DeltaTime);
+	void MoveEnd(float DeltaTime);
+
+
 
 
 public:

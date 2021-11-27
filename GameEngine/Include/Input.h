@@ -95,6 +95,7 @@ public:
     bool SetControlKey(const std::string& Name, bool State);
     bool SetAltKey(const std::string& Name, bool State);
     bool SetShiftKey(const std::string& Name, bool State);
+    //bool CheckKeyEndState(unsigned char Key);            // 인자로 들어온 키가 눌렸다가 떼어진 상태인지 ( 아직 미완)
 
 private:
     KeyInfo* FindKeyInfo(const std::string& Name);

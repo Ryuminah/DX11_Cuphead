@@ -5,7 +5,7 @@
 
 Vector3	CMeteor::StartPosition = Vector3(0.f, 0.f, 0.f);
 
-CMeteor::CMeteor() : m_WaitTime(2.f),
+CMeteor::CMeteor() : m_SmokeTime(0.2f),
 		m_TimeToFrame(0.f),
 	m_MinY(0.f), m_MaxY(720.f), m_Frame(0.f)
 {
@@ -98,11 +98,18 @@ void CMeteor::SkillActive(float DeltaTime)
 {
 	Vector3 MoveDistance = Vector3(0.f, 0.f, 0.f);		
 
-	// Move Y
+	// Move Y 
+	// 시간 당 프레임을 계산
 	if (m_TimeToFrame >= 0.1f)
 	{
 		++m_Frame;
 		m_TimeToFrame = 0.f;
+	}
+
+	if (m_SmokeTime  >= 0.0f)
+	{
+		m_SmokeTime = 0.2f;
+		// 현재 위치에 스모크 이펙트 생성.
 	}
 
 	// 삼각함수로 반복
@@ -118,6 +125,7 @@ void CMeteor::SkillActive(float DeltaTime)
 	MoveX.x = MoveX.x * DeltaTime * -0.35f;
 	AddRelativePos(GetAxis(AXIS_X) * MoveX);
 	
+	m_SmokeTime -= DeltaTime;
 	m_MoveTime += DeltaTime;
 
 	// Rotation 이건 나중에 ,,
