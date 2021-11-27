@@ -11,6 +11,8 @@
 #include "../Object/BackGround/BG_DragonMap.h"
 #include "../Object/BackGround/FG_Normal_Cloud1.h"
 #include "../Object/BackGround/FG_Normal_Cloud2.h"
+#include "../Object/BackGround/FG_Normal_Cloud3.h"
+
 
 
 
@@ -390,8 +392,7 @@ void CMainScene::CreateBackGround()
 	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("BG_DragonMap");
 	FG_Normal_Cloud1* pFGCloud1 = m_pScene->SpawnObject<FG_Normal_Cloud1>("FG_Cloud1");
 	FG_Normal_Cloud2* pFGCloud2 = m_pScene->SpawnObject<FG_Normal_Cloud2>("FG_Cloud2");
-
-
+	FG_Normal_Cloud3* pFGCloud3 = m_pScene->SpawnObject<FG_Normal_Cloud3>("FG_Cloud3");
 }
 
 void CMainScene::CreateBackGroundImage()

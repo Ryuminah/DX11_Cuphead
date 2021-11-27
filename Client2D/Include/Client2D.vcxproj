@@ -169,6 +169,7 @@
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\BackGround\BG_DragonMap.cpp" />
+    <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp" />
     <ClCompile Include="Object\Character\Bullet.cpp" />
     <ClCompile Include="Object\Character\Character.cpp" />
     <ClCompile Include="Object\Character\Dragon.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Animation2D\StepCloudAnimation.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Object\BackGround\BG_DragonMap.h" />
+    <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h" />
     <ClInclude Include="Object\Character\Bullet.h" />
     <ClInclude Include="Object\Character\Character.h" />
     <ClInclude Include="Object\Character\Dragon.h" />

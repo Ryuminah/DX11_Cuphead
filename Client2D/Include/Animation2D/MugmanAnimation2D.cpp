@@ -40,6 +40,9 @@ bool CMugmanAnimation2D::Init()
 	AddAnimationSequence2D("Mugman_Dash_R", false);
 	AddAnimationSequence2D("Mugman_Dash_L", false);
 
+	SetSequencePlayRate("Mugman_Idle_R", 2.0f);
+	SetSequencePlayRate("Mugman_Idle_L", 2.0f);
+
 	SetSequencePlayRate("Mugman_Shoot_R", 6.0f);
 	SetSequencePlayRate("Mugman_Shoot_L", 6.0f);
 

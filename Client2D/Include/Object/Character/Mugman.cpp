@@ -105,6 +105,8 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd);
+
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
 
 	SetPhysicsSimulate(true);
@@ -123,6 +125,9 @@ bool CMugman::Init()
 void CMugman::Update(float DeltaTime)
 {
 	CCharacter::Update(DeltaTime);
+
+	// Idle check
+	AnimCheck(DeltaTime);
 
 	// 땅이 아닐 경우 떨어지고 있는지 체크
 	if (!m_bIsGround)
@@ -174,7 +179,17 @@ void CMugman::MoveUp(float DeltaTime)
 		return;
 	}
 
-	m_Animation->ChangeAnimation("Mugman_AimUp_R");
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_AimUp_R");
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_AimUp_L");
+	}
+
+	m_bIsMove = true;
 
 	//AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
 }
@@ -186,6 +201,7 @@ void CMugman::MoveDown(float DeltaTime)
 		return;
 	}
 
+	m_bIsMove = true;
 	//AddRelativePos(GetAxis(AXIS_Y) * -m_Speed * DeltaTime);
 }
 
@@ -200,12 +216,14 @@ void CMugman::MoveRight(float DeltaTime)
 
 	m_State = Mugman_State::Run;
 
+	// 이미 공격중일 때는 Anim이 다시 처음부터 재생하면 안되므로 예외 처리.
 	if (!m_bIsJump && m_bIsGround)
 	{
 		m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
 	}
 
 	AddRelativePos(GetAxis(AXIS_X)* m_Speed* DeltaTime);
+	m_bIsMove = true;
 
 }
 
@@ -225,6 +243,7 @@ void CMugman::MoveLeft(float DeltaTime)
 	}
 
 	AddRelativePos(GetAxis(AXIS_X) * -m_Speed * DeltaTime);
+	m_bIsMove = true;
 }
 
 void CMugman::Jump(float DeltaTime)
@@ -263,7 +282,7 @@ void CMugman::Jump(float DeltaTime)
 
 void CMugman::Shoot(float DeltaTime)
 {
-	if (!m_bCanAttack)
+	if (!m_bCanAttack || m_bIsDash || m_bIsFall || m_bIsJump)
 	{
 		return;
 	}
@@ -271,9 +290,12 @@ void CMugman::Shoot(float DeltaTime)
 	if (m_BulletCount > 0 )
 	{
 		m_bCanAttack = false;
+		m_bIsAttack = true;
 		--m_BulletCount;
 
 		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
+
+		// 공격중이였다면 Animation을 다시 바꾸지 않음.
 
 		if (m_PrevDirection == Direction::RIGHT)
 		{
@@ -336,6 +358,11 @@ void CMugman::Dash(float DeltaTime)
 	}
 }
 
+void CMugman::ShootEnd(float DeltaTime)
+{
+	m_bIsAttack = false;
+}
+
 //void CMugman::Triple(float DeltaTime)
 //{
 //	float   Angle = GetWorldRotation().z - 30.f;
@@ -363,6 +390,7 @@ void CMugman::JumpCheck(float DeltaTime)
 {
 	if (m_bIsJump)
 	{
+		//m_bCanAttack = false;
 		//y=-GA*V+b에서 (a: 중력가속도, b: 초기 점프속도)
 		//적분 : y = (-GA/2)*t*t + (V*t) 공식을 얻는다.(t: 점프시간, y: 오브젝트의 높이)
 		//변화된 높이 height를 기존 높이 m_posY에 더한다.
@@ -497,6 +525,7 @@ void CMugman::OnGround()
 	m_bIsFall = false;
 	m_bIsJump = false;
 	m_bIsGround = true;
+	m_bIsAttack = false;
 
 	m_bCanJump = true;
 	m_bCanAttack = true;
@@ -536,6 +565,36 @@ void CMugman::TimeCheck(float DeltaTime)
 	}
 }
 
+void CMugman::AnimCheck(float DeltaTime)
+{
+	m_bIsMove = false;
+
+	// 조금이라도 이동했다면 종료
+	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
+	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
+
+	// 움직였다면
+	if (PrevWorldPos != WorldPos)
+	{
+		return;
+	}
+
+	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsMove)
+	{
+		if (GetPrevDirection() == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_R");
+		}
+
+		if (GetPrevDirection() == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_L");
+		}
+	}
+
+	
+}
+
 void CMugman::SavePlayerPos()
 {
 	PlayerPos = GetWorldPos();
@@ -563,6 +622,7 @@ void CMugman::InAir()
 	m_bIsFall = true;
 	m_bIsJump = false;
 	m_bIsGround = false;
+	m_bIsAttack = false;
 
 	m_bCanAttack = false;
 	m_bCanJump = false;

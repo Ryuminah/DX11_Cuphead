@@ -94,6 +94,9 @@ public:
 	void Shoot(float DeltaTime);
 	void Dash(float DeltaTime);
 
+public:
+	void ShootEnd(float DeltaTime);
+
 
 public:
 	void AnimationFrameEnd(const std::string& Name);
@@ -110,6 +113,7 @@ public:
 	void JumpCheck(float DeltaTime);
 	void DashCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
+	void AnimCheck(float DeltaTime);
 	void SavePlayerPos();
 
 

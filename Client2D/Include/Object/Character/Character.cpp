@@ -1,6 +1,6 @@
 #include "Character.h"
 
-CCharacter::CCharacter() :m_HitCount(0), m_bCanAttack(true), m_bIsAttack(false),
+CCharacter::CCharacter() :m_HitCount(0), m_bCanAttack(true), m_bIsAttack(false), m_bIsMove(false),
 							m_Speed(500.f), m_bCanMove(true)
 {
 

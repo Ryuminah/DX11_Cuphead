@@ -37,6 +37,8 @@ protected:
 	bool	m_bCanMove;	// 움직일 수 있는 상황인지
 
 	bool	m_bIsAttack;
+	bool	m_bIsMove;
+
 
 public:
 	virtual void HitCheck();

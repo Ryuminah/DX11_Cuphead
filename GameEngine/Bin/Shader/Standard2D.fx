@@ -142,8 +142,8 @@ PS_OUTPUT_SINGLE Standard2DTexturePS(VS_OUTPUT_UV input)
 {
 	PS_OUTPUT_SINGLE    output = (PS_OUTPUT_SINGLE)0;
 
-	float4  BaseColor = g_BaseTexture.Sample(g_AnisotropicSmp, input.UV);
-	float4	EmissiveColor = g_EmissiveTexture.Sample(g_AnisotropicSmp, input.UV);
+	float4  BaseColor = g_BaseTexture.Sample(g_PointSmp, input.UV);
+	float4	EmissiveColor = g_EmissiveTexture.Sample(g_PointSmp, input.UV);
 	
 	float4	result = (float4)0.f;
 
