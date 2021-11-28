@@ -28,8 +28,7 @@ float CStepCloud::GetMoveDistance()
 void CStepCloud::Start()
 {
 	CGameObject::Start();
-	m_Sprite->SetRelativePos(GetRelativePos());
-	m_FirstPosition = GetRelativePos().y;
+	m_FirstPosition = GetRelativePos();
 
 }
 
@@ -75,12 +74,12 @@ void CStepCloud::Update(float DeltaTime)
 
 	// 현재 위치
 	Vector3 CurrentPos = GetRelativePos();
-	Vector3 LastPosition = { 100.f, m_FirstPosition.y,0.f };
+	Vector3 LastPosition = { -125.f, 0.f,0.f };
 
 	// 현재 위치가 최종 위치까지 도달하지 않으면
-	if (CurrentPos.x >= -100.f)
+	if (CurrentPos.x >= -125.f)
 	{
-		Vector3 MoveDistance = Lerp2D(LastPosition, { 1380.f,0.f,0.f }, m_MoveTime * DeltaTime * 0.1f);
+		Vector3 MoveDistance = Lerp2D(LastPosition, { 1375.f,0.f,0.f }, m_MoveTime * DeltaTime * 0.1f);
 		m_MoveDistance = MoveDistance.x * DeltaTime * 0.1f;
 		AddRelativePos(-m_MoveDistance, 0.f, 0.f);
 	}
@@ -88,7 +87,7 @@ void CStepCloud::Update(float DeltaTime)
 	else
 	{
 		m_MoveTime = 0.f;
-		SetRelativePos(1380.f, m_FirstPosition.y, CurrentPos.z);
+		SetRelativePos(1375.f, m_FirstPosition.y, CurrentPos.z);
 	}
 
 	m_MoveTime += DeltaTime * 0.1f;

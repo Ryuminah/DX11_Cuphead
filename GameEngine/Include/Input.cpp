@@ -547,7 +547,7 @@ bool CInput::SetShiftKey(const std::string& Name, bool State)
 	return true;
 }
 
-
+	
 
 KeyInfo* CInput::FindKeyInfo(const std::string& Name)
 {

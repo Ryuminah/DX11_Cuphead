@@ -22,7 +22,7 @@ CDragon::CDragon(const CDragon& obj) : CCharacter(obj)
 {
 
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Dragon");
-	//m_Collider = (CColliderBox2D*)FindSceneComponent("DragonCollider");
+	m_GunPoint = (CColliderBox2D*)FindSceneComponent("DragonCollider");
 	m_Rotation = FindSceneComponent("Rotation");
 	//m_Muzzle = FindSceneComponent("Muzzle");
 }
@@ -43,10 +43,10 @@ void CDragon::Start()
 
 bool CDragon::Init()
 {
+	// Dragon의 충돌용 Collider는 따로 제작해서 사용한다.
 	CCharacter::Init();
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Dragon");
-	//m_Collider = CreateSceneComponent<CColliderBox2D>("DragonCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 	m_GunPoint = CreateSceneComponent<CSceneComponent>("GunPoint");
 
@@ -56,13 +56,6 @@ bool CDragon::Init()
 
 	//m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_GunPoint);
-
-
-	//m_Collider->SetWorldPos(1150.f, 0.f, 0.f);
-	/*m_Collider->SetRelativePos(0.f, 120.f, 0.f);
-	m_Collider->SetExtent(50.f, 360.f);
-	m_Collider->SetCollisionProfile("Enemy");
-	m_Collider->SetColliderType(Collider_Type::Character);*/
 
 	m_GunPoint->SetInheritRotZ(true);
 	m_GunPoint->SetRelativePos(Vector3(0.f, 630.f, 0.f));
@@ -239,11 +232,10 @@ void CDragon::Meteor()
 
 	CMeteor* pMeteor= m_pScene->SpawnObject<CMeteor>("Meteor");
 	m_CurrentSkill = pMeteor;
-	pMeteor->StartPosition.x = m_GunPoint->GetWorldPos().x -150.f;
 	pMeteor->SetRelativePos(m_GunPoint->GetWorldPos().x - 150.f, 270.f, 0.f);
 	pMeteor->SetIsActive(true);
 	pMeteor->SetSkillOwner(this);
-	pMeteor->SetRepeatNumber(2);
+	pMeteor->SetRepeatNumber(3);
 }
 
 void CDragon::Tail()

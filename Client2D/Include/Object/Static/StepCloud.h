@@ -8,6 +8,10 @@ class CStepCloud :
 {
 	friend class CScene;
 
+public:
+	// 가장 마지막으로 생성된 메테오가 위였는지 아래였는지.
+	static Direction LastDirection;
+
 protected:
 	CStepCloud();
 	CStepCloud(const CStepCloud& obj);

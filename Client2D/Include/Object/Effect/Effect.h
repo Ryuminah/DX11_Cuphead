@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Component/SpriteComponent.h"
 
 // 이펙트 클래스
 class CEffect :

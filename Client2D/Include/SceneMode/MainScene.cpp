@@ -354,6 +354,18 @@ void CMainScene::CreateDragonAnim()
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Meteor",
 			Vector2(i * 240.f, 0), Vector2((i + 1) * 240.f, 240.f));
 	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_MeteorSmoke");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_MeteorSmoke",
+		"Dragon_MeteorSmoke", TEXT("Enemy/Dragon_MeteorSmoke.png"));
+	for (int y = 0; y < 5; ++y)
+	{
+		for (int i = 0; i < 7; ++i)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_MeteorSmoke",
+				Vector2(i * 240.f, y * 240.f), Vector2((i + 1) * 240.f, (y + 1) * 240.f));
+		}
+	}
 }
 
 void CMainScene::CreateStepCloud()
@@ -362,28 +374,28 @@ void CMainScene::CreateStepCloud()
 	pStepCloud->SetRelativePos(150.f, 190.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(160.f, 570.f, 0.f);
+	pStepCloud->SetRelativePos(170.f, 570.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(420.f, 390.f, 0.f);
+	pStepCloud->SetRelativePos(415.f, 390.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(460.f, 120.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(690.f, 540.f, 0.f);
+	pStepCloud->SetRelativePos(690.f, 530.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(810.f, 180.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1000.f, 370.f, 0.f);
+	pStepCloud->SetRelativePos(1000.f, 360.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1200.f, 600.f, 0.f);
+	pStepCloud->SetRelativePos(1200.f, 610.f, 0.f);
 
-	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1450.f, 400.f, 0.f);
+	/*pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
+	pStepCloud->SetRelativePos(1450.f, 400.f, 0.f);*/
 
 }
 

@@ -7,7 +7,7 @@
 
 enum class Direction
 {
-	RIGHT, LEFT, UP, DOWN, NONE
+	UP, DOWN, RIGHT, LEFT, NONE
 };
 
 class CGameObject :

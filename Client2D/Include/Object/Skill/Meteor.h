@@ -1,6 +1,7 @@
 #pragma once
 #include "../Skill/Tail.h"
 
+
 class CMeteor :
     public CSkill
 {
@@ -8,6 +9,8 @@ class CMeteor :
 
 public:
 	static Vector3 StartPosition;
+	static Direction LastDirection;
+	static bool	bIsDouble;
 
 protected:
 	CMeteor();
@@ -24,7 +27,7 @@ private:
 	float	m_SmokeTime;			// 연기 생성 간격
 	float	m_MaxY;
 	float	m_MinY;
-
+	Direction m_CurrentDirection;
 
 	// x축이동
 	Vector3 m_FirstPosition;

@@ -19,5 +19,8 @@ public:
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
 	virtual CMeteorSmoke* Clone();
+
+public:
+	void AnimEnd(const std::string& Name);
 };
 

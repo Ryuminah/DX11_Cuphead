@@ -39,6 +39,8 @@ bool CDragonAnimation::Init()
 	AddAnimationSequence2D("Dragon_Peashot_Ring_Pink");
 	AddAnimationSequence2D("Dragon_Meteor");
 	AddAnimationSequence2D("Dragon_Tail");
+	AddAnimationSequence2D("Dragon_MeteorSmoke",false);
+
 
 
 
