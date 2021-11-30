@@ -47,6 +47,8 @@ bool FG_Normal_Cloud2::Init()
 	m_BackGroundImage = m_Sprite->GetAnimation2D();
 	m_BackGroundImage->ChangeAnimation("FG_Normal_Cloud2");
 
+	//SetDefaultZ(0.4f);
+
 	return true;
 }
 

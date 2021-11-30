@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 #include "Dragon.h"
 #include "Input.h"
 #include "Scene/Scene.h"
@@ -9,11 +10,14 @@
 #include "../Skill/Peashot.h"
 #include "../Skill/Tail.h"
 #include "../Skill/Meteor.h"
+#include "../Skill/FireBoy.h"
+
 #include "../Collision/DragonCollider.h"
 
 
 CDragon::CDragon() : m_CurrentPhase(Phase::Phase1), m_NextAttackTime(5.f),
-		m_LastPattern("Meteor"), m_NextPattern(0), m_TailTime(3.f), m_IsAnimEnd(false)
+		m_LastPattern("Meteor"), m_NextPattern(0), m_TailTime(3.f), m_IsAnimEnd(false),
+	m_bIsPhaseStart(false), m_GunPointAnim(nullptr)
 {
 	
 }
@@ -22,7 +26,7 @@ CDragon::CDragon(const CDragon& obj) : CCharacter(obj)
 {
 
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("Dragon");
-	m_GunPoint = (CColliderBox2D*)FindSceneComponent("DragonCollider");
+	m_GunPoint = (CSpriteComponent*)FindSceneComponent("GunPoint");
 	m_Rotation = FindSceneComponent("Rotation");
 	//m_Muzzle = FindSceneComponent("Muzzle");
 }
@@ -36,7 +40,7 @@ void CDragon::Start()
 	CGameObject::Start();
 	
 	m_bCanAttack = false;
-
+	m_Speed = 300.f;
 
 	PhaseOne();
 }
@@ -48,7 +52,7 @@ bool CDragon::Init()
 
 	m_Sprite = CreateSceneComponent<CSpriteComponent>("Dragon");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
-	m_GunPoint = CreateSceneComponent<CSceneComponent>("GunPoint");
+	m_GunPoint = CreateSceneComponent<CSpriteComponent>("GunPoint");
 
 	SetRootComponent(m_Sprite);
 	m_Sprite->SetRelativeScale(870.f, 870.f, 1.f);
@@ -64,6 +68,12 @@ bool CDragon::Init()
 	m_Sprite->CreateAnimation2D<CDragonAnimation>();
 	m_Animation = m_Sprite->GetAnimation2D();
 	m_Animation->SetFrameEndFunction<CDragon>(this, &CDragon::AnimFrameEnd);
+
+	m_GunPoint->CreateAnimation2D<CDragonAnimation>();
+	m_GunPoint->SetAnimation2DEnable(false);
+	m_GunPointAnim = m_GunPoint->GetAnimation2D();
+	m_GunPointAnim->SetFrameEndFunction<CDragon>(this, &CDragon::GunPointAnimEnd);
+
 
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
@@ -87,6 +97,7 @@ void CDragon::Update(float DeltaTime)
 	ChangeSkill();
 
 	TimeCheck(DeltaTime);
+	PhaseEndCheck(DeltaTime);
 }
 
 void CDragon::PostUpdate(float DeltaTime)
@@ -119,29 +130,50 @@ void CDragon::Animation2DNotify(const std::string& Name)
 
 void CDragon::AnimFrameEnd(const std::string& Name)
 {
+	// 페이즈 전환중에는 모든 애니메이션조건을 무시한다.
+	if (!m_bIsPhaseStart)
+	{
+		return;
+	}
+
 	if (Name == "Dragon_Peashot_Start")
 	{
 		Peashot();
+		return;
 	}
 
 	if (Name == "Dragon_Peashot_End")
 	{
 		AttackEnd();
+		return;
 	}
 
 	if (Name == "Dragon_Meteor_Start")
 	{
 		Meteor();
+		return;
 	}
 
 	if (Name == "Dragon_Meteor_Attack")
 	{
 		m_CurrentSkill->SetbIsEnd(true);
+		return;
 	}
 
 	if (Name == "Dragon_Meteor_End")
 	{
 		AttackEnd();
+		return;
+	}
+
+
+}
+
+void CDragon::GunPointAnimEnd(const std::string& Name)
+{
+	if (Name == "Dragon_Tounge_Start")
+	{
+		m_GunPointAnim->ChangeAnimation("Dragon_Tounge_Loop");
 	}
 }
 
@@ -185,11 +217,83 @@ void CDragon::CreateDragonCollider()
 	m_pDragonCollider->m_pDragon = this;
 }
 
+int CDragon::MakeRandomNumber()
+{
+	srand((unsigned int)time(NULL));
+
+	// 모든 스킬은 최소 2~4사이로 반복한다.
+	int RandomRepeat = rand() % 3 + 2;
+	return RandomRepeat;
+}
+
 void CDragon::PhaseOne()
 {
 	m_vecSkill.push_back(SkillData("Peashot"));
 	m_vecSkill.push_back(SkillData("Meteor"));
 	m_vecSkill.push_back(SkillData("Tail"));
+
+	m_bIsPhaseStart = true;
+}
+
+void CDragon::PhaseEnd()
+{
+	m_bIsPhaseStart = false;
+}
+
+void CDragon::SetPhaseTwoOpening()
+{
+	m_Animation->ChangeAnimation("Dragon_Dash");
+	// 충돌체 비활성화
+	m_pDragonCollider->Enable(false);
+	SetRelativeScale(480.f, 130.f, 0.f);
+	SetWorldPos(1600.f, 295.f, 0.f);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Back);
+	m_NextAttackTime = 3.0f;
+}
+
+void CDragon::PhaseTwo(float DeltaTime)
+{
+	// Dash
+	// 화면 밖으로 나갔다면 
+	if (GetWorldPos().x >= -400.f && m_Animation->GetCurrentSequenceName() == "Dragon_Dash")
+	{
+		AddRelativePos(GetAxis(AXIS_X) * -1200.f * DeltaTime);
+		return;
+	}
+
+	else
+	{
+		// 아직 애니메이션이 바뀌지 않았을 경우 애니메이션을 바꾼다.
+		if (m_Animation->GetCurrentSequenceName() != "Dragon_Idle2")
+		{
+			m_Animation->ChangeAnimation("Dragon_Idle2");
+			SetWorldPos(-400.f, 10.f, 0.f);
+			SetRelativeScale(670.f,600.f,0.f);
+			//m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
+		}
+
+	}
+
+	// 정상적인 위치까지 도달했을 시 Phase를 시작한다.
+	if (GetRelativePos().x >= 80.f)
+	{
+		m_pDragonCollider->Enable(true);
+		m_pDragonCollider->SetWorldPos(200.f, 0.f, 0.f);
+		// 총구 위치
+		m_GunPoint->AddRelativePos(760.f, -610.f,0.f);
+		m_GunPoint->SetRelativeScale(1180.f, 150.f, 0.f);
+		//m_GunPoint->SetRender2DType(Render_Type_2D::RT2D_Particle);
+		m_GunPoint->SetDefaultZ(0.5f);
+		m_GunPoint->SetAnimation2DEnable(true);
+		m_GunPointAnim->ChangeAnimation("Dragon_Tounge_Start");
+		m_bIsPhaseStart = true;
+
+		// test용 치트키
+		m_NextAttackTime = 0.f;
+	}
+	
+	AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
+
 }
 
 void CDragon::Peashot()
@@ -197,7 +301,9 @@ void CDragon::Peashot()
 	m_LastPattern = PEASHOT;
 	m_bCanAttack = false;
 	m_bIsAttack = true;
+	m_CurrentSkillName = "Peashot";
 	m_Animation->ChangeAnimation("Dragon_Peashot_Attack");
+
 
 	m_vecSkill[PEASHOT].IsActive = true;
 	m_LastPattern = m_vecSkill[PEASHOT].SkillName;
@@ -209,7 +315,7 @@ void CDragon::Peashot()
 	pPeashot->SetIsActive(true);
 	pPeashot->SetSkillOwner(this);
 	pPeashot->SetAllRingCount(3);
-	pPeashot->SetRepeatNumber(2);
+	pPeashot->SetTotalRepeatNumber(MakeRandomNumber());
 }
 
 void CDragon::AttackEnd()
@@ -221,10 +327,11 @@ void CDragon::AttackEnd()
 void CDragon::Meteor()
 {
 	m_LastPattern = METEOR;
-
 	// 총구 위치를 바꿔준다.
 	m_bCanAttack = false;
 	m_bIsAttack = true;
+	m_CurrentSkillName = "Meteor";
+
 	m_Animation->ChangeAnimation("Dragon_Meteor_Attack");
 
 	m_vecSkill[METEOR].IsActive = true;
@@ -235,7 +342,7 @@ void CDragon::Meteor()
 	pMeteor->SetRelativePos(m_GunPoint->GetWorldPos().x - 150.f, 270.f, 0.f);
 	pMeteor->SetIsActive(true);
 	pMeteor->SetSkillOwner(this);
-	pMeteor->SetRepeatNumber(3);
+	pMeteor->SetTotalRepeatNumber(MakeRandomNumber());
 }
 
 void CDragon::Tail()
@@ -243,6 +350,10 @@ void CDragon::Tail()
 	CMeteor* pTail= m_pScene->SpawnObject<CMeteor>("Tail");
 	pTail->SetIsActive(true);
 	pTail->SetSkillOwner(this);
+}
+
+void CDragon::FireBoy()
+{
 }
 
 void CDragon::ChangeSkill()
@@ -261,6 +372,11 @@ void CDragon::ChangeSkill()
 				m_Animation->ChangeAnimation("Dragon_Meteor_Start");
 			}
 		}
+
+		else if (m_CurrentPhase == Phase::Phase2)
+		{
+			// 알낳기
+		}
 	}
 
 	m_bCanAttack = false;
@@ -271,17 +387,34 @@ void CDragon::SelectNextSkill()
 	if (m_bCanAttack)
 	{
 		// 랜덤으로 정한다.
+		if (m_CurrentPhase == Phase::Phase1)
+		{
+			if (m_LastPattern == "Peashot")
+			{
+				m_NextPattern = METEOR;
+			}
+
+			else
+			{
+				m_NextPattern = PEASHOT;
+			}
+		}
+
+		else if (m_CurrentPhase == Phase::Phase2)
+		{
+			// phase2에 필요한 것들...
+			CFireBoy* pFireBoy = m_pScene->SpawnObject<CFireBoy>("FireBoy");
+			m_CurrentSkill = pFireBoy;
+			m_CurrentSkillName = "FireBoy";
+			pFireBoy->SetRelativePos(m_GunPoint->GetWorldPos());
+			pFireBoy->AddRelativePos(-500.f,0.f,0.f);
+			pFireBoy->SetIsActive(true);
+			pFireBoy->SetSkillOwner(this);
+		}
+	
 	}
 
-	if (m_LastPattern == "Peashot")
-	{
-		m_NextPattern = METEOR;
-	}
-
-	else
-	{
-		m_NextPattern = PEASHOT;
-	}
+	
 }
 
 void CDragon::SkillEnd(std::string SkillName)
@@ -305,21 +438,25 @@ void CDragon::SkillEnd(std::string SkillName)
 	{
 		CSkill::ResetRepeatInfo();
 	}
+
 }
 
 void CDragon::TimeCheck(float DeltaTime)
 {
-	if (m_TailTime < 0.f)
+	if (m_CurrentPhase == Phase::Phase1)
 	{
-		//Tail();
-		//Meteor();
-		m_TailTime = 100.f;	// 랜덤으로 바꾸기
-	}
+		if (m_TailTime < 0.f)
+		{
+			//Tail();
+			//Meteor();
+			m_TailTime = 100.f;	// 랜덤으로 바꾸기
+		}
 
-	else
-	{
-		m_TailTime -= DeltaTime;
+		else
+		{
+			m_TailTime -= DeltaTime;
 
+		}
 	}
 
 	if (m_bIsAttack)
@@ -327,14 +464,60 @@ void CDragon::TimeCheck(float DeltaTime)
 		return;
 	}
 
-	if (m_NextAttackTime < 0.f)
+	if (m_NextAttackTime < 0.f && m_bIsPhaseStart)
 	{
-		m_NextAttackTime = 3.0f;
+		switch (m_CurrentPhase)
+		{
+		case Phase::Phase1:
+			m_NextAttackTime = 3.0f;
+			break;
+		case Phase::Phase2:
+			m_NextAttackTime = 10.0f;
+			break;
+		case Phase::Phase3:
+			break;
+		default:
+			break;
+		}
+
 		m_bCanAttack = true;
+		return;
 	}
 
 	m_NextAttackTime -= DeltaTime;
 }
+
+void CDragon::PhaseEndCheck(float DeltaTime)
+{
+	// Phase1 End 조건을 달성했다면
+	if (m_HitCount >= 5 && m_CurrentPhase == Phase::Phase1)
+	{
+		if (m_CurrentSkill)
+		{
+			SkillEnd(m_CurrentSkillName);
+			m_CurrentSkill->SetbIsEnd(true);
+			m_bIsAttack = false;
+		}
+
+		m_bCanAttack = false;
+		m_bIsPhaseStart = false;
+		AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
+		m_pDragonCollider->AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
+
+		if (GetRelativePos().x >= 1600.f)
+		{
+			m_CurrentPhase = Phase::Phase2;
+			SetPhaseTwoOpening();
+		}
+	}
+
+	// 현재 Phase2로 바뀌었다면
+	if (m_CurrentPhase == Phase::Phase2 && m_bIsPhaseStart == false)
+	{
+		PhaseTwo(DeltaTime);
+	}
+}
+
 
 
 

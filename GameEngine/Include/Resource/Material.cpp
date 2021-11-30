@@ -16,7 +16,7 @@ CMaterial::CMaterial()  :
 	m_pCBuffer(nullptr),
 	m_pScene(nullptr),
 	m_BaseColor(1.f, 1.f, 1.f, 1.f),
-	m_MaterialTimer(0.01),
+	m_MaterialTimer(0.02),
 	m_EmissiveColor(0.f, 0.f, 0.f, 0.f),
 	m_RenderState{},
 	m_Opacity(1.f),
@@ -157,8 +157,8 @@ void CMaterial::MaterialTimerEvent(float DeltaTime)
 		// 타이머가 종료되었을 시 원래의 컬러로 변경해준다.
 		m_MaterialTimer = 0.f;
 		m_bUseTimer = false;
-		m_BaseColor = m_TimerBaseColor;
-		m_TimerBaseColor = Vector4(1.f, 1.f, 1.f, 1.f);
+		m_BaseColor = Vector4(1.f, 1.f, 1.f, 1.f);
+		m_TimerBaseColor = Vector4(1.f, 0.f, 0.f, 0.5f);
 
 		return;
 	}

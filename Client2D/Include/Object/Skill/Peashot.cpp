@@ -2,6 +2,7 @@
 #include "../Character/Mugman.h"
 #include "../Character/Dragon.h"
 #include "../../Animation2D/DragonAnimation.h"
+#include <time.h>
 
 float CPeashot::RingAngle = 0.f;
 int	CPeashot::AllRingCount = 0;
@@ -70,7 +71,6 @@ void CPeashot::Update(float DeltaTime)
 	CSkill::Update(DeltaTime);
 
 	// 화면 밖을 나갔다면 스킬 종료
-	Vector2 Out = { -100.f, -200.f };
 
 }
 
@@ -97,9 +97,15 @@ CPeashot* CPeashot::Clone()
 
 void CPeashot::SkillStart(float DeltaTime)
 {
+	srand((unsigned int)time(NULL));
+
+
 	// 가장 앞에 있는 링이라면 플레이어의 위치를 가져와 각도를 계산한다.
 	if (m_bIsHead)
 	{
+		// Set Random AllRings
+		AllRingCount = rand() % 2 + 3;
+
 		Vector3 vGunPoint = (GetRelativePos() * GetAxis(AXIS_X)) * -1.f;
 		Vector3 vGunPointToPlayer = CMugman::PlayerPos - GetRelativePos();
 		vGunPointToPlayer.y += 35.f;
@@ -109,6 +115,7 @@ void CPeashot::SkillStart(float DeltaTime)
 		m_Sprite->GetMaterial(0)->SetOpacity(1.f);
 		RingAngle = Angle;
 
+		// 뒤따라 오는 링들을 만든다.
 		CreateChildRing();
 
 		++RepeatCount;
@@ -119,6 +126,7 @@ void CPeashot::SkillStart(float DeltaTime)
 		// 아니라면 Head의 각도를 기준으로 생성된다.
 		AddRelativeRotationZ(RingAngle);
 
+		// 마지막 링은 무조건 패링이 가능하게끔.
 		if (m_Number == AllRingCount)
 		{
 			m_Animation->ChangeAnimation("Dragon_Peashot_Ring_Pink");
@@ -162,14 +170,14 @@ void CPeashot::SkillEnd(float DeltaTime)
 	if (m_bIsHead)
 	{
 		// 반복횟수가 남았다면
-		if (RepeatCount != RepeatNumber)
+		if (RepeatCount != TotalRepeatNumber)
 		{
 			CDragon* pDragon = (CDragon*)m_pSkillOwner;
 			pDragon->Peashot();
 		}
 
 		// 반복횟수가 남지 않았을때만 완전종료함수를 호출한다.
-		else if (RepeatCount == RepeatNumber)
+		else if (RepeatCount == TotalRepeatNumber)
 		{
 			m_pSkillOwner->SkillEnd(GetName());
 

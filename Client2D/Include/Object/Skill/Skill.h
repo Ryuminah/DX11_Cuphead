@@ -19,8 +19,8 @@ protected:
 	virtual ~CSkill();
 
 protected:
-	static int RepeatCount;		// 반복 횟수
-	static int RepeatNumber;		// 몇번 반복했는지
+	static int RepeatCount;		// 현재까지 몇번 반복했는지
+	static int TotalRepeatNumber;	// 총 몇번 반복할껀지
 
 
 protected:
@@ -78,9 +78,9 @@ public:
 		m_pSkillOwner = SkillOwner;
 	}
 
-	void SetRepeatNumber(int repeatNumber)
+	void SetTotalRepeatNumber(int repeatNumber)
 	{
-		RepeatNumber = repeatNumber;
+		TotalRepeatNumber = repeatNumber;
 	}
 
 	void SetbIsEnd(bool IsEnd)
@@ -95,13 +95,13 @@ public:
 	
 	static bool IsRepeatEnd()
 	{
-		return RepeatCount == RepeatNumber;
+		return RepeatCount == TotalRepeatNumber;
 	}
 
 	static void ResetRepeatInfo()
 	{
 		RepeatCount = 0;
-		RepeatNumber = 0;
+		TotalRepeatNumber = 0;
 	}
 
 public:

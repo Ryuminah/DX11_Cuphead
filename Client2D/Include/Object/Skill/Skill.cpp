@@ -7,7 +7,7 @@
 #include "../Character/Character.h"
 
 int CSkill::RepeatCount = 0;
-int CSkill::RepeatNumber= 1;
+int CSkill::TotalRepeatNumber= 1;
 
 
 CSkill::CSkill() : m_bIsActive(false),

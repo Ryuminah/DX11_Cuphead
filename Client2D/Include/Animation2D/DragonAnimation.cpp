@@ -24,8 +24,9 @@ bool CDragonAnimation::Init()
 	if (!CAnimation2D::Init())
 		return false;
 
-	AddAnimationSequence2D("Dragon_Idle");
 
+	// Phase1
+	AddAnimationSequence2D("Dragon_Idle");
 	AddAnimationSequence2D("Dragon_Peashot_Start",false);
 	AddAnimationSequence2D("Dragon_Peashot_Attack");
 	AddAnimationSequence2D("Dragon_Peashot_End", false);
@@ -41,14 +42,26 @@ bool CDragonAnimation::Init()
 	AddAnimationSequence2D("Dragon_Tail");
 	AddAnimationSequence2D("Dragon_MeteorSmoke",false);
 
+	//Phase2
+	AddAnimationSequence2D("Dragon_Dash");
+	AddAnimationSequence2D("Dragon_Idle2");
+	AddAnimationSequence2D("Dragon_Tounge_Start", false);
+	AddAnimationSequence2D("Dragon_Tounge_Loop");
+	AddAnimationSequence2D("Fireboy_Idle");
+	AddAnimationSequence2D("FireBoy_Attack", false);
+	AddAnimationSequence2D("Dragon_Tounge_Start", false);
+	AddAnimationSequence2D("Dragon_Tounge_Loop");
 
 
 
-	SetSequencePlayRate("Dragon_Idle", 1.5f);
-	SetSequencePlayRate("Dragon_Peashot_Start", 1.2f);
+	// Set Anim Play Speed
+	SetSequencePlayRate("Dragon_Idle2", 1.5f);
+	SetSequencePlayRate("Dragon_Peashot_Start", 1.5f);
 	SetSequencePlayRate("Dragon_Peashot_Attack", 1.5f);
 	SetSequencePlayRate("Dragon_Peashot_End", 1.5f);
 	SetSequencePlayRate("Dragon_Meteor", 1.5f);
+	SetSequencePlayRate("Dragon_Meteor_Attack", 1.5f);
+	SetSequencePlayRate("Dragon_Tounge_Loop", 1.5f);
 
 
 	ChangeAnimation("Dragon_Idle");

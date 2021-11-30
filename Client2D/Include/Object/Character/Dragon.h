@@ -29,10 +29,13 @@ protected:
 
 private:
 	CSharedPtr<CSceneComponent> m_Rotation;
-	CSharedPtr<CSceneComponent> m_GunPoint;		// ÃÑ±¸
-	std::vector<SkillData>		m_vecSkill;
+	CSharedPtr<CSpriteComponent> m_GunPoint;		// ÃÑ±¸
 	class CDragonCollider*		m_pDragonCollider;
 	class CSkill* m_CurrentSkill;
+	std::vector<SkillData>		m_vecSkill;
+	std::string	  m_CurrentSkillName;
+
+	class CAnimation2D* m_GunPointAnim;
 
 private:
 	Phase	m_CurrentPhase;
@@ -44,7 +47,9 @@ private:
 	bool	m_IsAnimEnd;
 
 private:
-	// basic Movement
+	bool	m_bIsPhaseStart;
+	//bool	m_bIsPhaseEnd;
+
 
 
 private:
@@ -61,6 +66,7 @@ public:
 
 public:
 	void AnimFrameEnd(const std::string& Name);
+	void GunPointAnimEnd(const std::string& Name);
 	void ChangeAnimation(const std::string& Name);
 	std::string GetCurrentSequenceName();
 	bool GetIsFrameEnd();
@@ -72,10 +78,17 @@ public:
 	void CreateDragonCollider();
 
 public:
+	int MakeRandomNumber();
 	void PhaseOne();
+	void PhaseEnd();
+
+	void SetPhaseTwoOpening();
+	void PhaseTwo(float DeltaTime);
 	void Peashot();
 	void Meteor();
 	void Tail();
+
+	void FireBoy();
 
 	void AttackEnd();
 
@@ -85,6 +98,7 @@ public:
 
 	virtual void SkillEnd(std::string SkillName);
 	void TimeCheck(float DeltaTime);
+	void PhaseEndCheck(float DeltaTime);
 
 };
 

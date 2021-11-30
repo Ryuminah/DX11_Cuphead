@@ -181,6 +181,7 @@
     <ClCompile Include="Object\Collision\GroundCollider.cpp" />
     <ClCompile Include="Object\Effect\Effect.cpp" />
     <ClCompile Include="Object\Effect\MeteorSmoke.cpp" />
+    <ClCompile Include="Object\Skill\FireBoy.cpp" />
     <ClCompile Include="Object\Skill\Skill.cpp" />
     <ClCompile Include="Object\Skill\Meteor.cpp" />
     <ClCompile Include="Object\Skill\Peashot.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Object\Collision\GroundCollider.h" />
     <ClInclude Include="Object\Effect\Effect.h" />
     <ClInclude Include="Object\Effect\MeteorSmoke.h" />
+    <ClInclude Include="Object\Skill\FireBoy.h" />
     <ClInclude Include="Object\Skill\Skill.h" />
     <ClInclude Include="Object\Skill\Meteor.h" />
     <ClInclude Include="Object\Skill\Peashot.h" />

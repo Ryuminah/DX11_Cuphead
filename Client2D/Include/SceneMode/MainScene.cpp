@@ -327,6 +327,71 @@ void CMainScene::CreateDragonAnim()
 	}
 
 
+	// Phase2
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Dash");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Dash",
+		"Dragon_Dash", TEXT("Enemy/Phase2/Dragon_Dash.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int x = 0; x < 4; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Dash",
+				Vector2(x * 480.f, y * 130.f), Vector2((x + 1) * 480.f, (y + 1) * 130.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Idle2");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Idle2",
+		"Dragon_Idle2", TEXT("Enemy/Phase2/Dragon_Idle2.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int x = 0; x < 5; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Idle2",
+				Vector2(x * 670.f, y * 600.f), Vector2((x + 1) * 670.f, (y + 1) * 600.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tounge_Start");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tounge_Start",
+		"Dragon_Tounge_Start", TEXT("Enemy/Phase2/Dragon_Tounge_Start.png"));
+	for (int y = 0; y < 7; ++y)
+	{
+		for (int x = 0; x < 2; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Tounge_Start",
+				Vector2(x * 1180.f, y * 150.f), Vector2((x + 1) * 1180.f, (y + 1) * 150.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tounge_Loop");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tounge_Loop",
+		"Dragon_Tounge_Loop", TEXT("Enemy/Phase2/Dragon_Tounge_Loop.png"));
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Tounge_Loop",
+			Vector2(i * 1180.f, 0), Vector2((i + 1) * 1180.f, 150.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FireBoy_Idle");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FireBoy_Idle",
+		"FireBoy_Idle", TEXT("Enemy/Phase2/FireBoy_Idle.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Idle",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 270.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FireBoy_Attack");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FireBoy_Attack",
+		"FireBoy_Attack", TEXT("Enemy/Phase2/FireBoy_Attack_Attack.png"));
+	for (int i = 0; i < 12; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Attack",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 500.f));
+	}
+
+
 	// Dragon sfx
 	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Peashot_Ring");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Peashot_Ring",
@@ -371,13 +436,13 @@ void CMainScene::CreateDragonAnim()
 void CMainScene::CreateStepCloud()
 {
 	CStepCloud* pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(150.f, 190.f, 0.f);
+	pStepCloud->SetRelativePos(1500.f, 190.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(170.f, 570.f, 0.f);
+	pStepCloud->SetRelativePos(80.f, 500.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(415.f, 390.f, 0.f);
+	pStepCloud->SetRelativePos(415.f, 350.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(460.f, 120.f, 0.f);
@@ -392,7 +457,7 @@ void CMainScene::CreateStepCloud()
 	pStepCloud->SetRelativePos(1000.f, 360.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1200.f, 610.f, 0.f);
+	pStepCloud->SetRelativePos(1200.f, 450.f, 0.f);
 
 	/*pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(1450.f, 400.f, 0.f);*/

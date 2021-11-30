@@ -114,7 +114,7 @@ void CMeteor::SkillStart(float DeltaTime)
 	}
 
 	//반복횟수가 2보다 크고, 짝수라면 Double로
-	if (RepeatNumber >= 2 && (RepeatNumber - RepeatCount) % 2 == 0 )
+	if (TotalRepeatNumber >= 2 && (TotalRepeatNumber - RepeatCount) % 2 == 0 )
 	{
 		int IsDouble = rand() % 2;
 		bIsDouble = IsDouble;
@@ -165,7 +165,7 @@ void CMeteor::SkillActive(float DeltaTime)
 	Vector3 LastPosition = { -100.f ,0.f,0.f };
 	Vector3 StartPosition = { CMeteor::StartPosition.x  , 0.f, 0.f };
 	Vector3 MoveX = Lerp2D(LastPosition, StartPosition, m_MoveTime * DeltaTime * 0.37f);
-	MoveX.x = MoveX.x * DeltaTime * -0.37;
+	MoveX.x = MoveX.x * DeltaTime * -0.37f;
 	AddRelativePos(GetAxis(AXIS_X) * MoveX);
 	
 	m_SmokeTime -= DeltaTime;
@@ -184,14 +184,14 @@ void CMeteor::SkillActive(float DeltaTime)
 void CMeteor::SkillEnd(float DeltaTime)
 {
 	// 반복횟수가 남았다면
-	if (RepeatCount != RepeatNumber)
+	if (RepeatCount != TotalRepeatNumber)
 	{
 		CDragon* pDragon = (CDragon*)m_pSkillOwner;
 		pDragon->ChangeAnimation("Dragon_Meteor_Start");
 	}
 
 	// 반복횟수가 남지 않았을때만 완전종료함수를 호출한다.
-	else if (RepeatCount == RepeatNumber)
+	else if (RepeatCount == TotalRepeatNumber)
 	{
 		m_pSkillOwner->SkillEnd(GetName());
 		m_bIsEnd = false;

@@ -124,7 +124,7 @@ bool CMugman::Init()
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Overlap, this, &CMugman::CollisionOverlap);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::End, this, &CMugman::CollisionEnd);
 
-	SetDefaultZ(0.1);
+	SetDefaultZ(0.1f);
 	return true;
 }
 
