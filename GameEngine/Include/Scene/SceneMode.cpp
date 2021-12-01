@@ -16,6 +16,7 @@ bool CSceneMode::Init()
 
 void CSceneMode::Update(float DeltaTime)
 {
+
 }
 
 void CSceneMode::PostUpdate(float DeltaTime)

@@ -42,6 +42,7 @@ private:
 	int		m_NextPattern;			// 다음 패턴을 뽑기로 정함
 	float	m_NextAttackTime;
 	float	m_TailTime;				// 꼬리는 주기적으로 나옴
+	float	m_AttackFireBoyTime;	// 공격 유닛 생성 주기
 
 	std::string	m_LastPattern;	// 가장 마지막으로 사용한 스킬
 	bool	m_IsAnimEnd;

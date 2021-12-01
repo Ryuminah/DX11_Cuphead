@@ -32,7 +32,7 @@ bool CRenderTarget::CreateTarget(const std::string& Name,
 	Desc.Height = Height;
 	Desc.ArraySize = 1;
 	Desc.MipLevels = 1;
-	Desc.SampleDesc.Count = 1;
+	Desc.SampleDesc.Count = 2;
 	Desc.SampleDesc.Quality = 0;
 	Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 	Desc.Format = PixelFormat;

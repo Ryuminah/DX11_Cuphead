@@ -46,6 +46,9 @@ private:
 
 private:
 	// basic Movement
+	bool m_bGameStart;
+	float m_IntroTime;		// 나중에 intro Animation 종료시로 조건을 변경한다.
+
 	bool m_bCanJump;
 	bool m_bIsJump;
 	bool m_bIsGround;

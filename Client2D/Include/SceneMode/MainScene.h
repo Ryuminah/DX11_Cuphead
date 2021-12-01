@@ -10,6 +10,10 @@ protected:
     CMainScene();
     virtual ~CMainScene();
 
+private:
+    bool m_pGameStart;
+    float   m_WaitTime;
+
 public:
     virtual bool Init();
 
@@ -29,5 +33,7 @@ private:
     // Game Object »ý¼º
     void CreateStepCloud();
     void CreateBackGround();
+
+
 };
 

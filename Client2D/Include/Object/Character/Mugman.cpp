@@ -24,7 +24,9 @@ CMugman::CMugman() :
 	m_DashSpeed(100.f),
 	m_DashTime(0.0f),
 	m_ShootCool(0.2f),
-	m_DashCool(0.5f)	
+	m_DashCool(0.5f),
+	m_IntroTime(5.f),
+	m_bGameStart(false)
 {
 	m_BulletCount = 1;
 }
@@ -120,11 +122,12 @@ bool CMugman::Init()
 	SetPrevDirection(Direction::RIGHT);
 	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
 
+	//SetDefaultZ(0.3f);
+
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Begin, this, &CMugman::CollisionBegin);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::Overlap, this, &CMugman::CollisionOverlap);
 	m_Collider->AddCollisionCallbackFunction<CMugman>(Collision_State::End, this, &CMugman::CollisionEnd);
 
-	SetDefaultZ(0.1f);
 	return true;
 }
 
@@ -577,6 +580,19 @@ void CMugman::TimeCheck(float DeltaTime)
 		m_bCanDash = true;
 		m_DashCool = 1.f;
 	}
+
+	// 게임이 아직 시작하지 않았다면
+	if (!m_bGameStart)
+	{
+		m_IntroTime -= DeltaTime;
+
+		if (m_IntroTime < 0.f)
+		{
+			m_IntroTime = 0.f;
+			m_bGameStart = true;
+			CStepCloud::m_bIsStageStart = true;
+		}
+	}
 }
 
 void CMugman::AnimCheck(float DeltaTime)
@@ -616,7 +632,7 @@ void CMugman::SavePlayerPos()
 
 void CMugman::OnStepCloud(float MoveZ, float CloudY)
 {
-	// 점프중일때는 구zz름z에z z타zzzzz지않zz음
+	// 점프중일때는 구름에 타지않음
 	if (m_bIsJump)
 	{
 		return; 

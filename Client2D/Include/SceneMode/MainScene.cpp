@@ -16,7 +16,7 @@
 
 
 
-CMainScene::CMainScene()
+CMainScene::CMainScene() : m_pGameStart(false) , m_WaitTime(2.f)
 {
 }
 
@@ -47,6 +47,7 @@ bool CMainScene::Init()
 
 	return true;
 }
+
 
 void CMainScene::CreateMaterial()
 {
@@ -373,23 +374,63 @@ void CMainScene::CreateDragonAnim()
 			Vector2(i * 1180.f, 0), Vector2((i + 1) * 1180.f, 150.f));
 	}
 
-	m_pScene->GetResource()->CreateAnimationSequence2D("FireBoy_Idle");
-	m_pScene->GetResource()->SetAnimationSequence2DTexture("FireBoy_Idle",
-		"FireBoy_Idle", TEXT("Enemy/Phase2/FireBoy_Idle.png"));
-	for (int i = 0; i < 8; ++i)
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Idle");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Idle",
+		"Fireboy_Idle", TEXT("Enemy/Phase2/Fireboy_Idle.png"));
+	for (int y = 0; y < 2; ++y)
 	{
-		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Idle",
-			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 270.f));
+		for (int x = 0; x < 8; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Idle",
+				Vector2(x * 110.f, y * 160.f), Vector2((x + 1) * 110.f, (y + 1) * 160.f));
+		}
 	}
 
-	m_pScene->GetResource()->CreateAnimationSequence2D("FireBoy_Attack");
-	m_pScene->GetResource()->SetAnimationSequence2DTexture("FireBoy_Attack",
-		"FireBoy_Attack", TEXT("Enemy/Phase2/FireBoy_Attack_Attack.png"));
-	for (int i = 0; i < 12; ++i)
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Cast");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Cast",
+		"Fireboy_Cast", TEXT("Enemy/Phase2/Fireboy_Cast.png"));
+	for (int i = 0; i < 5; ++i)
 	{
-		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Attack",
-			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 500.f));
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Cast",
+			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
 	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Cast_Loop");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Cast_Loop",
+		"Fireboy_Cast_Loop", TEXT("Enemy/Phase2/Fireboy_Cast_Loop.png"));
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Cast_Loop",
+			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Jump_Start");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Jump_Start",
+		"Fireboy_Jump_Start", TEXT("Enemy/Phase2/Fireboy_Jump_Start.png"));
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Jump_Start",
+			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Jump_Loop_R");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Jump_Loop_R",
+		"Fireboy_Jump_Loop_R", TEXT("Enemy/Phase2/Fireboy_Jump_Loop_R.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Jump_Loop_R",
+			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Fireboy_Jump_Loop_L");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Fireboy_Jump_Loop_L",
+		"Fireboy_Jump_Loop_L", TEXT("Enemy/Phase2/Fireboy_Jump_Loop_L.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Fireboy_Jump_Loop_L",
+			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
+	}
+
 
 
 	// Dragon sfx
@@ -436,10 +477,10 @@ void CMainScene::CreateDragonAnim()
 void CMainScene::CreateStepCloud()
 {
 	CStepCloud* pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1500.f, 190.f, 0.f);
+	pStepCloud->SetRelativePos(150.f, 190.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(80.f, 500.f, 0.f);
+	pStepCloud->SetRelativePos(170.f, 500.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(415.f, 350.f, 0.f);
@@ -457,7 +498,7 @@ void CMainScene::CreateStepCloud()
 	pStepCloud->SetRelativePos(1000.f, 360.f, 0.f);
 
 	pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
-	pStepCloud->SetRelativePos(1200.f, 450.f, 0.f);
+	pStepCloud->SetRelativePos(1300.f, 450.f, 0.f);
 
 	/*pStepCloud = m_pScene->SpawnObject<CStepCloud>("StepCloud");
 	pStepCloud->SetRelativePos(1450.f, 400.f, 0.f);*/

@@ -5,42 +5,44 @@
 #include "../Character/Dragon.h"
 #include "../Effect/MeteorSmoke.h"
 
-CFireBoy::CFireBoy() :
+float CFireboy::AttackUnitCoolTime = 0.f;
+
+CFireboy::CFireboy() :
 	m_Speed(600.f),
-	m_JumpPower(130.f),m_JumpAccel(50.f),m_JumpTime(0.f),
-	m_bIsJump(false),m_bIsAttackUnit(true),m_bIsAttack(false),
+	m_JumpPower(50.f),m_JumpAccel(50.f),m_JumpTime(0.f),
+	m_bIsJump(false),m_bIsAttackUnit(false),m_bIsAttack(false),
 	m_JumpCastCount(0), m_JumpDirection(Direction::RIGHT)
 {
 
 }
 
-CFireBoy::CFireBoy(const CFireBoy& obj) : CSkill(obj)
+CFireboy::CFireboy(const CFireboy& obj) : CSkill(obj)
 {
-	m_Collider = (CColliderBox2D*)FindSceneComponent("FireBoy");
+	m_Collider = (CColliderBox2D*)FindSceneComponent("Fireboy");
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("FireBoyCollider");
 	m_Rotation = FindSceneComponent("Rotation");
 }
 
-CFireBoy ::~CFireBoy()
+CFireboy ::~CFireboy()
 {
 
 }
 
-void CFireBoy::Start()
+void CFireboy::Start()
 {
 	CSkill::Start();
 }
 
-bool CFireBoy::Init()
+bool CFireboy::Init()
 {
 	CSkill::Init();
 
-	m_Sprite = CreateSceneComponent<CSpriteComponent>("FireBoy");
+	m_Sprite = CreateSceneComponent<CSpriteComponent>("Fireboy");
 	m_Collider = CreateSceneComponent<CColliderBox2D>("FireBoyCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 
 	SetRootComponent(m_Sprite);
-	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
+	m_Sprite->SetRelativeScale(110.f, 160.f, 1.f);
 	m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_Rotation);
 
@@ -52,65 +54,64 @@ bool CFireBoy::Init()
 
 	m_Sprite->CreateAnimation2D<CDragonAnimation>();
 	m_Animation = m_Sprite->GetAnimation2D();
-	m_Animation->ChangeAnimation("Dragon_Meteor");
-
-	//m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
+	m_Animation->ChangeAnimation("Fireboy_Idle");
 
 
-	//m_Animation->SetFrameEndFunction<CDragon>(this, &CDragon::AnimationFrameEnd);
+
+	m_Animation->SetFrameEndFunction<CFireboy>(this, &CFireboy::AnimFrameEnd);
 
 	SetUseBlockMovement(false);
 	SetPhysicsSimulate(false);
-	SetDefaultZ(0.1f);
 
 	return true;
 }
 
-void CFireBoy::Update(float DeltaTime)
+void CFireboy::Update(float DeltaTime)
 {
 	CSkill::Update(DeltaTime);
 
-	MoveCheck(DeltaTime);
-	JumpCheck(DeltaTime);
-	TimeCheck(DeltaTime);
 }
 
-void CFireBoy::PostUpdate(float DeltaTime)
+void CFireboy::PostUpdate(float DeltaTime)
 {
 	CSkill::PostUpdate(DeltaTime);
 }
 
-void CFireBoy::Collision(float DeltaTime)
+void CFireboy::Collision(float DeltaTime)
 {
 	CSkill::Collision(DeltaTime);
 }
 
-void CFireBoy::Render(float DeltaTime)
+void CFireboy::Render(float DeltaTime)
 {
 	CSkill::Render(DeltaTime);
 }
 
-CFireBoy* CFireBoy::Clone()
+CFireboy* CFireboy::Clone()
 {
-	return new CFireBoy(*this);
+	return new CFireboy(*this);
 }
 
 
-void CFireBoy::SkillStart(float DeltaTime)
+void CFireboy::SkillStart(float DeltaTime)
 {
 	srand((unsigned int)time(NULL));
 
 	if (m_bIsAttackUnit)
 	{
 		m_Sprite->GetMaterial(0)->SetBaseColor(0.5f, 0.f, 0.1f, 0.2f);
-		m_CoolTime = 2.f;
+		m_Sprite->SetDefaultZ(0.1f);
+		m_CoolTime = 1.f;
 	}
-	m_bIsStarted = true;
 
+	m_bIsStarted = true;
 }
 
-void CFireBoy::SkillActive(float DeltaTime)
+void CFireboy::SkillActive(float DeltaTime)
 {
+	MoveCheck(DeltaTime);
+	JumpCheck(DeltaTime);
+	TimeCheck(DeltaTime);
 
 	// 화면 밖을 나갔다면 종료 종료 
 	Vector2 DefaultOut = { -200.f, -200.f };
@@ -121,47 +122,42 @@ void CFireBoy::SkillActive(float DeltaTime)
 	}
 }
 
-void CFireBoy::SkillEnd(float DeltaTime)
+void CFireboy::SkillEnd(float DeltaTime)
 {
 	m_bIsAttack = false;
 	m_bIsJump = false;
 	SetPhysicsSimulate(false);
 }
 
-void CFireBoy::MoveCheck(float DeltaTime)
+void CFireboy::MoveCheck(float DeltaTime)
 {
+	// 공격중인 유닛은 움직이지않음
+
 	if (m_bIsAttack)
 	{
 		return;
 	}
 
-	if (GetRelativePos().x >= 700.f)
+	// 공격 가능한 유닛이 공격범위 내로 들어왔다면
+	if (m_bIsAttackUnit && GetRelativePos().x >= 700.f)
 	{
 		m_bIsAttack= true;
-
-		if (CMugman::PlayerPos.x >= GetWorldPos().x)
-		{
-			m_JumpDirection = Direction::RIGHT;
-		}
-
-		else
-		{
-			m_JumpDirection = Direction::LEFT;
-		}
+		m_Sprite->SetRelativeScale(130.f, 160.f, 0.f);
+		m_Animation->ChangeAnimation("Fireboy_Cast");
 	}
 
 	else
 	{
-		AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
+		AddRelativePos(GetAxis(AXIS_X) * 200.f * DeltaTime);
 	}
 }
 
-void CFireBoy::JumpCheck(float DeltaTime)
+void CFireboy::JumpCheck(float DeltaTime)
 {
 	// 점프중 일 경우 점프를 적용
 	if (m_bIsJump)
 	{
-		m_JumpTime += GetGravityAccel() * 0.4f * DeltaTime;
+		m_JumpTime += GetGravityAccel() * 0.6f * DeltaTime;
 
 		// 처음 뛸 경우 힘을 강하게 적용함.
 	/*	if (m_JumpAccel == 90.f)
@@ -170,27 +166,31 @@ void CFireBoy::JumpCheck(float DeltaTime)
 		}*/
 
 		float jumpHeight = (m_JumpTime * m_JumpTime * GetGravity() * -0.5f) + (m_JumpTime * m_JumpPower) + (m_JumpAccel * m_JumpTime);
+		if (jumpHeight <0.f)
+		{
+			jumpHeight *= 0.4f;
+		}
+
 		AddRelativePos(GetAxis(AXIS_Y) * (jumpHeight)*DeltaTime);
 
-		m_JumpAccel -= GetGravityAccel() * 0.4f * DeltaTime;
+		m_JumpAccel -= GetGravity() * 0.6f * DeltaTime;
 
 		// 플레이어가 나보다 더 오른쪽에 있을 경우
 		if (m_JumpDirection == Direction::RIGHT)
 		{
-			AddRelativePos(GetAxis(AXIS_X) * 350.f * DeltaTime);
+			AddRelativePos(GetAxis(AXIS_X) * 400.f * DeltaTime);
 		}
 
 		else
 		{
-			AddRelativePos(GetAxis(AXIS_X) * -350.f * DeltaTime);
-
+			AddRelativePos(GetAxis(AXIS_X) * -400.f * DeltaTime);
 		}
 	}
 
 	
 }
 
-void CFireBoy::TimeCheck(float DeltaTime)
+void CFireboy::TimeCheck(float DeltaTime)
 {
 	// 공격하는 유닛만 쿨타임을 체크한다.
 	if (!m_bIsAttackUnit)
@@ -199,17 +199,66 @@ void CFireBoy::TimeCheck(float DeltaTime)
 	}
 
 	// 공격중이지만 아직 점프하지 않았다면
-	if (m_bIsAttack && !m_bIsJump)
-	{
-		m_CoolTime -= DeltaTime;
-	}
+	//if (m_bIsAttack && !m_bIsJump)
+	//{
+	//	m_CoolTime -= DeltaTime;
+	//}
 
-	if (m_CoolTime <0.f)
+	// 아직 점프하지 않았으나 캐스팅이 끝났다면.
+	if (!m_bIsJump && m_JumpCastCount >= 3)
 	{
 		m_bIsJump = true;
-		m_CoolTime = 0.f;
 		SetPhysicsSimulate(true);
-		//m_Animation->ChangeAnimation("FireBoy_Attack");
+
+		// 뛰기 직전에 점프 방향을 확정해준다.
+		if (CMugman::PlayerPos.x >= GetWorldPos().x)
+		{
+			m_JumpDirection = Direction::RIGHT;
+			m_Animation->ChangeAnimation("Fireboy_Jump_Start");
+		}
+
+		else
+		{
+			m_JumpDirection = Direction::LEFT;
+			m_Animation->ChangeAnimation("Fireboy_Jump_Start");
+
+		}
+
+		// Y 차이만큼.
+		float YDistance = CMugman::PlayerPos.y - GetWorldPos().y;
+		m_JumpPower += YDistance * 0.2f;
+		
+		// Set JumpPower Limit
+		if (m_JumpPower >150.f)
+		{
+			m_JumpPower = 150.f;
+		}
+	}
+}
+
+void CFireboy::AnimFrameEnd(const std::string& Name)
+{
+	if (Name == "Fireboy_Cast")
+	{
+		m_Animation->ChangeAnimation("Fireboy_Cast_Loop");
+	}
+
+	if (Name == "Fireboy_Cast_Loop")
+	{
+		++m_JumpCastCount;
+	}
+
+	if (Name == "Fireboy_Jump_Start")
+	{
+		if (m_JumpDirection == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Fireboy_Jump_Loop_R");
+		}
+
+		else
+		{
+			m_Animation->ChangeAnimation("Fireboy_Jump_Loop_L");
+		}
 	}
 }
 

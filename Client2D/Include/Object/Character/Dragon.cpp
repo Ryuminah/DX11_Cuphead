@@ -17,7 +17,7 @@
 
 CDragon::CDragon() : m_CurrentPhase(Phase::Phase1), m_NextAttackTime(5.f),
 		m_LastPattern("Meteor"), m_NextPattern(0), m_TailTime(3.f), m_IsAnimEnd(false),
-	m_bIsPhaseStart(false), m_GunPointAnim(nullptr)
+	m_bIsPhaseStart(false), m_GunPointAnim(nullptr), m_AttackFireBoyTime(0.f)
 {
 	
 }
@@ -42,7 +42,7 @@ void CDragon::Start()
 	m_bCanAttack = false;
 	m_Speed = 300.f;
 
-	PhaseOne();
+	//PhaseOne();
 }
 
 bool CDragon::Init()
@@ -57,6 +57,8 @@ bool CDragon::Init()
 	SetRootComponent(m_Sprite);
 	m_Sprite->SetRelativeScale(870.f, 870.f, 1.f);
 	m_Sprite->SetRelativePos(1150.f, -120.f, 0.f);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
+
 
 	//m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_GunPoint);
@@ -71,6 +73,8 @@ bool CDragon::Init()
 
 	m_GunPoint->CreateAnimation2D<CDragonAnimation>();
 	m_GunPoint->SetAnimation2DEnable(false);
+	m_GunPoint->SetRender2DType(Render_Type_2D::RT2D_Default);
+	m_GunPoint->SetDefaultZ(0.7f);
 	m_GunPointAnim = m_GunPoint->GetAnimation2D();
 	m_GunPointAnim->SetFrameEndFunction<CDragon>(this, &CDragon::GunPointAnimEnd);
 
@@ -78,7 +82,6 @@ bool CDragon::Init()
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
 	CreateDragonCollider();
-	SetDefaultZ(0.5f);
 	SetPhysicsSimulate(false);
 	SetUseBlockMovement(false);
 	SetPrevDirection(Direction::LEFT);
@@ -95,7 +98,6 @@ void CDragon::Update(float DeltaTime)
 	CCharacter::Update(DeltaTime);
 
 	ChangeSkill();
-
 	TimeCheck(DeltaTime);
 	PhaseEndCheck(DeltaTime);
 }
@@ -269,7 +271,7 @@ void CDragon::PhaseTwo(float DeltaTime)
 			m_Animation->ChangeAnimation("Dragon_Idle2");
 			SetWorldPos(-400.f, 10.f, 0.f);
 			SetRelativeScale(670.f,600.f,0.f);
-			//m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
+			m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
 		}
 
 	}
@@ -280,16 +282,19 @@ void CDragon::PhaseTwo(float DeltaTime)
 		m_pDragonCollider->Enable(true);
 		m_pDragonCollider->SetWorldPos(200.f, 0.f, 0.f);
 		// 총구 위치
-		m_GunPoint->AddRelativePos(760.f, -610.f,0.f);
+		m_GunPoint->AddRelativePos(760.f, -610.f,0.5f);
 		m_GunPoint->SetRelativeScale(1180.f, 150.f, 0.f);
-		//m_GunPoint->SetRender2DType(Render_Type_2D::RT2D_Particle);
-		m_GunPoint->SetDefaultZ(0.5f);
 		m_GunPoint->SetAnimation2DEnable(true);
 		m_GunPointAnim->ChangeAnimation("Dragon_Tounge_Start");
 		m_bIsPhaseStart = true;
 
 		// test용 치트키
 		m_NextAttackTime = 0.f;
+
+
+		// 공격 유닛 생성
+		int NextAttackTime = rand() % 4 + 2;
+		m_AttackFireBoyTime = (float)NextAttackTime;
 	}
 	
 	AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
@@ -354,6 +359,20 @@ void CDragon::Tail()
 
 void CDragon::FireBoy()
 {
+	CFireboy* pFireBoy = m_pScene->SpawnObject<CFireboy>("FireBoy");
+	m_CurrentSkill = pFireBoy;
+	m_CurrentSkillName = "FireBoy";
+	pFireBoy->SetRelativePos(m_GunPoint->GetWorldPos());
+	pFireBoy->AddRelativePos(-500.f, 0.f, 0.f);
+	pFireBoy->SetIsActive(true);
+	pFireBoy->SetSkillOwner(this);
+
+	if (m_AttackFireBoyTime <= 0.f)
+	{
+		pFireBoy->SetAttackUnit(true);
+		int NextAttackTime = rand() % 4 + 1;
+		m_AttackFireBoyTime = (float)NextAttackTime;
+	}
 }
 
 void CDragon::ChangeSkill()
@@ -376,6 +395,7 @@ void CDragon::ChangeSkill()
 		else if (m_CurrentPhase == Phase::Phase2)
 		{
 			// 알낳기
+			FireBoy();
 		}
 	}
 
@@ -403,7 +423,7 @@ void CDragon::SelectNextSkill()
 		else if (m_CurrentPhase == Phase::Phase2)
 		{
 			// phase2에 필요한 것들...
-			CFireBoy* pFireBoy = m_pScene->SpawnObject<CFireBoy>("FireBoy");
+			CFireboy* pFireBoy = m_pScene->SpawnObject<CFireboy>("FireBoy");
 			m_CurrentSkill = pFireBoy;
 			m_CurrentSkillName = "FireBoy";
 			pFireBoy->SetRelativePos(m_GunPoint->GetWorldPos());
@@ -455,8 +475,12 @@ void CDragon::TimeCheck(float DeltaTime)
 		else
 		{
 			m_TailTime -= DeltaTime;
-
 		}
+	}
+
+	if (m_AttackFireBoyTime > 0.f && m_CurrentPhase == Phase::Phase2)
+	{
+		m_AttackFireBoyTime -= DeltaTime;
 	}
 
 	if (m_bIsAttack)
@@ -472,7 +496,7 @@ void CDragon::TimeCheck(float DeltaTime)
 			m_NextAttackTime = 3.0f;
 			break;
 		case Phase::Phase2:
-			m_NextAttackTime = 10.0f;
+			m_NextAttackTime = 1.0f;
 			break;
 		case Phase::Phase3:
 			break;

@@ -9,6 +9,9 @@ class CStepCloud :
 	friend class CScene;
 
 public:
+	static bool	m_bIsStageStart;
+
+public:
 	// 가장 마지막으로 생성된 메테오가 위였는지 아래였는지.
 	static Direction LastDirection;
 
@@ -29,6 +32,7 @@ private:
 	float m_MoveDistance;
 	Vector3 m_FirstPosition;
 	
+
 	bool	m_bIsPlayerOn;
 
 public:

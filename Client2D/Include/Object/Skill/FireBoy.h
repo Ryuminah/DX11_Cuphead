@@ -1,15 +1,19 @@
 #pragma once
 #include "Skill.h"
 
-class CFireBoy :
+class CFireboy :
     public CSkill
 {
 	friend class CScene;
 
+public:
+	// 시간을 랜덤으로 설정한 후, 
+	static float	AttackUnitCoolTime;			// 공격 유닛 생성주기
+
 protected:
-	CFireBoy();
-	CFireBoy(const CFireBoy& obj);
-	virtual ~CFireBoy();
+	CFireboy();
+	CFireboy(const CFireboy& obj);
+	virtual ~CFireboy();
 
 protected:
 	CSharedPtr<CSpriteComponent> m_Sprite;
@@ -29,7 +33,7 @@ private:
 
 	float	m_Speed;
 	int		m_JumpCastCount;
-
+	
 	Direction m_JumpDirection;
 
 
@@ -40,7 +44,7 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual CFireBoy* Clone();
+	virtual CFireboy* Clone();
 
 public:
 	virtual void SkillStart(float DeltaTime);
@@ -51,5 +55,13 @@ public:
 	void MoveCheck(float DeltaTime);
 	void JumpCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
+
+	void AnimFrameEnd(const std::string& Name);
+	
+public:
+	void SetAttackUnit(bool isAttackUnit)
+	{
+		m_bIsAttackUnit = isAttackUnit;
+	}
 };
 

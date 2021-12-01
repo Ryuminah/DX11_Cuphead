@@ -2,6 +2,7 @@
 #include "../../Animation2D/StepCloudAnimation.h"
 #include "../Character/Mugman.h"
 
+bool CStepCloud::m_bIsStageStart = false;
 
 CStepCloud::CStepCloud() :m_MoveTime(0.f), m_MoveDistance(0.f),
 						m_bIsPlayerOn(false)
@@ -42,6 +43,7 @@ bool CStepCloud::Init()
 	SetRootComponent(m_Sprite);
 
 	m_Sprite->SetRelativeScale(250.f, 75.f, 1.f);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Back);
 
 	m_Collider->SetPivot(0.5f,0.f,0.f);
 	m_Collider->SetRelativePos(0.f, 19.f, 0.f);
@@ -63,7 +65,7 @@ bool CStepCloud::Init()
 
 
 	SetUseBlockMovement(false);
-	SetDefaultZ(0.6f);
+	SetDefaultZ(0.7f);
 
 	return true;
 }
@@ -72,6 +74,12 @@ void CStepCloud::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
+	if (!m_bIsStageStart)
+	{
+		return;
+	}
+
+	
 	// 현재 위치
 	Vector3 CurrentPos = GetRelativePos();
 	Vector3 LastPosition = { -125.f, 0.f,0.f };
@@ -139,12 +147,7 @@ void CStepCloud::CollisionBegin(const HitResult& result, CCollider* Collider)
 
 void CStepCloud::CollisionOverlap(const HitResult& result, CCollider* Collider)
 {
-	// 캐릭터 콜리전과 닿았을때 캐릭터 콜리전을 이동시키고, 키입력이 들어왔을 시 리턴.
-	//if (result.DestCollider->GetName() == "MugmanCollider")
-	//{
-	//	CMugman* pMugman = (CMugman*)result.DestCollider->GetOwner();
-	//	pMugman->OnStepCloud(m_MoveDistance, GetWorldPos().y);
-	//}
+
 }
 
 void CStepCloud::CollisionEnd(const HitResult& result, CCollider* Collider)

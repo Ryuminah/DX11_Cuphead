@@ -41,7 +41,7 @@ bool FG_Normal_Cloud3::Init()
 	m_Sprite->SetRelativePos(640.f, 0.0f, 0.f);
 	m_Sprite->SetRelativeScale(1561.f, 185.f, 1.f);
 
-	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_MAP);
 
 	m_Sprite->CreateAnimation2D<CBackGround_CloudAnim>();
 	m_BackGroundImage = m_Sprite->GetAnimation2D();

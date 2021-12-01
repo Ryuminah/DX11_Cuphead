@@ -85,6 +85,15 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("StepCloud", Collision_Channel::Skill, Collision_Interaction::Ignore);
 
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Player, Collision_Interaction::Trigger);
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Enemy, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Static, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Bullet, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Skill, Collision_Interaction::Ignore);
+
+
+
 
 
 
