@@ -42,7 +42,7 @@ void CDragon::Start()
 	m_bCanAttack = false;
 	m_Speed = 300.f;
 
-	//PhaseOne();
+	PhaseOne();
 }
 
 bool CDragon::Init()
@@ -372,6 +372,9 @@ void CDragon::FireBoy()
 		pFireBoy->SetAttackUnit(true);
 		int NextAttackTime = rand() % 4 + 1;
 		m_AttackFireBoyTime = (float)NextAttackTime;
+
+		int RandXPosition = rand() % 280 + 600;
+		pFireBoy->SetJumpXPosition(RandXPosition);
 	}
 }
 
@@ -516,15 +519,22 @@ void CDragon::PhaseEndCheck(float DeltaTime)
 	// Phase1 End 조건을 달성했다면
 	if (m_HitCount >= 5 && m_CurrentPhase == Phase::Phase1)
 	{
-		if (m_CurrentSkill)
+		// 공격중이 아닐때 페이즈를 종료한다.
+		if (m_bIsAttack)
+		{
+			return;
+		}
+
+		/*if (m_CurrentSkill)
 		{
 			SkillEnd(m_CurrentSkillName);
 			m_CurrentSkill->SetbIsEnd(true);
 			m_bIsAttack = false;
-		}
+		}*/
 
 		m_bCanAttack = false;
 		m_bIsPhaseStart = false;
+		m_NextAttackTime = 0.f;
 		AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
 		m_pDragonCollider->AddRelativePos(GetAxis(AXIS_X) * m_Speed * DeltaTime);
 

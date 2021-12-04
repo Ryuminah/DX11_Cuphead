@@ -11,7 +11,8 @@ CFireboy::CFireboy() :
 	m_Speed(600.f),
 	m_JumpPower(50.f),m_JumpAccel(50.f),m_JumpTime(0.f),
 	m_bIsJump(false),m_bIsAttackUnit(false),m_bIsAttack(false),
-	m_JumpCastCount(0), m_JumpDirection(Direction::RIGHT)
+	m_JumpCastCount(0), m_JumpDirection(Direction::RIGHT), 
+	m_JumpXPosition(0)
 {
 
 }
@@ -139,7 +140,7 @@ void CFireboy::MoveCheck(float DeltaTime)
 	}
 
 	// 공격 가능한 유닛이 공격범위 내로 들어왔다면
-	if (m_bIsAttackUnit && GetRelativePos().x >= 700.f)
+	if (m_bIsAttackUnit && GetRelativePos().x >= (float)m_JumpXPosition)
 	{
 		m_bIsAttack= true;
 		m_Sprite->SetRelativeScale(130.f, 160.f, 0.f);

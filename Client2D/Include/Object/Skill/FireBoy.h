@@ -34,8 +34,9 @@ private:
 	float	m_Speed;
 	int		m_JumpCastCount;
 	
-	Direction m_JumpDirection;
-
+	Direction m_JumpDirection;		// 점프 방향
+	int		m_JumpXPosition;		// 점프할 위치 (
+		
 
 public:
 	virtual void Start();
@@ -62,6 +63,11 @@ public:
 	void SetAttackUnit(bool isAttackUnit)
 	{
 		m_bIsAttackUnit = isAttackUnit;
+	}
+
+	void SetJumpXPosition(int randXPosition)
+	{
+		m_JumpXPosition = randXPosition;
 	}
 };
 
