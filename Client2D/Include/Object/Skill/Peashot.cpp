@@ -106,11 +106,21 @@ void CPeashot::SkillStart(float DeltaTime)
 		// Set Random AllRings
 		AllRingCount = rand() % 2 + 3;
 
+		// 캐릭터 중앙을 기준으로 벡터 길이 계산 (캐릭터 피봇이 현재 발 밑이여서 높이를 보정해줌)
 		Vector3 vGunPoint = (GetRelativePos() * GetAxis(AXIS_X)) * -1.f;
-		Vector3 vGunPointToPlayer = CMugman::PlayerPos - GetRelativePos();
-		vGunPointToPlayer.y += 35.f;
-		
+		Vector3 vGunPointToPlayer = CMugman::PlayerPrevPos - GetRelativePos();
+
+		// 시선 방향보다 아래에 있을 때 (y값이 음수일 때)만 위치를 보정해준다.
+		// 안그러면 너무 높게 올라감 ㄱㅡ
+		if (vGunPointToPlayer.y <= 0.f)
+		{
+			vGunPointToPlayer.y += 35.f;
+		}
+	
 		float Angle = vGunPoint.Angle(vGunPointToPlayer);
+
+		// 캐릭터가 몬스터의 시선 방향보다 높게 있을 경우 부호를 바꿔줌.
+		Angle = vGunPointToPlayer.y > 0.f ? Angle * -1.f : Angle;
 		AddRelativeRotationZ(Angle);
 		m_Sprite->GetMaterial(0)->SetOpacity(1.f);
 		RingAngle = Angle;
