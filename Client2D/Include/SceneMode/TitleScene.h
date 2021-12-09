@@ -1,17 +1,18 @@
 #pragma once
-
 #include "Scene\SceneMode.h"
 
-class CStartScene :
+class CTitleScene :
     public CSceneMode
 {
     friend class CScene;
 
 protected:
-    CStartScene();
-    virtual ~CStartScene();
+    CTitleScene();
+    virtual ~CTitleScene();
+
+private:
+    void CreateTitleSceneAnim();
 
 public:
     virtual bool Init();
 };
-

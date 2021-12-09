@@ -1,20 +1,20 @@
 #pragma once
-#include "GameObject.h"
 #include "BackGround.h"
-#include "Component/SpriteComponent.h"
 
-class BG_DragonMap :
+class BG_TitleScene :
     public CBackGround
 {
 	friend class CScene;
 
-public:
-	static bool bIsNight;
-
 protected:
-	BG_DragonMap();
-	BG_DragonMap(const BG_DragonMap& obj);
-	virtual ~BG_DragonMap();
+	BG_TitleScene();
+	BG_TitleScene(const BG_TitleScene& obj);
+	virtual ~BG_TitleScene();
+
+private:
+	// 배경에 필요한 모든 이미지, 애니메이션을 자식 컴포넌트로 가지고 있는다.
+	CSharedPtr<CSpriteComponent> m_CupheadSprite;
+	class CAnimation2D* m_CupheadAnim;
 
 public:
 	virtual void Start();
@@ -23,6 +23,6 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
-	virtual BG_DragonMap* Clone();
+	virtual BG_TitleScene* Clone();
 };
 

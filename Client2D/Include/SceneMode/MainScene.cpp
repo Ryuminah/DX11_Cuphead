@@ -30,10 +30,10 @@ bool CMainScene::Init()
 	CreateAnimationSequence2D();
 	CreateParticle();
 
-	m_pScene->GetResource()->LoadSound("UI", false, "ButtonMouseOn",
-		"TeemoSmile.mp3");
-	m_pScene->GetResource()->LoadSound("UI", false, "ButtonClick",
-		"TeemoStartClicck.mp3");
+	//m_pScene->GetResource()->LoadSound("UI", false, "ButtonMouseOn",
+	//	"TeemoSmile.mp3");
+	//m_pScene->GetResource()->LoadSound("UI", false, "ButtonClick",
+	//	"TeemoStartClicck.mp3");
 
 	// Create BackGround
 	CreateBackGround();
@@ -507,7 +507,7 @@ void CMainScene::CreateStepCloud()
 
 void CMainScene::CreateBackGround()
 {
-	BG_CDragonMap* pDragonMap = m_pScene->SpawnObject<BG_CDragonMap>("BG_DragonMap");
+	BG_DragonMap* pDragonMap = m_pScene->SpawnObject<BG_DragonMap>("BG_DragonMap");
 	FG_Normal_Cloud1* pFGCloud1 = m_pScene->SpawnObject<FG_Normal_Cloud1>("FG_Cloud1");
 	FG_Normal_Cloud2* pFGCloud2 = m_pScene->SpawnObject<FG_Normal_Cloud2>("FG_Cloud2");
 	FG_Normal_Cloud3* pFGCloud3 = m_pScene->SpawnObject<FG_Normal_Cloud3>("FG_Cloud3");

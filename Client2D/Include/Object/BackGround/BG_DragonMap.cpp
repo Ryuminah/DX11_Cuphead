@@ -3,24 +3,24 @@
 #include "Resource/Material.h"
 #include "../../Animation2D/BackGround_CloudAnim.h"
 
-bool BG_CDragonMap::bIsNight = false;
+bool BG_DragonMap::bIsNight = false;
 
-BG_CDragonMap::BG_CDragonMap()
+BG_DragonMap::BG_DragonMap()
 {
 
 }
 
-BG_CDragonMap::BG_CDragonMap(const BG_CDragonMap& obj) :
+BG_DragonMap::BG_DragonMap(const BG_DragonMap& obj) :
 	CBackGround(obj)
 {
 	m_Sprite = (CSpriteComponent*)FindSceneComponent("BG_DragonMap");
 }
 
-BG_CDragonMap::~BG_CDragonMap()
+BG_DragonMap::~BG_DragonMap()
 {
 }
 
-void BG_CDragonMap::Start()
+void BG_DragonMap::Start()
 {
 	CBackGround::Start();
 
@@ -32,7 +32,7 @@ void BG_CDragonMap::Start()
 	m_Sprite->SetUVFlow2DDirection(false);
 }
 
-bool BG_CDragonMap::Init()
+bool BG_DragonMap::Init()
 {
 	CBackGround::Init();
 
@@ -52,27 +52,27 @@ bool BG_CDragonMap::Init()
 	return true;
 }
 
-void BG_CDragonMap::Update(float DeltaTime)
+void BG_DragonMap::Update(float DeltaTime)
 {
 	CBackGround::Update(DeltaTime);
 }
 
-void BG_CDragonMap::PostUpdate(float DeltaTime)
+void BG_DragonMap::PostUpdate(float DeltaTime)
 {
 	CBackGround::PostUpdate(DeltaTime);
 }
 
-void BG_CDragonMap::Collision(float DeltaTime)
+void BG_DragonMap::Collision(float DeltaTime)
 {
 	CBackGround::Collision(DeltaTime);
 }
 
-void BG_CDragonMap::Render(float DeltaTime)
+void BG_DragonMap::Render(float DeltaTime)
 {
 	CBackGround::Render(DeltaTime);
 }
 
-BG_CDragonMap* BG_CDragonMap::Clone()
+BG_DragonMap* BG_DragonMap::Clone()
 {
-	return new BG_CDragonMap(*this);
+	return new BG_DragonMap(*this);
 }

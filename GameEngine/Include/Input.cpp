@@ -659,6 +659,8 @@ unsigned char CInput::ConvertKey(unsigned char Key)
 			return DIK_UP;
 		case VK_DOWN:
 			return DIK_DOWN;
+		case 'C':
+			return DIK_C;
 			/*case DIK_L:
 				return 'L';
 			case DIK_SEMICOLON:
@@ -673,8 +675,6 @@ unsigned char CInput::ConvertKey(unsigned char Key)
 				return 'Z';
 			case DIK_X:
 				return 'X';
-			case DIK_C:
-				return 'C';
 			case DIK_V:
 				return 'V';
 			case DIK_B:

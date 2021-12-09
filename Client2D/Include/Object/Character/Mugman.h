@@ -70,6 +70,10 @@ private:
 	// Attack
 	int	m_BulletCount;
 
+	// Muzzle
+	float m_TimeToFrame;
+	float m_MuzzleMaxY;
+	int	  m_Frame;
 
 
 private:
@@ -120,6 +124,7 @@ public:
 	void DashCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
 	void AnimCheck(float DeltaTime);
+	void MuzzleLoopCheck(float DeltaTime);
 	void SavePlayerPos();
 
 

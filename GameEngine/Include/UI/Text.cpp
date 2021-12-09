@@ -22,18 +22,18 @@ CText::CText()	:
 	m_ShadowOpacity(1.f),
 	m_ShadowColor(0.f, 0.f, 0.f, 1.f),
 	m_ShadowOffset(3.f, 3.f),
-	m_AlignH(TEXT_ALIGN_H::Left),
-	m_AlignV(TEXT_ALIGN_V::Top)
+	m_AlignH(TEXT_ALIGN_H::Center),
+	m_AlignV(TEXT_ALIGN_V::Middle)
 {
 	m_2DTarget = CDevice::GetInst()->Get2DTarget();
 
-	const TCHAR* FontName = CResourceManager::GetInst()->GetFontFaceName("Default");
+	const TCHAR* FontName = CResourceManager::GetInst()->GetFontFaceName("Tutorial_ExtraBold");
 
 	m_FontName = new TCHAR[128];
 	memset(m_FontName, 0, sizeof(TCHAR) * 128);
 	lstrcpy(m_FontName, FontName);
 
-	m_FontKey = "Default";
+	m_FontKey = "Tutorial_ExtraBold";
 
 	m_MaxCount = 256;
 

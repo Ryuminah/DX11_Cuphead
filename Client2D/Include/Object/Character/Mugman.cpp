@@ -26,7 +26,10 @@ CMugman::CMugman() :
 	m_ShootCool(0.2f),
 	m_DashCool(0.5f),
 	m_IntroTime(5.f),
-	m_bGameStart(false)
+	m_bGameStart(false),
+	m_TimeToFrame(0.f),
+	m_Frame(0),
+	m_MuzzleMaxY(50.f)
 {
 	m_BulletCount = 1;
 }
@@ -77,7 +80,7 @@ bool CMugman::Init()
 
 	
 	m_Muzzle->SetInheritRotZ(true);
-	m_Muzzle->SetRelativePos(Vector3(20.f, 80.f, 0.f));
+	m_Muzzle->SetRelativePos(Vector3(10.f, -20.f, 0.f));
 	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
 
 	//m_Arm->SetOffset(0.f, 0.f, 0.f);
@@ -87,9 +90,6 @@ bool CMugman::Init()
 	//m_Arm->AddChild(m_Camera);
 
 	//CSharedPtr<CMaterial>   SpriteMtrl = m_Sprite->GetMaterial(0);
-
-	//SpriteMtrl->SetBaseColor(1.f, 0.f, 0.f, 1.f);
-	//SpriteMtrl->AddTexture("PlayerTex", TEXT("teemo.png"));
 
 	m_Sprite->CreateAnimation2D<CMugmanAnimation2D>();
 	m_Animation = m_Sprite->GetAnimation2D();
@@ -152,6 +152,10 @@ void CMugman::Update(float DeltaTime)
 
 	// 시간 체크
 	TimeCheck(DeltaTime);
+
+	// 총구 루핑
+	MuzzleLoopCheck(DeltaTime);
+
 
 	//m_DirectInputKeyResult[DIK_LSHIFT] & 0x80
 	SavePlayerPos();
@@ -310,14 +314,15 @@ void CMugman::Shoot(float DeltaTime)
 
 		if (m_PrevDirection == Direction::RIGHT)
 		{
-			m_Muzzle->SetRelativePos(20.f, 80.f, 0.f);
+			//m_Muzzle->SetRelativePos(20.f, 80.f, 0.f);
 			m_Animation->ChangeAnimation("Mugman_Shoot_R");
 			pBullet->SetBulletDirection(Direction::RIGHT);
 		}
 
 		if (m_PrevDirection == Direction::LEFT)
 		{
-			m_Muzzle->SetRelativePos(-20.f, 80.f, 0.f);
+			Vector3 CurrentMuzzlePos = m_Muzzle->GetRelativePos();
+			m_Muzzle->SetRelativePos(-CurrentMuzzlePos.x, CurrentMuzzlePos.y, CurrentMuzzlePos.z);
 			m_Animation->ChangeAnimation("Mugman_Shoot_L");
 			pBullet->SetBulletDirection(Direction::LEFT);
 		}
@@ -565,8 +570,16 @@ void CMugman::OnGround()
 
 void CMugman::TimeCheck(float DeltaTime)
 {
+	m_TimeToFrame += DeltaTime;
 	m_ShootCool -= DeltaTime;
 	m_DashCool -= DeltaTime;
+
+	// 60프레임 기준
+	if (m_TimeToFrame >= 0.1f)
+	{
+		++m_Frame;
+		m_TimeToFrame = 0.f;
+	}
 
 	if (m_ShootCool < 0.0f)
 	{
@@ -621,6 +634,14 @@ void CMugman::AnimCheck(float DeltaTime)
 	}
 
 	
+}
+
+void CMugman::MuzzleLoopCheck(float DeltaTime)
+{
+	// 코사인 함수로 반복
+	// Move Y
+	float MoveY = sin(PI * 2 / 30.f * m_Frame) * m_MuzzleMaxY;
+	m_Muzzle->AddRelativePos(GetAxis(AXIS_Y) * MoveY * DeltaTime);
 }
 
 void CMugman::SavePlayerPos()

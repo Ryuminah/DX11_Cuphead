@@ -1,6 +1,7 @@
 #include "ClientManager.h"
 #include "Scene/SceneManager.h"
 #include "SceneMode/MainScene.h"
+#include "SceneMode/TitleScene.h"
 #include "Input.h"
 #include "CollisionManager.h"
 #include "IMGUIManager.h"
@@ -91,17 +92,9 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Bullet, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Skill, Collision_Interaction::Ignore);
-
-
-
-
-
-
     
 
-
-
-    CSceneManager::GetInst()->SetSceneMode<CMainScene>();
+    CSceneManager::GetInst()->SetSceneMode<CTitleScene>();
 
     //CreateMouse();
 

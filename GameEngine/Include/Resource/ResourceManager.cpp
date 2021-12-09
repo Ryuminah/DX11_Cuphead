@@ -339,13 +339,19 @@ bool CResourceManager::Init()
 	CreateSoundChannelGroup("UI");
 
 
+	// Title Font
+	CreateFontFile("Tutorial_ExtraBold", TEXT("Tutorial_ExtraBold.ttf"));
+	const TCHAR* FontFaceName = GetFontFaceName("Tutorial_ExtraBold");
+	CreateTextFormat("Tutorial_ExtraBold", FontFaceName, 600, 20.f, TEXT("ko"));
 
-	CreateFontFile("Default", TEXT("NotoSansKR-Regular.otf"));
+	// Tutorial Font
+	//CreateFontFile("Tutorial", TEXT("Tutorial.otf"));
+	//FontFaceName = GetFontFaceName("Tutorial");
+	//CreateTextFormat("Tutorial", FontFaceName, 600, 20.f, TEXT("Tutorial"));
 
-	const TCHAR* FontFaceName = GetFontFaceName("Default");
-
-	CreateTextFormat("Default", FontFaceName, 600, 20.f, TEXT("ko"));
-
+	//CreateFontFile("KettleHouse", TEXT("KettleHouse.otf"));
+	//FontFaceName = GetFontFaceName("KettleHouse");
+	//CreateTextFormat("KettleHouse", FontFaceName, 600, 20.f, TEXT("KettleHouse"));
 
 	return true;
 }

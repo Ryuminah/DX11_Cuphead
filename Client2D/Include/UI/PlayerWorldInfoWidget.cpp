@@ -20,7 +20,7 @@ bool CPlayerWorldInfoWidget::Init()
 
 	m_NameText = CreateWidget<CText>("Name");
 
-	m_NameText->SetText(TEXT("Test"));
+	m_NameText->SetText(TEXT("Press Any Button"));
 	m_NameText->SetPos(0.f, 20.f);
 	m_NameText->SetSize(200.f, 50.f);
 	m_NameText->SetFontSize(30.f);
