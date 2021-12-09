@@ -38,6 +38,9 @@ public:
 private:
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
+	CSharedPtr<CSpriteComponent> m_GunEffect;
+
+
 	/*CSharedPtr<CSpringArm2D> m_Arm;
 	CSharedPtr<CCamera> m_Camera;*/
 
@@ -75,6 +78,8 @@ private:
 	float m_MuzzleMaxY;
 	int	  m_Frame;
 
+	// Effect
+	float m_DustTime;
 
 private:
 	// Shooting
@@ -132,7 +137,6 @@ public:
 public:
 	void JumpEnd();
 	void DashEnd();
-
 	void OnGround();
 	void OnStepCloud(float MoveZ, float CloudY);
 	void InAir();

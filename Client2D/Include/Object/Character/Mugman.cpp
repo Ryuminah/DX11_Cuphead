@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "Bullet.h"
 #include "../Static/StepCloud.h"
+#include  "../Effect/Dust.h"
 
 Vector3 CMugman::PlayerPos = {0.f,0.f,0.f};
 Vector3 CMugman::PlayerPrevPos = { 0.f, 0.f, 0.f };
@@ -29,7 +30,7 @@ CMugman::CMugman() :
 	m_bGameStart(false),
 	m_TimeToFrame(0.f),
 	m_Frame(0),
-	m_MuzzleMaxY(50.f)
+	m_MuzzleMaxY(50.f), m_DustTime(0.f)
 {
 	m_BulletCount = 1;
 }
@@ -111,10 +112,10 @@ bool CMugman::Init()
 
 	// End CallBack Func
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd); 
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
+	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Up, this, &CMugman::MoveEnd);
+	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Up, this, &CMugman::MoveEnd);
 
 
 	SetPhysicsSimulate(true);
@@ -155,9 +156,8 @@ void CMugman::Update(float DeltaTime)
 
 	// 총구 루핑
 	MuzzleLoopCheck(DeltaTime);
-
-
-	//m_DirectInputKeyResult[DIK_LSHIFT] & 0x80
+	
+	// 플레이어 위치 저장
 	SavePlayerPos();
 
 }
@@ -204,8 +204,6 @@ void CMugman::MoveUp(float DeltaTime)
 		m_Animation->ChangeAnimation("Mugman_AimUp_L");
 	}
 
-	m_bIsMove = true;
-
 	//AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
 }
 
@@ -216,7 +214,6 @@ void CMugman::MoveDown(float DeltaTime)
 		return;
 	}
 
-	m_bIsMove = true;
 	//AddRelativePos(GetAxis(AXIS_Y) * -m_Speed * DeltaTime);
 }
 
@@ -382,6 +379,7 @@ void CMugman::ShootEnd(float DeltaTime)
 void CMugman::MoveEnd(float DeltaTime)
 {
 	m_bIsMove = false;
+	m_DustTime = 0.f;
 }
 
 
@@ -574,6 +572,11 @@ void CMugman::TimeCheck(float DeltaTime)
 	m_ShootCool -= DeltaTime;
 	m_DashCool -= DeltaTime;
 
+	if (m_bIsMove && m_bIsGround)
+	{
+		m_DustTime += DeltaTime;
+	}
+
 	// 60프레임 기준
 	if (m_TimeToFrame >= 0.1f)
 	{
@@ -592,6 +595,14 @@ void CMugman::TimeCheck(float DeltaTime)
 	{
 		m_bCanDash = true;
 		m_DashCool = 1.f;
+	}
+
+	if (m_DustTime >= 0.3f)
+	{
+		m_DustTime = 0.f;
+		CDust* pDust = m_pScene->SpawnObject<CDust>("Dust");
+		pDust->SetRelativePos(GetPrevWorldPos());
+
 	}
 
 	// 게임이 아직 시작하지 않았다면
@@ -635,6 +646,7 @@ void CMugman::AnimCheck(float DeltaTime)
 
 	
 }
+
 
 void CMugman::MuzzleLoopCheck(float DeltaTime)
 {

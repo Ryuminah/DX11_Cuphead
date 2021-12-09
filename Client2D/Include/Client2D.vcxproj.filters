@@ -162,9 +162,6 @@
     <ClCompile Include="Object\Effect\Effect.cpp">
       <Filter>02. Object\6 .Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Skill\FireBoy.cpp">
       <Filter>02. Object\4. Skill</Filter>
     </ClCompile>
@@ -176,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp">
       <Filter>03. Animation2D\04 ForeGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
+      <Filter>02. Object\6 .Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\Dust.cpp">
+      <Filter>02. Object\6 .Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,9 +278,6 @@
     <ClInclude Include="Object\Effect\Effect.h">
       <Filter>02. Object\6 .Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Effect\MeteorSmoke.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Skill\FireBoy.h">
       <Filter>02. Object\4. Skill</Filter>
     </ClInclude>
@@ -289,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h">
       <Filter>03. Animation2D\04 ForeGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\MeteorSmoke.h">
+      <Filter>02. Object\6 .Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\Dust.h">
+      <Filter>02. Object\6 .Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,13 +30,11 @@ bool CClientManager::Init()
     CInput::GetInst()->CreateKey("MoveLeft", VK_LEFT);
     CInput::GetInst()->CreateKey("MoveRight", VK_RIGHT);
     CInput::GetInst()->CreateKey("Shoot", 'X');
+    CInput::GetInst()->CreateKey("Aim", 'C');
     CInput::GetInst()->CreateKey("Jump", 'Z');
-    CInput::GetInst()->CreateKey("Skill1", '1');
-    CInput::GetInst()->CreateKey("Skill2", '2');
-
+  
     CInput::GetInst()->CreateKey("Dash", VK_LSHIFT);
     CInput::GetInst()->SetShiftKey("Dash", true);
-    CInput::GetInst()->SetControlKey("Skill2", true);
 
     // 예제 코드
     CCollisionManager::GetInst()->CreateChannel("Bullet", Collision_Interaction::Block);
@@ -94,7 +92,7 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("Skill", Collision_Channel::Skill, Collision_Interaction::Ignore);
     
 
-    CSceneManager::GetInst()->SetSceneMode<CTitleScene>();
+    CSceneManager::GetInst()->SetSceneMode<CMainScene>();
 
     //CreateMouse();
 

@@ -62,6 +62,11 @@ public:
 		return m_CurrentSequence->Sequence->GetName();
 	}
 
+	int GetCurrentFrame()	
+	{
+		return m_Frame;
+	}
+
 
 public:
 	virtual void Start();
