@@ -173,7 +173,7 @@ void CMainScene::CreateMugmanAnim()
 	for (int i = 0; i < 5; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Aim_R",
-			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+			Vector2(i * 140.f, 0), Vector2((i + 1) * 140.f, 170.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Aim_L");
@@ -182,7 +182,7 @@ void CMainScene::CreateMugmanAnim()
 	for (int i = 0; i < 5; ++i)
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Aim_L",
-			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+			Vector2(i * 140.f, 0), Vector2((i + 1) * 140.f, 170.f));
 	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_AimUp_R");
@@ -301,7 +301,7 @@ void CMainScene::CreateMugmanAnim()
 		"Mugman_Hit_R", TEXT("Mugman/Mugman_Hit_R.png"));
 	for (int i = 0; i < 6; ++i)
 	{
-		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Parry_R",
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Hit_R",
 			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 230.f));
 	}
 

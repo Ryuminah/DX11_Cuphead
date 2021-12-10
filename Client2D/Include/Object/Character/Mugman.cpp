@@ -17,8 +17,7 @@ CMugman::CMugman() :
 	m_bIsJump(false),
 	m_bIsFall(false),
 	m_bIsDash(false),
-	m_bCanJump(true),
-	m_bCanDash(true),
+	m_bIsDamaged(false),
 	m_JumpTime(0.f), m_FallTime(0.f),
 	m_JumpVelocity(50.f),
 	m_JumpAccel(90.f),
@@ -27,12 +26,17 @@ CMugman::CMugman() :
 	m_ShootCool(0.2f),
 	m_DashCool(0.5f),
 	m_IntroTime(5.f),
+	m_InvincibleTime(0.f),
 	m_bGameStart(false),
 	m_TimeToFrame(0.f),
 	m_Frame(0),
 	m_MuzzleMaxY(50.f), m_DustTime(0.f)
 {
 	m_BulletCount = 1;
+	m_bCanAim = true;
+	m_bCanJump = true;
+	m_bCanAttack = true;
+	m_bCanMove = true;
 }
 
 CMugman::CMugman(const CMugman& obj) : CCharacter(obj)
@@ -81,7 +85,7 @@ bool CMugman::Init()
 
 	
 	m_Muzzle->SetInheritRotZ(true);
-	m_Muzzle->SetRelativePos(Vector3(10.f, -20.f, 0.f));
+	m_Muzzle->SetRelativePos(Vector3(10.f, -15.f, 0.f));
 	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
 
 	//m_Arm->SetOffset(0.f, 0.f, 0.f);
@@ -106,15 +110,18 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Push, this, &CMugman::MoveDown);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Push, this, &CMugman::Aim);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
 
+
 	// End CallBack Func
 	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd); 
-	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Up, this, &CMugman::AimEnd);
+	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
 	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Up, this, &CMugman::MoveEnd);
 
 
@@ -219,24 +226,30 @@ void CMugman::MoveDown(float DeltaTime)
 
 void CMugman::MoveRight(float DeltaTime)
 {
-	// 점프 중이라면 애니메이션을 교체하지 않는다.
 	// 대시중이라면 키 입력을 받지 않는다.
 	if (m_bIsDash || !m_bCanMove)
 	{
 		return;
 	}
 
-	m_State = Mugman_State::Run;
-
-	// 이미 공격중일 때는 Anim이 다시 처음부터 재생하면 안되므로 예외 처리.
-	if (!m_bIsJump && m_bIsGround)
+	// 이동과 동시에 애니메이션을 바꿔야 할 경우(다른 상태가 아닐 경우)
+	// 점프 중이거나, 떨어지고 있거나 이미 달리던 중이였을 경우 애니메이션을 교체하지 않는다
+	if (!m_bIsJump && !m_bIsFall && m_bIsMove)
 	{
-		m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
+		// 공격중이면 공격하는 애님으로
+		if (m_bIsAttack)
+		{
+			m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
+		}
+		
+		else
+		{
+			m_Animation->ChangeAnimation("Mugman_Run_Normal_R");
+		}
 	}
 
 	AddRelativePos(GetAxis(AXIS_X)* m_Speed* DeltaTime);
 	m_bIsMove = true;
-
 }
 
 void CMugman::MoveLeft(float DeltaTime)
@@ -246,12 +259,17 @@ void CMugman::MoveLeft(float DeltaTime)
 		return;
 	}
 
-	m_State = Mugman_State::Run;
-	
-	// 점프중이 아닐 때만
-	if (!m_bIsJump && m_bIsGround)
+	if (!m_bIsJump && !m_bIsFall && m_bIsMove)
 	{
-		m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
+		if (m_bIsAttack)
+		{
+			m_Animation->ChangeAnimation("Mugman_Run_Shoot_L");
+		}
+
+		else
+		{
+			m_Animation->ChangeAnimation("Mugman_Run_Normal_L");
+		}
 	}
 
 	AddRelativePos(GetAxis(AXIS_X) * -m_Speed * DeltaTime);
@@ -266,11 +284,18 @@ void CMugman::Jump(float DeltaTime)
 		return;
 	}
 
+	// 땅에서 아래로 내려가려고 하는 경우
+	if (m_bIsGround && (GetAsyncKeyState(VK_DOWN) & 0x8000))
+	{
+		InAir();
+		return;
+	}
+
 	// 점프가 가능한 경우
-	m_State = Mugman_State::Jump;
 	m_PosY = GetRelativePos().y; // 처음 Y를 저장
 	m_bCanAttack = false;
 	m_bCanJump = false;
+	m_bCanAim = false;
 
 	m_bIsFall = false;
 	m_bIsJump = true;
@@ -301,8 +326,6 @@ void CMugman::Shoot(float DeltaTime)
 
 	if (m_BulletCount > 0 )
 	{
-		m_bCanAttack = false;
-		m_bIsAttack = true;
 		--m_BulletCount;
 
 		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
@@ -311,8 +334,12 @@ void CMugman::Shoot(float DeltaTime)
 
 		if (m_PrevDirection == Direction::RIGHT)
 		{
-			//m_Muzzle->SetRelativePos(20.f, 80.f, 0.f);
-			m_Animation->ChangeAnimation("Mugman_Shoot_R");
+			// 정지 사격일 경우
+			if (!m_bIsMove)
+			{
+				m_Animation->ChangeAnimation("Mugman_Shoot_R");
+			}
+
 			pBullet->SetBulletDirection(Direction::RIGHT);
 		}
 
@@ -320,11 +347,19 @@ void CMugman::Shoot(float DeltaTime)
 		{
 			Vector3 CurrentMuzzlePos = m_Muzzle->GetRelativePos();
 			m_Muzzle->SetRelativePos(-CurrentMuzzlePos.x, CurrentMuzzlePos.y, CurrentMuzzlePos.z);
-			m_Animation->ChangeAnimation("Mugman_Shoot_L");
+
+			if (!m_bIsMove)
+			{
+				m_Animation->ChangeAnimation("Mugman_Shoot_L");
+			}
+
 			pBullet->SetBulletDirection(Direction::LEFT);
 		}
 
 		pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
+
+		m_bCanAttack = false;
+		m_bIsAttack = true;
 	}
 
 	
@@ -332,10 +367,33 @@ void CMugman::Shoot(float DeltaTime)
 
 }
 
+void CMugman::Aim(float DeltaTime)
+{
+	if (!m_bCanAim)
+	{
+		return;
+	}
+
+	if (!m_bIsAiming)
+	{
+		if (m_PrevDirection == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Aim_R");
+		}
+
+		if (m_PrevDirection == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Aim_L");
+		}
+	}
+	
+	m_bIsAiming = true;
+}
+
 void CMugman::Dash(float DeltaTime)
 {
 	// 대시가 가능한 상황인지 판단
-	if (!m_bCanDash)
+	if (!m_bCanDash && !m_bIsDamaged)
 	{
 		return;
 	}
@@ -346,13 +404,13 @@ void CMugman::Dash(float DeltaTime)
 		JumpEnd();
 	}
 
-	m_State = Mugman_State::Dash;
 	m_bIsDash = true;
 
 	m_bCanMove = false;
 	m_bCanAttack = false;
 	m_bCanDash = false;
 	m_bCanJump = false;
+	m_bCanAim = false;
 	
 	ResetPhysicsSimulate();
 	SetPhysicsSimulate(true);
@@ -371,6 +429,51 @@ void CMugman::Dash(float DeltaTime)
 	}
 }
 
+void CMugman::Hit()
+{
+	// 데미지를 입을 수 없는 상황이라면
+	if (!m_bCanDamaged)
+	{
+		return;
+	}
+
+	if (m_bIsDash)
+	{
+		DashEnd();
+	}
+
+	if (m_bIsJump)
+	{
+		JumpEnd();
+	}
+
+	// 할 수 있는 행동 전부 막고 모든 상태를 즉시 종료함
+	m_bCanAim = false;
+	m_bCanAttack = false;
+	m_bCanDash = false;
+	m_bCanMove = false;
+	m_bCanDamaged = false;
+	m_bCanJump = false;
+
+
+
+	m_bIsDamaged = true;
+
+	m_Sprite->SetRelativeScale(200.f, 230.f, 1.f);
+
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Hit_R");
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Hit_L");
+	}
+
+	++m_HitCount;
+}
+
 void CMugman::ShootEnd(float DeltaTime)
 {
 	m_bIsAttack = false;
@@ -380,6 +483,11 @@ void CMugman::MoveEnd(float DeltaTime)
 {
 	m_bIsMove = false;
 	m_DustTime = 0.f;
+}
+
+void CMugman::AimEnd(float DeltaTime)
+{
+	m_bIsAiming = false;
 }
 
 
@@ -403,7 +511,11 @@ void CMugman::MoveEnd(float DeltaTime)
 
 void CMugman::AnimationFrameEnd(const std::string& Name)
 {
-	// 현재 애니메이션이 Dash일 경우
+	if (Name == "Mugman_Hit_R" || Name == "Mugman_Hit_L")
+	{
+		
+		HitEnd();
+	}
 }
 
 void CMugman::JumpCheck(float DeltaTime)
@@ -438,7 +550,7 @@ void CMugman::JumpCheck(float DeltaTime)
 
 void CMugman::FallCheck(float DeltaTime)
 {
-	if (m_bIsDash)
+	if (m_bIsDash || m_bIsDamaged)
 	{
 		return;
 	}
@@ -492,7 +604,6 @@ void CMugman::JumpEnd()
 
 void CMugman::DashEnd()
 {
-	m_State = Mugman_State::Idle;
 	m_DashSpeed = 100.f;
 	m_DashTime = 0.f;
 
@@ -500,6 +611,8 @@ void CMugman::DashEnd()
 	m_bCanJump = true;
 	m_bCanMove = true;
 	m_bCanAttack = true;
+	m_bCanAim = true;
+
 
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 
@@ -537,6 +650,53 @@ void CMugman::DashEnd()
 
 }
 
+void CMugman::HitEnd()
+{
+	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
+
+	m_bCanAim = true;
+	m_bCanAttack = true;
+	m_bCanDash = true;
+	m_bCanMove = true;
+	m_bCanJump = true;
+	m_bCanDamaged = true;
+
+	m_bIsDamaged = false;
+
+	Invincible();
+
+	if (!m_bIsGround && !m_bIsJump)
+	{
+		m_bIsFall = true;
+
+		if (GetPrevDirection() == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Jump_R");
+
+		}
+
+		if (GetPrevDirection() == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Jump_L");
+		}
+
+		return;
+	}
+
+
+	if (GetPrevDirection() == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+	}
+
+	if (GetPrevDirection() == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_L");
+	}
+
+}
+
 void CMugman::OnGround()
 {
 	// 땅에 닿았을때 정지하거나 수행 가능한 모든 행동을 처리
@@ -545,11 +705,12 @@ void CMugman::OnGround()
 	m_bIsFall = false;
 	m_bIsJump = false;
 	m_bIsGround = true;
-	m_bIsAttack = false;
+	//m_bIsAttack = false;
 
 	m_bCanJump = true;
 	m_bCanAttack = true;
 	m_bCanDash = true;
+	m_bCanAim = true;
 	
 	SetPhysicsSimulate(false);
 	SetUseBlockMovement(true);
@@ -575,6 +736,11 @@ void CMugman::TimeCheck(float DeltaTime)
 	if (m_bIsMove && m_bIsGround)
 	{
 		m_DustTime += DeltaTime;
+	}
+
+	if (m_bIsInvincible)
+	{
+		m_InvincibleTime += DeltaTime;
 	}
 
 	// 60프레임 기준
@@ -605,6 +771,12 @@ void CMugman::TimeCheck(float DeltaTime)
 
 	}
 
+	if (m_InvincibleTime >= 1.f)
+	{
+		InvincibleEnd();
+		m_InvincibleTime = 0.f;
+	}
+
 	// 게임이 아직 시작하지 않았다면
 	if (!m_bGameStart)
 	{
@@ -625,13 +797,7 @@ void CMugman::AnimCheck(float DeltaTime)
 	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
 	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
 
-	// 움직였다면
-	//if (PrevWorldPos != WorldPos)
-	//{
-	//	return;
-	//}
-
-	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsMove)
+	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsMove && !m_bIsDamaged)
 	{
 		if (GetPrevDirection() == Direction::RIGHT)
 		{
@@ -644,7 +810,18 @@ void CMugman::AnimCheck(float DeltaTime)
 		}
 	}
 
-	
+	//if (!m_bIsGround)
+	//{
+	//	m_bIsFall = true;
+	//}
+}
+
+void CMugman::DeathCheck(float DeltaTime)
+{
+	if (m_HitCount >= 3)
+	{
+		m_Animation->ChangeAnimation("Mugman_Death");
+	}
 }
 
 
@@ -687,6 +864,7 @@ void CMugman::InAir()
 
 	m_bCanAttack = false;
 	m_bCanJump = false;
+	m_bCanAim = false;
 
 	if (!m_bIsDash)
 	{
@@ -743,6 +921,12 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 			InAir();
 		}
 	}
+
+	// 충돌체 종류가 스킬이고 무적이 아닐 경우
+	if (result.DestCollider->GetProfile()->Name == "Skill" && m_bCanDamaged)
+	{
+		Hit();
+	}
 }
 
 void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
@@ -756,7 +940,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
-		//m_bIsGround = true;
+		m_bIsGround = true;
 	}
 }
 
@@ -765,7 +949,7 @@ void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 	// 점프중이 아니라면 떨어지는 것으로 간주.
 	if (result.DestCollider->GetName() == "StepCloudCollider")
 	{
-		if (!m_bIsJump && GetWorldPos().y  > result.DestCollider->GetWorldPos().y)
+		if (!m_bIsJump/* && GetWorldPos().y  > result.DestCollider->GetWorldPos().y*/)
 		{
 			InAir();
 		}

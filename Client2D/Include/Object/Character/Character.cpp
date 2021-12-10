@@ -1,7 +1,7 @@
 #include "Character.h"
 
-CCharacter::CCharacter() :m_HitCount(0), m_bCanAttack(true), m_bIsAttack(false), m_bIsMove(false),
-							m_Speed(500.f), m_bCanMove(true)
+CCharacter::CCharacter() :m_HitCount(0), m_bIsAttack(false), m_bIsMove(false), m_bIsInvincible(false),
+							m_Speed(550.f), m_bCanMove(true), m_bCanDamaged(true) ,m_bCanAttack(true)
 {
 
 }
@@ -55,12 +55,30 @@ CCharacter* CCharacter::Clone()
 	return new CCharacter(*this);
 }
 
-void CCharacter::HitCheck()
+void CCharacter::Hit()
 {
-	m_HitCount ++;
+	
+}
+
+void CCharacter::HitEnd()
+{
 }
 
 void CCharacter::SkillEnd(std::string SkillName)
 {
 	
+}
+
+void CCharacter::Invincible()
+{
+	m_Sprite->GetMaterial(0)->SetBaseColor(0.99f, 0.99f, 0.99f, 0.5f);
+	m_bCanDamaged = false;
+	m_bIsInvincible = true;
+}
+
+void CCharacter::InvincibleEnd()
+{
+	m_Sprite->GetMaterial(0)->SetBaseColor(1.f, 1.f, 1.f, 1.f);
+	m_bCanDamaged = true;
+	m_bIsInvincible = false;
 }

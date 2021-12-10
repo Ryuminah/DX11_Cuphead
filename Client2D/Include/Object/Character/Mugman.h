@@ -6,11 +6,6 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/WidgetComponent.h"
 
-enum class Mugman_State
-{
-	Idle, Run, Dash, Jump, Attack
-};
-
 class CMugman :
 	public CCharacter
 {
@@ -36,16 +31,10 @@ public:
 	}
 
 private:
+	// Component
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
 	CSharedPtr<CSpriteComponent> m_GunEffect;
-
-
-	/*CSharedPtr<CSpringArm2D> m_Arm;
-	CSharedPtr<CCamera> m_Camera;*/
-
-private:
-	Mugman_State	m_State;
 
 private:
 	// basic Movement
@@ -54,21 +43,23 @@ private:
 
 	bool m_bCanJump;
 	bool m_bIsJump;
-	bool m_bIsGround;
-
-	bool m_bIsFall;
-	float m_FallTime;
-
-	bool m_bIsDash;
-	bool m_bCanDash;
-
 	float m_JumpTime;
 	float m_JumpVelocity;
 	float m_JumpAccel;
 	float m_PosY;
 
+	bool m_bIsGround;
+	bool m_bIsFall;
+	float m_FallTime;
+
+	bool m_bIsDash;
+	bool m_bCanDash;
 	float m_DashTime;
 	float m_DashSpeed;
+
+	// Aim
+	bool m_bCanAim;
+	bool m_bIsAiming;
 
 	// Attack
 	int	m_BulletCount;
@@ -81,10 +72,13 @@ private:
 	// Effect
 	float m_DustTime;
 
+	bool m_bIsDamaged;
+
 private:
 	// Shooting
 	float	m_ShootCool;
 	float	m_DashCool;
+	float	m_InvincibleTime;
 
 
 public:
@@ -104,14 +98,14 @@ public:
 	void MoveLeft(float DeltaTime);
 	void Jump(float DeltaTime);
 	void Shoot(float DeltaTime);
+	void Aim(float DeltaTime);
 	void Dash(float DeltaTime);
+	virtual void Hit();
 
 public:
 	void ShootEnd(float DeltaTime);
 	void MoveEnd(float DeltaTime);
-
-
-
+	void AimEnd(float DeltaTime);
 
 public:
 	void AnimationFrameEnd(const std::string& Name);
@@ -122,21 +116,23 @@ public: //Get Set
 		return m_bIsGround;
 	}
 
-	//Check Logic
-public:
+	
+public: //Check Logic
 	void FallCheck(float DeltaTime);
 	void JumpCheck(float DeltaTime);
 	void DashCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
 	void AnimCheck(float DeltaTime);
+	void DeathCheck(float DeltaTime);
 	void MuzzleLoopCheck(float DeltaTime);
 	void SavePlayerPos();
 
 
-	// Move 관련
-public:
+	
+public: // Move 관련
 	void JumpEnd();
 	void DashEnd();
+	virtual void HitEnd();
 	void OnGround();
 	void OnStepCloud(float MoveZ, float CloudY);
 	void InAir();
