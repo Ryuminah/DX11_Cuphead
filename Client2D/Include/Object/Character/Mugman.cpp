@@ -31,7 +31,8 @@ CMugman::CMugman() :
 	m_InvincibleTime(0.f),
 	m_TimeToFrame(0.f),
 	m_Frame(0),
-	m_MuzzleMaxY(50.f), m_DustTime(0.f)
+	m_MuzzleMaxY(50.f), m_DustTime(0.f),
+	m_bIsDuck(false), m_bIsDuckLoop(false)
 {
 	m_BulletCount = 1;
 	m_bCanAim = true;
@@ -111,7 +112,7 @@ bool CMugman::Init()
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
 
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Push, this, &CMugman::MoveUp);
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Push, this, &CMugman::MoveDown);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Push, this, &CMugman::Duck);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Push, this, &CMugman::Aim);
@@ -125,8 +126,8 @@ bool CMugman::Init()
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Up, this, &CMugman::AimEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Up, this, &CMugman::DuckEnd);
 	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
-	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveDown", KT_Up, this, &CMugman::MoveEnd);
 
 
 	SetPhysicsSimulate(true);
@@ -225,14 +226,42 @@ void CMugman::MoveUp(float DeltaTime)
 	//AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
 }
 
-void CMugman::MoveDown(float DeltaTime)
+void CMugman::Duck(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsJump || !m_bIsGround ||!m_bParrySuccess)
+	if (m_bIsDash || m_bIsJump || !m_bIsGround ||m_bParrySuccess || !m_bCanMove)
 	{
 		return;
 	}
 
-	//AddRelativePos(GetAxis(AXIS_Y) * -m_Speed * DeltaTime);
+	// 공격중이면 공격하는 애님으로
+	m_bIsDuck = true;
+	m_Collider->SetExtent(45.f, 20.f);
+
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		if (!m_bIsDuckLoop)
+		{
+			m_Animation->ChangeAnimation("Mugman_Duck_R");
+		}
+
+		else
+		{
+			m_Animation->ChangeAnimation("Mugman_Duck_Loop_R");
+		}
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		if (!m_bIsDuckLoop)
+		{
+			m_Animation->ChangeAnimation("Mugman_Duck_L");
+		}
+
+		else
+		{
+			m_Animation->ChangeAnimation("Mugman_Duck_Loop_L");
+		}
+	}
 }
 
 void CMugman::MoveRight(float DeltaTime)
@@ -527,6 +556,13 @@ void CMugman::MoveEnd(float DeltaTime)
 	m_DustTime = 0.f;
 }
 
+void CMugman::DuckEnd(float DeltaTime)
+{
+	m_Collider->SetExtent(45.f, 70.f);
+	m_bIsDuck = false;
+	m_bIsDuckLoop = false;
+}
+
 void CMugman::AimEnd(float DeltaTime)
 {
 	m_bIsAiming = false;
@@ -579,6 +615,11 @@ void CMugman::AnimationFrameEnd(const std::string& Name)
 		{
 			m_Animation->ChangeAnimation("Mugman_Jump_L");
 		}
+	}
+
+	if ((Name == "Mugman_Duck_R" || Name == "Mugman_Duck_L" ) && m_bIsDuck)
+	{
+		m_bIsDuckLoop = true;
 	}
 }
 
@@ -928,11 +969,11 @@ void CMugman::TimeCheck(float DeltaTime)
 
 void CMugman::AnimCheck(float DeltaTime)
 {
-	// 조금이라도 이동했다면 종료
 	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
 	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
 
-	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsMove && !m_bIsDamaged && (!m_bIsParry && !m_bParrySuccess))
+	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && 
+		!m_bIsMove && !m_bIsDamaged && !m_bIsDuck && (!m_bIsParry && !m_bParrySuccess))
 	{
 		if (GetPrevDirection() == Direction::RIGHT)
 		{

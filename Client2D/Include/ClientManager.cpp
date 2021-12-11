@@ -26,7 +26,7 @@ bool CClientManager::Init()
 
     // Å° µî·Ï
     CInput::GetInst()->CreateKey("MoveUp", VK_UP);
-    CInput::GetInst()->CreateKey("MoveDown", VK_DOWN);
+    CInput::GetInst()->CreateKey("Duck", VK_DOWN);
     CInput::GetInst()->CreateKey("MoveLeft", VK_LEFT);
     CInput::GetInst()->CreateKey("MoveRight", VK_RIGHT);
     CInput::GetInst()->CreateKey("Shoot", 'X');

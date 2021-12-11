@@ -26,7 +26,7 @@ bool CEditorScene::Init()
     CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
 
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveUp", KT_Push, this, &CEditorScene::MoveUp);
-    CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveDown", KT_Push, this, &CEditorScene::MoveDown);
+    CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveDown", KT_Push, this, &CEditorScene::Duck);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveLeft", KT_Push, this, &CEditorScene::MoveLeft);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveRight", KT_Push, this, &CEditorScene::MoveRight);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MouseLButton", KT_Push, this, &CEditorScene::MouseLButton);
@@ -53,7 +53,7 @@ void CEditorScene::MoveUp(float DeltaTime)
     Camera->AddRelativePos(Camera->GetAxis(AXIS_Y) * 300.f * DeltaTime);
 }
 
-void CEditorScene::MoveDown(float DeltaTime)
+void CEditorScene::Duck(float DeltaTime)
 {
     CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
 

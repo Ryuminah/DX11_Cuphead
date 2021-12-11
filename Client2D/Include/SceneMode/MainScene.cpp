@@ -339,6 +339,43 @@ void CMainScene::CreateMugmanAnim()
 				Vector2(x * 140.f, y * 140.f), Vector2((x + 1) * 140.f, (y + 1) * 140.f));
 		}
 	}
+
+	// Duck
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Duck_L");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Duck_L",
+		"Mugman_Duck_L", TEXT("Mugman/Mugman_Duck_L.png"));
+	for (int i = 0; i < 7; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Duck_L",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Duck_Loop_L");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Duck_Loop_L",
+		"Mugman_Duck_Loop_L", TEXT("Mugman/Mugman_Duck_Loop_L.png"));
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Duck_Loop_L",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Duck_R");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Duck_R",
+		"Mugman_Duck_R", TEXT("Mugman/Mugman_Duck_R.png"));
+	for (int i = 0; i < 7; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Duck_R",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Duck_Loop_R");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Duck_Loop_R",
+		"Mugman_Duck_Loop_R", TEXT("Mugman/Mugman_Duck_Loop_R.png"));
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Duck_Loop_R",
+			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
 }
 
 void CMainScene::CreateStepCloudAnim()

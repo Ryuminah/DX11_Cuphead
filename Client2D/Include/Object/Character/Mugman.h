@@ -37,9 +37,13 @@ private:
 	CSharedPtr<CSpriteComponent> m_GunEffect;
 
 private:
-	// basic Movement
+	// Game Start
 	bool m_bGameStart;
 	float m_IntroTime;		// 나중에 intro Animation 종료시로 조건을 변경한다.
+
+	// Basic Movement
+	bool m_bIsDuck;
+	bool m_bIsDuckLoop;
 
 	// Jump
 	bool m_bCanJump;
@@ -108,7 +112,7 @@ public:
 
 public:
 	void MoveUp(float DeltaTime);
-	void MoveDown(float DeltaTime);
+	void Duck(float DeltaTime);
 	void MoveRight(float DeltaTime);
 	void MoveLeft(float DeltaTime);
 	void Jump(float DeltaTime);
@@ -121,6 +125,7 @@ public:
 public:
 	void ShootEnd(float DeltaTime);
 	void MoveEnd(float DeltaTime);
+	void DuckEnd(float DeltaTime);
 	void AimEnd(float DeltaTime);
 
 public:

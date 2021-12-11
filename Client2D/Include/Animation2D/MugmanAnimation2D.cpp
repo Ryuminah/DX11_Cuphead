@@ -52,6 +52,16 @@ bool CMugmanAnimation2D::Init()
 	AddAnimationSequence2D("Mugman_Hit_L",false);
 	AddAnimationSequence2D("Mugman_Death",false);
 
+	// Duck
+	AddAnimationSequence2D("Mugman_Duck_R", false);
+	AddAnimationSequence2D("Mugman_Duck_L", false);
+	AddAnimationSequence2D("Mugman_Duck_Loop_R");
+	AddAnimationSequence2D("Mugman_Duck_Loop_L");
+	SetSequencePlayRate("Mugman_Duck_R", 2.0f);
+	SetSequencePlayRate("Mugman_Duck_L", 2.0f);
+	SetSequencePlayRate("Mugman_Duck_Loop_R", 2.0f);
+	SetSequencePlayRate("Mugman_Duck_Loop_L", 2.0f);
+
 
 	// Shoot
 	AddAnimationSequence2D("Mugman_Run_Shoot_R");
@@ -65,8 +75,12 @@ bool CMugmanAnimation2D::Init()
 	AddAnimationSequence2D("Mugman_Jump_L");
 	AddAnimationSequence2D("Mugman_Run_AimUp_R");
 	AddAnimationSequence2D("Mugman_Run_AimUp_L");
+
+
 	AddAnimationSequence2D("Mugman_Dash_R", false);
 	AddAnimationSequence2D("Mugman_Dash_L", false);
+	SetSequencePlayRate("Mugman_Dash_R", 2.0);
+	SetSequencePlayRate("Mugman_Dash_L", 2.0);
 
 	// vfx
 	AddAnimationSequence2D("Mugman_Dust",false);
@@ -81,17 +95,14 @@ bool CMugmanAnimation2D::Init()
 	SetSequencePlayRate("Mugman_Jump_R", 4.0f);
 	SetSequencePlayRate("Mugman_Jump_L", 4.0f);
 
-	SetSequencePlayRate("Mugman_Dash_R", 2.0);
-	SetSequencePlayRate("Mugman_Dash_L", 2.0);
+	
 
 	SetSequencePlayRate("Mugman_Hit_R", 2.0f);
 	SetSequencePlayRate("Mugman_Hit_L", 2.0f);
 
 	SetSequencePlayRate("Mugman_Parry_R", 2.0f);
 	SetSequencePlayRate("Mugman_Parry_L", 2.0f);
-
 	
-
 	return true;
 }
 

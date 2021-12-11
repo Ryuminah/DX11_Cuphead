@@ -20,7 +20,7 @@ public:
 
 private:
     void MoveUp(float DeltaTime);
-    void MoveDown(float DeltaTime);
+    void Duck(float DeltaTime);
     void MoveLeft(float DeltaTime);
     void MoveRight(float DeltaTime);
     void MouseLButton(float DeltaTime);
