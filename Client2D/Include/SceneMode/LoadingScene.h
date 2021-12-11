@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Scene\SceneMode.h"
 
 class CLoadingScene :
@@ -16,5 +15,8 @@ private:
 
 public:
     virtual bool Init();
+
+public:
+    void CreateLoadingAnim();
 };
 

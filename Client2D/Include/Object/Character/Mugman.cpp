@@ -77,7 +77,7 @@ bool CMugman::Init()
 
 	SetRootComponent(m_Sprite);
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
-	m_Sprite->SetRelativePos(640.f, 100.f, 0.f);
+	m_Sprite->SetRelativePos(150.f, 265.f, 0.f);
 
 	m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_Muzzle);

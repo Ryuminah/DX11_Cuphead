@@ -161,7 +161,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation2D\BackGround\BG_KettleHouseAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp" />
+    <ClCompile Include="Animation2D\BackGround\FG_LoadingAnim.cpp" />
     <ClCompile Include="Animation2D\BulletAnimation.cpp" />
     <ClCompile Include="Animation2D\DragonAnimation.cpp" />
     <ClCompile Include="Animation2D\BackGround_CloudAnim.cpp" />
@@ -170,7 +172,9 @@
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\BackGround\BG_DragonMap.cpp" />
+    <ClCompile Include="Object\BackGround\BG_KettleHouse.cpp" />
     <ClCompile Include="Object\BackGround\BG_TitleScene.cpp" />
+    <ClCompile Include="Object\BackGround\FG_Loading.cpp" />
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp" />
     <ClCompile Include="Object\Character\Bullet.cpp" />
     <ClCompile Include="Object\Character\Character.cpp" />
@@ -190,6 +194,7 @@
     <ClCompile Include="Object\Skill\Peashot.cpp" />
     <ClCompile Include="Object\Skill\Tail.cpp" />
     <ClCompile Include="Object\Static\StepCloud.cpp" />
+    <ClCompile Include="SceneMode\KettleHouseScene.cpp" />
     <ClCompile Include="SceneMode\LoadingScene.cpp" />
     <ClCompile Include="SceneMode\LoadingThread.cpp" />
     <ClCompile Include="SceneMode\MainScene.cpp" />
@@ -201,7 +206,9 @@
     <ClCompile Include="UI\TitleScene\TitleSceneWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation2D\BackGround\BG_KettleHouseAnim.h" />
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h" />
+    <ClInclude Include="Animation2D\BackGround\FG_LoadingAnim.h" />
     <ClInclude Include="Animation2D\BulletAnimation.h" />
     <ClInclude Include="Animation2D\DragonAnimation.h" />
     <ClInclude Include="Animation2D\BackGround_CloudAnim.h" />
@@ -209,7 +216,9 @@
     <ClInclude Include="Animation2D\StepCloudAnimation.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Object\BackGround\BG_DragonMap.h" />
+    <ClInclude Include="Object\BackGround\BG_KettleHouse.h" />
     <ClInclude Include="Object\BackGround\BG_TitleScene.h" />
+    <ClInclude Include="Object\BackGround\FG_Loading.h" />
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h" />
     <ClInclude Include="Object\Character\Bullet.h" />
     <ClInclude Include="Object\Character\Character.h" />
@@ -230,6 +239,7 @@
     <ClInclude Include="Object\Skill\Tail.h" />
     <ClInclude Include="Object\Static\StepCloud.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SceneMode\KettleHouseScene.h" />
     <ClInclude Include="SceneMode\LoadingScene.h" />
     <ClInclude Include="SceneMode\LoadingThread.h" />
     <ClInclude Include="SceneMode\MainScene.h" />

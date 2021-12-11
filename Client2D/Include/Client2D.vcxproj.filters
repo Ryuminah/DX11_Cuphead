@@ -34,9 +34,6 @@
     <Filter Include="03. Animation2D\03. Weapon">
       <UniqueIdentifier>{423f13be-3367-47f6-b965-df2ebbe1c6fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Animation2D\04 ForeGround">
-      <UniqueIdentifier>{f4f03950-bcad-426a-a611-8891ac570e1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Object\4. Skill">
       <UniqueIdentifier>{28b0637d-d1f0-412a-a53c-69441bbbf74f}</UniqueIdentifier>
     </Filter>
@@ -64,6 +61,21 @@
     <Filter Include="04. UI\1. TitleScene">
       <UniqueIdentifier>{3feda0a4-aeb3-4cec-9149-84879c68d2b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\1. BackGround\Fore\1. MainScene">
+      <UniqueIdentifier>{b295b7d1-c0bd-4668-b61b-95748aa1fecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. BackGround\Fore\2. LoadingScene">
+      <UniqueIdentifier>{e030d124-e64d-4a6e-9b55-ef11beed1642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Animation2D\04. BackGround">
+      <UniqueIdentifier>{f4f03950-bcad-426a-a611-8891ac570e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. BackGround\Fore\3. KettleHouse">
+      <UniqueIdentifier>{7bd1a705-c458-47a9-824f-6bc62e01fbab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. BackGround\Back\1.MainScene">
+      <UniqueIdentifier>{dc4e9748-117a-4848-a1ec-d84674fcd300}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="SceneMode\MainScene.cpp">
       <Filter>01. SceneMode</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientManager.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UI\MainHUDWidget.cpp">
       <Filter>04. UI</Filter>
@@ -109,7 +118,7 @@
       <Filter>02. Object\4. Skill</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\BackGround_CloudAnim.cpp">
-      <Filter>03. Animation2D\04 ForeGround</Filter>
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\StepCloudAnimation.cpp">
       <Filter>03. Animation2D\02. StepObj</Filter>
@@ -126,12 +135,6 @@
     <ClCompile Include="Object\BackGround\BackGround.cpp">
       <Filter>02. Object\1. BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="Object\BackGround\FG_Normal_Cloud1.cpp">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\BackGround\FG_Normal_Cloud2.cpp">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Static\StepCloud.cpp">
       <Filter>02. Object\5. Static</Filter>
     </ClCompile>
@@ -140,9 +143,6 @@
     </ClCompile>
     <ClCompile Include="Object\Character\Character.cpp">
       <Filter>02. Object\2. Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\BackGround\BG_DragonMap.cpp">
-      <Filter>02. Object\1. BackGround\Back</Filter>
     </ClCompile>
     <ClCompile Include="Object\Character\Bullet.cpp">
       <Filter>02. Object\2. Character</Filter>
@@ -155,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="Animation2D\DragonAnimation.cpp">
       <Filter>03. Animation2D\01. Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
     </ClCompile>
     <ClCompile Include="Object\Effect\Effect.cpp">
       <Filter>02. Object\6 .Effect</Filter>
@@ -172,13 +169,43 @@
       <Filter>02. Object\1. BackGround\Back</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp">
-      <Filter>03. Animation2D\04 ForeGround</Filter>
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClCompile>
     <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
       <Filter>02. Object\6 .Effect</Filter>
     </ClCompile>
     <ClCompile Include="Object\Effect\Dust.cpp">
       <Filter>02. Object\6 .Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\FG_Normal_Cloud1.cpp">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\FG_Normal_Cloud2.cpp">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\FG_Loading.cpp">
+      <Filter>02. Object\1. BackGround\Fore\2. LoadingScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMode\KettleHouseScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\BG_DragonMap.cpp">
+      <Filter>02. Object\1. BackGround\Back\1.MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\BG_KettleHouse.cpp">
+      <Filter>02. Object\1. BackGround\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\BackGround\FG_LoadingAnim.cpp">
+      <Filter>03. Animation2D\04. BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\BackGround\BG_KettleHouseAnim.cpp">
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +252,7 @@
       <Filter>02. Object\4. Skill</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround_CloudAnim.h">
-      <Filter>03. Animation2D\04 ForeGround</Filter>
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\StepCloudAnimation.h">
       <Filter>03. Animation2D\02. StepObj</Filter>
@@ -242,12 +269,6 @@
     <ClInclude Include="Object\BackGround\BackGround.h">
       <Filter>02. Object\1. BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="Object\BackGround\FG_Normal_Cloud1.h">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\BackGround\FG_Normal_Cloud2.h">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Static\StepCloud.h">
       <Filter>02. Object\5. Static</Filter>
     </ClInclude>
@@ -256,9 +277,6 @@
     </ClInclude>
     <ClInclude Include="Object\Character\Character.h">
       <Filter>02. Object\2. Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\BackGround\BG_DragonMap.h">
-      <Filter>02. Object\1. BackGround\Back</Filter>
     </ClInclude>
     <ClInclude Include="Object\Character\Bullet.h">
       <Filter>02. Object\2. Character</Filter>
@@ -271,9 +289,6 @@
     </ClInclude>
     <ClInclude Include="Animation2D\DragonAnimation.h">
       <Filter>03. Animation2D\01. Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h">
-      <Filter>02. Object\1. BackGround\Fore</Filter>
     </ClInclude>
     <ClInclude Include="Object\Effect\Effect.h">
       <Filter>02. Object\6 .Effect</Filter>
@@ -288,13 +303,40 @@
       <Filter>02. Object\1. BackGround\Back</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h">
-      <Filter>03. Animation2D\04 ForeGround</Filter>
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClInclude>
     <ClInclude Include="Object\Effect\MeteorSmoke.h">
       <Filter>02. Object\6 .Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\Effect\Dust.h">
       <Filter>02. Object\6 .Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\FG_Normal_Cloud1.h">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\FG_Normal_Cloud2.h">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h">
+      <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\FG_Loading.h">
+      <Filter>02. Object\1. BackGround\Fore\2. LoadingScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMode\KettleHouseScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\BG_DragonMap.h">
+      <Filter>02. Object\1. BackGround\Back\1.MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\BG_KettleHouse.h">
+      <Filter>02. Object\1. BackGround\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\BackGround\FG_LoadingAnim.h">
+      <Filter>03. Animation2D\04. BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\BackGround\BG_KettleHouseAnim.h">
+      <Filter>03. Animation2D\04. BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

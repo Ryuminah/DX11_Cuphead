@@ -19,7 +19,7 @@ bool CTitleSceneWidget::Init()
 
 	m_OutlineText = CreateWidget<CText>("PressAnyButton");
 	m_OutlineText->SetFont("Tutorial_ExtraBold");
-	m_OutlineText->SetText(TEXT("Press Any Button"));
+	m_OutlineText->SetText(TEXT("Press Enter Key"));
 	m_OutlineText->SetColor(0.f, 0.f, 0.f);
 	m_OutlineText->SetPos(440.f, 50.f);
 	m_OutlineText->SetSize(400.f, 50.f);
@@ -27,9 +27,9 @@ bool CTitleSceneWidget::Init()
 	m_OutlineText->SetShadowEnable(false);
 
 	// 적을 text를 이름으로 등록한다.
-	m_Text = CreateWidget<CText>("PressAnyButton");
+	m_Text = CreateWidget<CText>("PressEnterKey");
 	m_Text->SetFont("Tutorial_ExtraBold");
-	m_Text->SetText(TEXT("Press Any Button"));
+	m_Text->SetText(TEXT("Press Enter Key"));
 	m_Text->SetColor(1.f, 0.79f, 0.39f);
 	m_Text->SetPos(440.f, 50.f);
 	m_Text->SetSize(400.f, 50.f);

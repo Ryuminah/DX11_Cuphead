@@ -16,6 +16,8 @@ private:
 
 public:
     virtual bool Init();
+    virtual void Update(float DeltaTime);
+
 
 private:
     void CreateMaterial();

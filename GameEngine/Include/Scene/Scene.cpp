@@ -101,6 +101,8 @@ bool CScene::Init()
 
 void CScene::Update(float DeltaTime)
 {
+    m_pSceneMode->Update(DeltaTime);
+
     auto    iter = m_ObjList.begin();
     auto    iterEnd = m_ObjList.end();
 

@@ -6,6 +6,7 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/WidgetComponent.h"
 
+// 씬마다 할 수 있는 행동 정리.
 class CMugman :
 	public CCharacter
 {

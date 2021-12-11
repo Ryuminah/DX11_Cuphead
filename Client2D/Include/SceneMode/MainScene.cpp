@@ -48,6 +48,12 @@ bool CMainScene::Init()
 	return true;
 }
 
+void CMainScene::Update(float DeltaTime)
+{
+	// æ¿ Ω√¿€ √º≈©
+
+}
+
 
 void CMainScene::CreateMaterial()
 {

@@ -25,6 +25,7 @@ bool CClientManager::Init()
     //CEngine::GetInst()->OnLogFPS(true);
 
     // Å° µî·Ï
+    CInput::GetInst()->CreateKey("Enter", VK_RETURN);
     CInput::GetInst()->CreateKey("MoveUp", VK_UP);
     CInput::GetInst()->CreateKey("Duck", VK_DOWN);
     CInput::GetInst()->CreateKey("MoveLeft", VK_LEFT);
@@ -112,7 +113,7 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::Skill, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::Parry, Collision_Interaction::Ignore);
 
-    CSceneManager::GetInst()->SetSceneMode<CMainScene>();
+    CSceneManager::GetInst()->SetSceneMode<CTitleScene>();
 
     //CreateMouse();
 

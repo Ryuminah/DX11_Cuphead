@@ -4,6 +4,8 @@
 #include "Scene/SceneResource.h"
 #include "../UI/TitleScene/TitleSceneWidget.h"
 #include "../Object/BackGround/BG_TitleScene.h"
+#include "Scene/SceneManager.h"
+#include "KettleHouseScene.h"
 
 
 CTitleScene::CTitleScene()
@@ -42,4 +44,13 @@ bool CTitleScene::Init()
 	CTitleSceneWidget* Widget = m_pScene->GetViewport()->AddWindow<CTitleSceneWidget>("TitleSceneWidget");
 
 	return true;
+}
+
+void CTitleScene::Update(float DeltaTime)
+{
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	{
+		CSceneManager::GetInst()->CreateNextScene();
+		CSceneManager::GetInst()->SetSceneMode<CKettleHouseScene>(false);
+	}
 }
