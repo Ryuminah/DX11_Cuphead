@@ -41,17 +41,29 @@ private:
 	bool m_bGameStart;
 	float m_IntroTime;		// 나중에 intro Animation 종료시로 조건을 변경한다.
 
+	// Jump
 	bool m_bCanJump;
 	bool m_bIsJump;
 	float m_JumpTime;
 	float m_JumpVelocity;
 	float m_JumpAccel;
-	float m_PosY;
+	float m_JumpInputTime;		// 낮은 점프 , 높은 점프
 
+	// Parry
+	bool m_bCanParry;
+	bool m_bIsParry;
+	bool m_bParrySuccess;		// 기본 상태는 true 이다	
+	float m_ParryTime;
+	float m_ParryVelocity;
+	float m_ParryAccel;
+	float m_StartY;			// 시작 위치로 돌아왔을 경우 패링 상태를 종료한다.
+
+	// Ground or Air
 	bool m_bIsGround;
 	bool m_bIsFall;
 	float m_FallTime;
 
+	// Dash
 	bool m_bIsDash;
 	bool m_bCanDash;
 	float m_DashTime;
@@ -72,13 +84,16 @@ private:
 	// Effect
 	float m_DustTime;
 
+	// Hit
 	bool m_bIsDamaged;
+	
 
 private:
 	// Shooting
 	float	m_ShootCool;
 	float	m_DashCool;
 	float	m_InvincibleTime;
+	float	m_ParryCheckTime;
 
 
 public:
@@ -97,6 +112,7 @@ public:
 	void MoveRight(float DeltaTime);
 	void MoveLeft(float DeltaTime);
 	void Jump(float DeltaTime);
+	void Parry();
 	void Shoot(float DeltaTime);
 	void Aim(float DeltaTime);
 	void Dash(float DeltaTime);
@@ -118,11 +134,12 @@ public: //Get Set
 
 	
 public: //Check Logic
+	void AnimCheck(float DeltaTime);
 	void FallCheck(float DeltaTime);
 	void JumpCheck(float DeltaTime);
+	void ParryCheck(float DeltaTime);
 	void DashCheck(float DeltaTime);
 	void TimeCheck(float DeltaTime);
-	void AnimCheck(float DeltaTime);
 	void DeathCheck(float DeltaTime);
 	void MuzzleLoopCheck(float DeltaTime);
 	void SavePlayerPos();
@@ -130,21 +147,18 @@ public: //Check Logic
 
 	
 public: // Move 관련
-	void JumpEnd();
+	void JumpEnd();				
+	void ParryEnd();			// 패링에 성공 했을 시에만 패링의 상태를 종료함
+	void ResetParry();
 	void DashEnd();
 	virtual void HitEnd();
 	void OnGround();
 	void OnStepCloud(float MoveZ, float CloudY);
 	void InAir();
 
-	// Shoot 관련
-public:
-
-
 public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
 	void CollisionOverlap(const HitResult& result, CCollider* Collider);
 	void CollisionEnd(const HitResult& result, CCollider* Collider);
-
 
 };

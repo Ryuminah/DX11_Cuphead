@@ -47,7 +47,7 @@ bool CPeashot::Init()
 	m_Sprite->AddChild(m_Rotation);
 
 
-	m_Collider->SetExtent(50.f, 70.f);
+	m_Collider->SetExtent(40.f, 70.f);
 	m_Collider->SetCollisionProfile("Skill");
 	m_Collider->SetColliderType(Collider_Type::Static);
 	//m_Collider->SetPivot(0.5f, 0.f, 0.f);
@@ -139,6 +139,8 @@ void CPeashot::SkillStart(float DeltaTime)
 		// 마지막 링은 무조건 패링이 가능하게끔.
 		if (m_Number == AllRingCount)
 		{
+			// 패링이 가능한 콜리전으로 변경
+			m_Collider->SetCollisionProfile("Parry");
 			m_Animation->ChangeAnimation("Dragon_Peashot_Ring_Pink");
 		}
 	}

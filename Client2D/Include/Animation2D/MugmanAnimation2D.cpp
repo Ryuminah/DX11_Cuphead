@@ -84,6 +84,12 @@ bool CMugmanAnimation2D::Init()
 	SetSequencePlayRate("Mugman_Dash_R", 2.0);
 	SetSequencePlayRate("Mugman_Dash_L", 2.0);
 
+	SetSequencePlayRate("Mugman_Hit_R", 2.0f);
+	SetSequencePlayRate("Mugman_Hit_L", 2.0f);
+
+	SetSequencePlayRate("Mugman_Parry_R", 2.0f);
+	SetSequencePlayRate("Mugman_Parry_L", 2.0f);
+
 	
 
 	return true;

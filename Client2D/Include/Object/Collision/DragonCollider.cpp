@@ -31,7 +31,7 @@ bool CDragonCollider::Init()
 
 	m_Collider->SetExtent(50.f, 360.f);
 	m_Collider->SetRelativePos(1000.f, 0.f, 0.f);
-	m_Collider->SetCollisionProfile("Enemy");
+	m_Collider->SetCollisionProfile("Static");
 	m_Collider->SetColliderType(Collider_Type::Character);
 
 	SetUseBlockMovement(false);

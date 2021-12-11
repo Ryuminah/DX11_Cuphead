@@ -87,8 +87,7 @@ void CCollisionSection::Collision(float DeltaTime)
             if (SrcProfile->vecChannel[(int)DestProfile->Channel].Interaction ==
                 Collision_Interaction::Ignore ||
                 DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction ==
-                Collision_Interaction::Ignore ||
-                Src->GetColliderType() == Collider_Type::Off)
+                Collision_Interaction::Ignore)
             {
                 continue;
             }
@@ -115,7 +114,7 @@ void CCollisionSection::Collision(float DeltaTime)
                     Src->CallCollisionCallback(Collision_State::Overlap);
                     Dest->CallCollisionCallback(Collision_State::Overlap);
 
-                    // 부딪치는 콜리전이 캐릭터이고, 충돌을 사용하고, CollisionInteraction이 
+                    // 부딪치는 콜리전이 캐릭터이고, 충돌을 사용하고, CollisionInteraction이 Block일 경우
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                         && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     {
