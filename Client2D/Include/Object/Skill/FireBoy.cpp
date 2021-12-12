@@ -61,6 +61,7 @@ bool CFireboy::Init()
 
 	m_Animation->SetFrameEndFunction<CFireboy>(this, &CFireboy::AnimFrameEnd);
 
+	SetDefaultZ(0.5f);
 	SetUseBlockMovement(false);
 	SetPhysicsSimulate(false);
 
@@ -101,6 +102,7 @@ void CFireboy::SkillStart(float DeltaTime)
 	if (m_bIsAttackUnit)
 	{
 		m_Sprite->GetMaterial(0)->SetBaseColor(0.5f, 0.f, 0.1f, 0.2f);
+		m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
 		m_Sprite->SetDefaultZ(0.1f);
 		m_CoolTime = 1.f;
 	}

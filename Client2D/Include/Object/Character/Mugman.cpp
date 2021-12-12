@@ -8,6 +8,15 @@
 #include "../Static/StepCloud.h"
 #include  "../Effect/Dust.h"
 
+Vector3 MuzzlePosition::Up = { 10.f, 50.f, 0.f };
+Vector3 MuzzlePosition::Up_Digonal_R = { 20.f, 70.f, 0.f };
+Vector3 MuzzlePosition::Up_Digonal_L = { -20.f, 70.f, 0.f };
+Vector3 MuzzlePosition::Down_Duck_R = { 20.f, 10.f, 0.f };
+Vector3 MuzzlePosition::Down_Duck_L = { -20.f, 10.f, 0.f };
+Vector3 MuzzlePosition::Down_Digonal_R = { 45.f, 10.f, 0.f };
+Vector3 MuzzlePosition::Down_Digonal_L = { -45.f, 10.f, 0.f };
+Vector3 MuzzlePosition::Down = { 0.f, -40.f, 0.f };
+
 Vector3 CMugman::PlayerPos = {0.f,0.f,0.f};
 Vector3 CMugman::PlayerPrevPos = { 0.f, 0.f, 0.f };
 
@@ -276,6 +285,7 @@ void CMugman::Duck(float DeltaTime)
 
 	// 공격중이면 공격하는 애님으로
 	m_bIsDuck = true;
+	m_bCanMove = false;
 	m_Collider->SetExtent(45.f, 20.f);
 
 	if (m_PrevDirection == Direction::RIGHT)
@@ -315,6 +325,11 @@ void CMugman::Duck(float DeltaTime)
 void CMugman::MoveRight(float DeltaTime)
 {
 	// Aiming 중이라면 이동은 하지 않고 보는 방향만 바꿔줌
+	if (m_bIsDuck)
+	{
+		m_PrevDirection = Direction::RIGHT;
+	}
+
 	if (m_bIsAiming)
 	{
 		m_PrevDirection = Direction::RIGHT;
@@ -326,6 +341,8 @@ void CMugman::MoveRight(float DeltaTime)
 			m_Animation->ChangeAnimation("Mugman_Aim_R");
 		}
 	}
+
+	// 대각선 입력을 받을 경우 애니메이션만 교체해주긩
 
 	// 대시중이라면 키 입력을 받지 않는다.
 	if (!m_bCanMove)
@@ -342,11 +359,12 @@ void CMugman::MoveRight(float DeltaTime)
 		{
 			m_Animation->ChangeAnimation("Mugman_Run_Shoot_R");
 		}
-		
+
 		else
 		{
 			m_Animation->ChangeAnimation("Mugman_Run_Normal_R");
 		}
+
 	}
 
 	AddRelativePos(GetAxis(AXIS_X)* m_Speed* DeltaTime);
@@ -355,6 +373,11 @@ void CMugman::MoveRight(float DeltaTime)
 
 void CMugman::MoveLeft(float DeltaTime)
 {
+	if (m_bIsDuck)
+	{
+		m_PrevDirection = Direction::LEFT;
+	}
+
 	// Aiming 중이라면 이동은 하지 않고 보는 방향만 바꿔준다.
 	if (m_bIsAiming)
 	{
@@ -399,7 +422,6 @@ void CMugman::Jump(float DeltaTime)
 	}
 
 	// 점프가 가능한 경우
-	m_bCanAttack = false;
 	m_bCanJump = false;
 	m_bCanAim = false;
 	m_bCanDuck = false;
@@ -459,52 +481,122 @@ void CMugman::Parry()
 
 void CMugman::Shoot(float DeltaTime)
 {
-	if (!m_bCanAttack || m_bIsDash || m_bIsFall || m_bIsJump)
+	if (!m_bCanAttack || m_bIsDash )
 	{
 		return;
 	}
 
-	if (m_BulletCount > 0 )
+	if (m_BulletCount > 0)
 	{
 		--m_BulletCount;
-
 		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
 
-		// 공격중이였다면 Animation을 다시 바꾸지 않음.
 
-		if (m_PrevDirection == Direction::RIGHT)
+		// 대각선인지를 우선 체크한다.
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
-			// 정지 사격일 경우
-			if (!m_bIsMove)
+			// 대각선일 경우 현재 동시에 눌려있는지에 대해 구분해야 한다.
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 			{
-				m_Animation->ChangeAnimation("Mugman_Shoot_R");
+				pBullet->SetBulletDirection(Direction::RIGHT);
+				m_Muzzle->SetWorldRotationZ(45.f);
+				m_Muzzle->SetRelativePos(MuzzlePosition::Up_Digonal_R);
 			}
 
-			pBullet->SetBulletDirection(Direction::RIGHT);
-		}
-
-		if (m_PrevDirection == Direction::LEFT)
-		{
-			Vector3 CurrentMuzzlePos = m_Muzzle->GetRelativePos();
-			m_Muzzle->SetRelativePos(-CurrentMuzzlePos.x, CurrentMuzzlePos.y, CurrentMuzzlePos.z);
-
-			if (!m_bIsMove)
+			else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 			{
-				m_Animation->ChangeAnimation("Mugman_Shoot_L");
+				pBullet->SetBulletDirection(Direction::LEFT);
+				m_Muzzle->SetWorldRotationZ(-45.f);
+				m_Muzzle->SetRelativePos(MuzzlePosition::Up_Digonal_L);
 			}
 
-			pBullet->SetBulletDirection(Direction::LEFT);
+			else
+			{
+				// 그냥 위로 사격하는 경우
+				pBullet->SetBulletDirection(Direction::RIGHT);
+				m_Muzzle->SetRelativePos(MuzzlePosition::Up);
+				m_Muzzle->SetWorldRotationZ(90.f);
+			}
 		}
 
+		else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		{
+			// 조준 중이 아닐 경우(Duck) 총구 위치만 변경해준다
+			if (!m_bIsAiming)
+			{
+				if (m_PrevDirection == Direction::RIGHT)
+				{
+					pBullet->SetBulletDirection(Direction::RIGHT);
+					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Duck_R);
+				}
+
+				if(m_PrevDirection == Direction::LEFT)
+				{
+					pBullet->SetBulletDirection(Direction::LEFT);
+					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Duck_L);
+				}
+			}
+
+			// 현재 조준 중 일 경우
+			else
+			{
+				if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+				{
+					pBullet->SetBulletDirection(Direction::RIGHT);
+					m_Muzzle->SetWorldRotationZ(-45.f);
+					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Digonal_R);
+				}
+
+				else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+				{
+					pBullet->SetBulletDirection(Direction::LEFT);
+					m_Muzzle->SetWorldRotationZ(45.f);
+					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Digonal_L);
+				}
+
+				else
+				{
+					// 그냥 아래로 사격하는 경우
+					pBullet->SetBulletDirection(Direction::RIGHT);
+					m_Muzzle->SetRelativePos(MuzzlePosition::Down);
+					m_Muzzle->SetWorldRotationZ(-90.f);
+				}
+			}
+		}
+
+		// 위 아래에 대한 키 입력이 없는 경우
+		else
+		{
+			if (m_PrevDirection == Direction::RIGHT)
+			{
+				pBullet->SetBulletDirection(Direction::RIGHT);
+
+				// 정지 사격일 경우만 애니메이션을 바꿔준다.
+				if (!m_bIsMove && !m_bIsJump)
+				{
+					m_Animation->ChangeAnimation("Mugman_Shoot_R");
+				}
+			}
+
+			if (m_PrevDirection == Direction::LEFT)
+			{
+				pBullet->SetBulletDirection(Direction::LEFT);
+				Vector3 CurrentMuzzlePos = m_Muzzle->GetRelativePos();
+				m_Muzzle->SetRelativePos(-CurrentMuzzlePos.x, CurrentMuzzlePos.y, CurrentMuzzlePos.z);
+
+				if (!m_bIsMove && !m_bIsJump)
+				{
+					m_Animation->ChangeAnimation("Mugman_Shoot_L");
+				}
+			}
+		}
+
+		pBullet->SetWorldRotationZ(m_Muzzle->GetWorldRotation().z);
 		pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
 
 		m_bCanAttack = false;
 		m_bIsAttack = true;
 	}
-
-	
-	//pBullet->SetRelativeRotation(GetWorldRotation());
-
 }
 
 void CMugman::Aim(float DeltaTime)
@@ -514,17 +606,6 @@ void CMugman::Aim(float DeltaTime)
 	{
 		return;
 	}
-
-	/*m_Sprite->SetRelativeScale(150.f, 170.f, 0.f);
-	if (m_PrevDirection == Direction::RIGHT)
-	{
-		m_Animation->ChangeAnimation("Mugman_Aim_R");
-	}
-
-	if (m_PrevDirection == Direction::LEFT)
-	{
-		m_Animation->ChangeAnimation("Mugman_Aim_L");
-	}*/
 
 	m_bCanDuck = false;
 	m_bCanMove = false;
@@ -545,6 +626,7 @@ void CMugman::AimDown()
 		// Digonal Down
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
+			float   Angle = GetWorldRotation().z - 30.f;
 			m_Animation->ChangeAnimation("Mugman_AimDown_Digonal_R");
 			return;
 
@@ -628,6 +710,11 @@ void CMugman::Hit()
 		JumpEnd();
 	}
 
+	if (m_bIsFall)
+	{
+		FallEnd();
+	}
+
 	if (m_bIsAiming)
 	{
 		m_bCanMove = true;
@@ -662,6 +749,10 @@ void CMugman::Hit()
 void CMugman::ShootEnd(float DeltaTime)
 {
 	m_bIsAttack = false;
+	m_ShootCool = 0.2f;
+	// Z값을 항상 초기화 해준다.
+	m_Muzzle->SetWorldRotationZ(0.f);
+	
 }
 
 void CMugman::MoveEnd(float DeltaTime)
@@ -692,7 +783,6 @@ void CMugman::AimEnd(float DeltaTime)
 	m_bCanMove = true;
 	m_bCanDuck = true;
 	m_bIsAiming = false;
-
 
 	SetRelativeScale(200.f, 200.f, 1.f);
 
@@ -826,7 +916,7 @@ void CMugman::ParryCheck(float DeltaTime)
 
 void CMugman::FallCheck(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsDamaged)
+	if (m_bIsDash)
 	{
 		return;
 	}
@@ -891,6 +981,44 @@ void CMugman::ParryEnd()
 	m_ParryAccel = 70.f;
 	m_ParryCheckTime = 0.f;
 
+	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
+
+	// 대시의 끝이 공중인지 체크
+	if (!m_bIsGround && !m_bIsJump)
+	{
+		m_bIsFall = true;
+
+		if (GetPrevDirection() == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Jump_R");
+
+		}
+
+		if (GetPrevDirection() == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Jump_L");
+		}
+
+		return;
+	}
+
+	// 땅일 경우
+	else
+	{
+		m_bCanDuck = true;
+
+		if (GetPrevDirection() == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+		}
+
+		if (GetPrevDirection() == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_L");
+		}
+
+	}
 }
 
 
@@ -998,8 +1126,8 @@ void CMugman::OnGround()
 {
 	// 땅에 닿았을때 정지하거나 수행 가능한 모든 행동을 처리
 	m_FallTime = 0.f;
-
 	m_bIsFall = false;
+
 	m_bIsJump = false;
 	m_bIsGround = true;
 
@@ -1095,7 +1223,7 @@ void CMugman::TimeCheck(float DeltaTime)
 		pDust->SetRelativePos(GetPrevWorldPos());
 	}
 
-	if (m_InvincibleTime >= 1.f)
+	if (m_InvincibleTime >= 0.5f)
 	{
 		InvincibleEnd();
 		m_InvincibleTime = 0.f;
@@ -1146,6 +1274,12 @@ void CMugman::MuzzleLoopCheck(float DeltaTime)
 	// Move Y
 	float MoveY = sin(PI * 2 / 30.f * m_Frame) * m_MuzzleMaxY;
 	m_Muzzle->AddRelativePos(GetAxis(AXIS_Y) * MoveY * DeltaTime);
+
+	// 회전 했을 경우도 생각해보기.
+	/*if (m_Muzzle->GetRelativeRotation().z != 0.f)
+	{
+		m_Muzzle->AddRelativePos(GetAxis(AXIS_X) * MoveY * DeltaTime);
+	}*/
 }
 
 void CMugman::SavePlayerPos()
@@ -1178,7 +1312,6 @@ void CMugman::InAir()
 	m_bIsAttack = false;
 	m_bIsAiming = false;
 
-	m_bCanAttack = false;
 	m_bCanJump = false;
 	m_bCanAim = false;
 	m_bCanDuck = false;
@@ -1201,6 +1334,12 @@ void CMugman::InAir()
 			m_Animation->ChangeAnimation("Mugman_Jump_L");
 		}
 	}
+}
+
+void CMugman::FallEnd()
+{
+	m_FallTime = 0.f;
+	m_bIsFall = false;
 }
 
 

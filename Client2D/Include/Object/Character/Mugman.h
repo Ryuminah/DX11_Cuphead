@@ -6,6 +6,20 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/WidgetComponent.h"
 
+struct MuzzlePosition
+{
+	static Vector3 Up;
+	static Vector3 Up_Digonal_R;
+	static Vector3 Up_Digonal_L;
+
+	static Vector3 Down;
+	static Vector3 Down_Duck_R;
+	static Vector3 Down_Duck_L;
+	static Vector3 Down_Digonal_R;
+	static Vector3 Down_Digonal_L;
+};
+
+
 // 씬마다 할 수 있는 행동 정리.
 class CMugman :
 	public CCharacter
@@ -162,6 +176,7 @@ public: // Move 관련
 	void JumpEnd();				
 	void ParryEnd();			
 	void DashEnd();
+	void FallEnd();
 	virtual void HitEnd();
 	void OnGround();
 	void OnStepCloud(float MoveZ, float CloudY);

@@ -71,7 +71,7 @@ void CCharacter::SkillEnd(std::string SkillName)
 
 void CCharacter::Invincible()
 {
-	m_Sprite->GetMaterial(0)->SetBaseColor(0.99f, 0.99f, 0.99f, 0.5f);
+	m_Sprite->GetMaterial(0)->SetBaseColor(0.46f, 0.98f, 1.0f, 0.3f);
 	m_bCanDamaged = false;
 	m_bIsInvincible = true;
 }
