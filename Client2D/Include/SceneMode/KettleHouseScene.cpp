@@ -6,6 +6,7 @@
 #include "../Object/Character/Mugman.h"
 #include "../Object/BackGround/FG_Loading.h"
 #include "../Object/BackGround/BG_KettleHouse.h"
+#include "../Object/Collision/GroundCollider.h"
 #include "Scene/SceneManager.h"
 #include "LoadingScene.h"
 
@@ -24,6 +25,8 @@ bool CKettleHouseScene::Init()
 	//CreateMugmanAnim();
 
 	BG_KettleHouse* pKettleHouse = m_pScene->SpawnObject<BG_KettleHouse>("BG_KettleHouse");
+	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
+	pGroundCollider->AddWorldPos(0.f, 50.f, 0.f);
 
 	//CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
 

@@ -19,13 +19,13 @@ CEditorScene::~CEditorScene()
 
 bool CEditorScene::Init()
 {
-    CInput::GetInst()->CreateKey("MoveUp", 'W');
+    CInput::GetInst()->CreateKey("AimUp", 'W');
     CInput::GetInst()->CreateKey("MoveDown", 'S');
     CInput::GetInst()->CreateKey("MoveLeft", 'A');
     CInput::GetInst()->CreateKey("MoveRight", 'D');
     CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
 
-    CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveUp", KT_Push, this, &CEditorScene::MoveUp);
+    CInput::GetInst()->AddKeyCallback<CEditorScene>("AimUp", KT_Push, this, &CEditorScene::AimUp);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveDown", KT_Push, this, &CEditorScene::Duck);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveLeft", KT_Push, this, &CEditorScene::MoveLeft);
     CInput::GetInst()->AddKeyCallback<CEditorScene>("MoveRight", KT_Push, this, &CEditorScene::MoveRight);
@@ -46,7 +46,7 @@ void CEditorScene::PostUpdate(float DeltaTime)
     CSceneMode::PostUpdate(DeltaTime);
 }
 
-void CEditorScene::MoveUp(float DeltaTime)
+void CEditorScene::AimUp(float DeltaTime)
 {
     CCamera* Camera = m_pScene->GetCameraManager()->GetCurrentCamera();
 

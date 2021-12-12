@@ -19,7 +19,7 @@ public:
     virtual void PostUpdate(float DeltaTime);
 
 private:
-    void MoveUp(float DeltaTime);
+    void AimUp(float DeltaTime);
     void Duck(float DeltaTime);
     void MoveLeft(float DeltaTime);
     void MoveRight(float DeltaTime);

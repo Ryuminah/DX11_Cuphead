@@ -23,7 +23,7 @@ CMugman::CMugman() :
 	m_ParryTime(0.f),m_ParryAccel(50.f), m_ParryVelocity(70.f), m_StartY(0.f),
 	m_JumpTime(0.f),m_JumpVelocity(50.f),m_JumpAccel(90.f),
 	m_FallTime(0.f),
-	m_DashSpeed(100.f),m_DashTime(0.0f),
+	m_DashSpeed(50.f),m_DashTime(0.0f),
 	m_ShootCool(0.2f),
 	m_DashCool(0.5f),
 	m_IntroTime(5.f),
@@ -41,7 +41,10 @@ CMugman::CMugman() :
 	m_bCanMove = true;
 	m_bCanDash = true;
 	m_bCanParry = false;
+	m_bCanDuck = true;
 	m_bParrySuccess = false;
+
+	m_bIsFightScene = true;
 }
 
 CMugman::CMugman(const CMugman& obj) : CCharacter(obj)
@@ -57,11 +60,41 @@ CMugman::CMugman(const CMugman& obj) : CCharacter(obj)
 
 CMugman::~CMugman()
 {
+
 }
 
 void CMugman::Start()
 {
 	CGameObject::Start();
+
+
+	CInput::GetInst()->AddKeyCallback<CMugman>("AimUp", KT_Push, this, &CMugman::AimUp);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Push, this, &CMugman::Duck);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Push, this, &CMugman::Aim);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
+
+
+	// End CallBack Func
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Up, this, &CMugman::AimEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("AimUp", KT_Up, this, &CMugman::AimEnd);
+	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Up, this, &CMugman::DuckEnd);
+
+	// 전투 상황일 경우 X키는 공격으로 등록
+	if (m_bIsFightScene)
+	{
+		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
+		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd);
+	}
+
+	else
+	{
+
+	}
 }
 
 bool CMugman::Init()
@@ -90,7 +123,7 @@ bool CMugman::Init()
 
 	
 	m_Muzzle->SetInheritRotZ(true);
-	m_Muzzle->SetRelativePos(Vector3(10.f, -15.f, 0.f));
+	m_Muzzle->SetRelativePos(Vector3(10.f, 40.f, 0.f));
 	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
 
 	//m_Arm->SetOffset(0.f, 0.f, 0.f);
@@ -110,25 +143,6 @@ bool CMugman::Init()
 	//m_Sprite->AddChild(m_Muzzle);
 	
 	m_Rotation->SetPivot(0.5f, 0.5f, 0.f);
-
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Push, this, &CMugman::MoveUp);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Push, this, &CMugman::Duck);
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Push, this, &CMugman::Aim);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
-
-
-	// End CallBack Func
-	CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd); 
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
-	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Up, this, &CMugman::MoveEnd);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Up, this, &CMugman::AimEnd);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Up, this, &CMugman::DuckEnd);
-	//CInput::GetInst()->AddKeyCallback<CMugman>("MoveUp", KT_Up, this, &CMugman::MoveEnd);
-
 
 	SetPhysicsSimulate(true);
 	SetUseBlockMovement(true);
@@ -206,11 +220,33 @@ void CMugman::Animation2DNotify(const std::string& Name)
 	CCharacter::Animation2DNotify(Name);
 }
 
-void CMugman::MoveUp(float DeltaTime)
+void CMugman::AimUp(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsJump || !m_bIsGround)
+	if (!m_bCanAim || m_bIsDash || m_bIsJump || !m_bIsGround)
 	{
 		return;
+	}
+
+	m_bCanMove = false;
+	m_bIsAiming = true;
+
+	SetRelativeScale(200.f, 200.f, 0.f);
+
+	// 에임이 활성화 되어 있을 경우 대각선 입력까지 체크해보아야 한다
+	if (GetAsyncKeyState('C') & 0x8000)
+	{
+		// Digonal UP
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			m_Animation->ChangeAnimation("Mugman_AimUp_Digonal_R");
+			return;
+		}
+
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			m_Animation->ChangeAnimation("Mugman_AimUp_Digonal_L");
+			return;
+		}
 	}
 
 	if (m_PrevDirection == Direction::RIGHT)
@@ -222,13 +258,18 @@ void CMugman::MoveUp(float DeltaTime)
 	{
 		m_Animation->ChangeAnimation("Mugman_AimUp_L");
 	}
-
-	//AddRelativePos(GetAxis(AXIS_Y) * m_Speed * DeltaTime);
+	
 }
 
 void CMugman::Duck(float DeltaTime)
 {
-	if (m_bIsDash || m_bIsJump || !m_bIsGround ||m_bParrySuccess || !m_bCanMove)
+	if (m_bIsAiming)
+	{
+		AimDown();
+	}
+
+	// 숙일 수 없는 경우
+	if (!m_bCanDuck)
 	{
 		return;
 	}
@@ -262,12 +303,32 @@ void CMugman::Duck(float DeltaTime)
 			m_Animation->ChangeAnimation("Mugman_Duck_Loop_L");
 		}
 	}
+
+	// 땅에서 아래로 내려가려고 하는 경우
+	if (m_bIsGround && (GetAsyncKeyState('Z') & 0x8000))
+	{
+		InAir();
+		return;
+	}
 }
 
 void CMugman::MoveRight(float DeltaTime)
 {
+	// Aiming 중이라면 이동은 하지 않고 보는 방향만 바꿔줌
+	if (m_bIsAiming)
+	{
+		m_PrevDirection = Direction::RIGHT;
+
+		// 위, 아래 동시 입력이 아닐 경우에만 애니메이션을 변경해준다.
+		if (!(GetAsyncKeyState(VK_UP) & 0x8000) && !(GetAsyncKeyState(VK_DOWN) & 0x8000))
+		{
+			m_Sprite->SetRelativeScale(140.f, 170.f, 0.f);
+			m_Animation->ChangeAnimation("Mugman_Aim_R");
+		}
+	}
+
 	// 대시중이라면 키 입력을 받지 않는다.
-	if (m_bIsDash || !m_bCanMove)
+	if (!m_bCanMove)
 	{
 		return;
 	}
@@ -294,7 +355,20 @@ void CMugman::MoveRight(float DeltaTime)
 
 void CMugman::MoveLeft(float DeltaTime)
 {
-	if (m_bIsDash || !m_bCanMove)
+	// Aiming 중이라면 이동은 하지 않고 보는 방향만 바꿔준다.
+	if (m_bIsAiming)
+	{
+		m_PrevDirection = Direction::LEFT;
+
+		// 위, 아래 동시 입력이 아닐 경우에만 애니메이션을 변경해준다.
+		if (!(GetAsyncKeyState(VK_UP) & 0x8000) && !(GetAsyncKeyState(VK_DOWN) & 0x8000))
+		{
+			m_Sprite->SetRelativeScale(140.f, 170.f, 0.f);
+			m_Animation->ChangeAnimation("Mugman_Aim_L");
+		}
+	}
+
+	if (!m_bCanMove)
 	{
 		return;
 	}
@@ -324,17 +398,11 @@ void CMugman::Jump(float DeltaTime)
 		return;
 	}
 
-	// 땅에서 아래로 내려가려고 하는 경우
-	if (m_bIsGround && (GetAsyncKeyState(VK_DOWN) & 0x8000))
-	{
-		InAir();
-		return;
-	}
-
 	// 점프가 가능한 경우
 	m_bCanAttack = false;
 	m_bCanJump = false;
 	m_bCanAim = false;
+	m_bCanDuck = false;
 
 	m_bIsFall = false;
 	m_bIsJump = true;
@@ -441,25 +509,65 @@ void CMugman::Shoot(float DeltaTime)
 
 void CMugman::Aim(float DeltaTime)
 {
+	// 좌, 우에 관련된 로직만 해당 부분에서 처리한다.
 	if (!m_bCanAim)
 	{
 		return;
 	}
 
-	if (!m_bIsAiming)
+	/*m_Sprite->SetRelativeScale(150.f, 170.f, 0.f);
+	if (m_PrevDirection == Direction::RIGHT)
 	{
-		if (m_PrevDirection == Direction::RIGHT)
+		m_Animation->ChangeAnimation("Mugman_Aim_R");
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Aim_L");
+	}*/
+
+	m_bCanDuck = false;
+	m_bCanMove = false;
+	m_bIsAiming = true;
+}
+
+void CMugman::AimDown()
+{
+	m_bCanDuck = false;
+	m_bCanMove = false;
+	m_bIsAiming = true;
+
+	SetRelativeScale(200.f, 200.f, 0.f);
+
+	// 에임이 활성화 되어 있을 경우 대각선 입력까지 체크해보아야 한다
+	if (GetAsyncKeyState('C') & 0x8000)
+	{
+		// Digonal Down
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
-			m_Animation->ChangeAnimation("Mugman_Aim_R");
+			m_Animation->ChangeAnimation("Mugman_AimDown_Digonal_R");
+			return;
+
 		}
 
-		if (m_PrevDirection == Direction::LEFT)
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
-			m_Animation->ChangeAnimation("Mugman_Aim_L");
+			m_Animation->ChangeAnimation("Mugman_AimDown_Digonal_L");
+			return;
 		}
 	}
+
+
+	if (m_PrevDirection == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_AimDown_R");
+	}
+
+	if (m_PrevDirection == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_AimDown_L");
+	}
 	
-	m_bIsAiming = true;
 }
 
 void CMugman::Dash(float DeltaTime)
@@ -476,12 +584,14 @@ void CMugman::Dash(float DeltaTime)
 		JumpEnd();
 	}
 
-	m_bIsDash = true;
 	m_bCanMove = false;
 	m_bCanAttack = false;
 	m_bCanDash = false;
 	m_bCanJump = false;
 	m_bCanAim = false;
+	m_bCanDuck = false;
+
+	m_bIsDash = true;
 	
 	ResetPhysicsSimulate();
 	SetPhysicsSimulate(true);
@@ -518,6 +628,12 @@ void CMugman::Hit()
 		JumpEnd();
 	}
 
+	if (m_bIsAiming)
+	{
+		m_bCanMove = true;
+		m_bIsAiming = false;
+	}
+
 	// 할 수 있는 행동 전부 막고 모든 상태를 즉시 종료함
 	m_bCanAim = false;
 	m_bCanAttack = false;
@@ -525,8 +641,6 @@ void CMugman::Hit()
 	m_bCanMove = false;
 	m_bCanDamaged = false;
 	m_bCanJump = false;
-
-
 
 	m_bIsDamaged = true;
 
@@ -558,14 +672,40 @@ void CMugman::MoveEnd(float DeltaTime)
 
 void CMugman::DuckEnd(float DeltaTime)
 {
-	m_Collider->SetExtent(45.f, 70.f);
-	m_bIsDuck = false;
-	m_bIsDuckLoop = false;
+	m_bCanMove = true;
+
+	if (m_bIsAiming)
+	{
+		AimEnd(DeltaTime);
+	}
+
+	if (m_bIsDuck)
+	{
+		m_Collider->SetExtent(45.f, 70.f);
+		m_bIsDuck = false;
+		m_bIsDuckLoop = false;
+	}
 }
 
 void CMugman::AimEnd(float DeltaTime)
 {
+	m_bCanMove = true;
+	m_bCanDuck = true;
 	m_bIsAiming = false;
+
+
+	SetRelativeScale(200.f, 200.f, 1.f);
+
+	if (GetPrevDirection() == Direction::RIGHT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+	}
+
+	if (GetPrevDirection() == Direction::LEFT)
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_L");
+	}
 }
 
 
@@ -741,12 +881,7 @@ void CMugman::JumpEnd()
 
 void CMugman::ParryEnd()
 {
-	// 땅에 닿았을 시 패링 종료.
-	ResetParry();
-}
-
-void CMugman::ResetParry()
-{
+	// 땅에 닿았을 시 패링 종료
 	m_bIsParry = false;
 	m_bCanParry = false;
 	m_bParrySuccess = false;
@@ -755,14 +890,17 @@ void CMugman::ResetParry()
 	m_ParryTime = 0.f;
 	m_ParryAccel = 70.f;
 	m_ParryCheckTime = 0.f;
+
 }
+
 
 void CMugman::DashEnd()
 {
-	m_DashSpeed = 100.f;
+	m_DashSpeed = 50.f;
 	m_DashTime = 0.f;
 
 	m_bIsDash = false;
+
 	m_bCanJump = true;
 	m_bCanMove = true;
 	m_bCanAttack = true;
@@ -790,31 +928,35 @@ void CMugman::DashEnd()
 		return;
 	}
 
-
-	if (GetPrevDirection() == Direction::RIGHT)
+	// 땅일 경우
+	else
 	{
-		m_Animation->ChangeAnimation("Mugman_Idle_R");
+		m_bCanDuck = true;
+
+		if (GetPrevDirection() == Direction::RIGHT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_R");
+
+		}
+
+		if (GetPrevDirection() == Direction::LEFT)
+		{
+			m_Animation->ChangeAnimation("Mugman_Idle_L");
+		}
 
 	}
-
-	if (GetPrevDirection() == Direction::LEFT)
-	{
-		m_Animation->ChangeAnimation("Mugman_Idle_L");
-	}
-
-
 }
 
 void CMugman::HitEnd()
 {
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 
-	m_bCanAim = true;
 	m_bCanAttack = true;
 	m_bCanDash = true;
 	m_bCanMove = true;
 	m_bCanJump = true;
 	m_bCanDamaged = true;
+	m_bCanAim = true;
 
 	m_bIsDamaged = false;
 
@@ -863,7 +1005,7 @@ void CMugman::OnGround()
 
 	if (m_bIsParry)
 	{
-		ResetParry();
+		ParryEnd();
 	}
 	//m_bIsAttack = false;
 
@@ -871,6 +1013,8 @@ void CMugman::OnGround()
 	m_bCanAttack = true;
 	m_bCanDash = true;
 	m_bCanAim = true;
+	m_bCanDuck = true;
+
 	
 	SetPhysicsSimulate(false);
 	SetUseBlockMovement(true);
@@ -958,7 +1102,7 @@ void CMugman::TimeCheck(float DeltaTime)
 	}
 
 	// 패링의 자동종료
-	if (m_ParryCheckTime >= 1.0f)
+	if (m_ParryCheckTime >= 0.3f)
 	{
 		m_bCanParry = false;
 		m_bIsParry = false;
@@ -972,7 +1116,7 @@ void CMugman::AnimCheck(float DeltaTime)
 	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
 	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
 
-	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && 
+	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsAiming && 
 		!m_bIsMove && !m_bIsDamaged && !m_bIsDuck && (!m_bIsParry && !m_bParrySuccess))
 	{
 		if (GetPrevDirection() == Direction::RIGHT)
@@ -1037,6 +1181,8 @@ void CMugman::InAir()
 	m_bCanAttack = false;
 	m_bCanJump = false;
 	m_bCanAim = false;
+	m_bCanDuck = false;
+
 
 	if (!m_bIsDash && !m_bParrySuccess)
 	{
@@ -1136,6 +1282,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 
 		if (m_bCanParry)
 		{
+			m_bCanDamaged = false;
 			m_bIsParry = true;
 
 			// 만약 점프가 눌린 상태라면 패링을 실행한다
@@ -1148,6 +1295,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 		// 충돌 중이나 패링 가능 시간이 종료 됐을 경우 피격 체크
 		if (!m_bCanParry && !m_bIsParry && !m_bParrySuccess)
 		{
+			m_bCanDamaged = true;
 			ParryEnd();
 			Hit();
 		}

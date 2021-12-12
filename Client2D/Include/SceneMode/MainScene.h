@@ -35,7 +35,5 @@ private:
     // Game Object »ý¼º
     void CreateStepCloud();
     void CreateBackGround();
-
-
 };
 

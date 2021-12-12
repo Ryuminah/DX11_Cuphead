@@ -41,6 +41,7 @@ bool CMainScene::Init()
 	// Create GameObject
 	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
+	pMugman->SetIsFightScene(true);
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
 
 	CreateStepCloud();

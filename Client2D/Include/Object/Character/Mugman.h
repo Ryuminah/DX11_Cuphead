@@ -40,9 +40,11 @@ private:
 private:
 	// Game Start
 	bool m_bGameStart;
+	bool m_bIsFightScene;	// Scene마다 등록해야하는 콜백 함수를 변경해준다.
 	float m_IntroTime;		// 나중에 intro Animation 종료시로 조건을 변경한다.
 
 	// Basic Movement
+	bool m_bCanDuck;
 	bool m_bIsDuck;
 	bool m_bIsDuckLoop;
 
@@ -112,14 +114,15 @@ public:
 	virtual void Animation2DNotify(const std::string& Name);
 
 public:
-	void MoveUp(float DeltaTime);
+	void AimUp(float DeltaTime);
+	void Aim(float DeltaTime);
+	void AimDown();
 	void Duck(float DeltaTime);
 	void MoveRight(float DeltaTime);
 	void MoveLeft(float DeltaTime);
 	void Jump(float DeltaTime);
 	void Parry();
 	void Shoot(float DeltaTime);
-	void Aim(float DeltaTime);
 	void Dash(float DeltaTime);
 	virtual void Hit();
 
@@ -138,6 +141,11 @@ public: //Get Set
 		return m_bIsGround;
 	}
 
+	void SetIsFightScene(bool IsFightScene)
+	{
+		m_bIsFightScene = IsFightScene;
+	}
+
 	
 public: //Check Logic
 	void AnimCheck(float DeltaTime);
@@ -150,12 +158,9 @@ public: //Check Logic
 	void MuzzleLoopCheck(float DeltaTime);
 	void SavePlayerPos();
 
-
-	
 public: // Move 관련
 	void JumpEnd();				
-	void ParryEnd();			// 패링에 성공 했을 시에만 패링의 상태를 종료함
-	void ResetParry();
+	void ParryEnd();			
 	void DashEnd();
 	virtual void HitEnd();
 	void OnGround();

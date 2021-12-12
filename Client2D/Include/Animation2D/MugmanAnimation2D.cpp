@@ -39,6 +39,17 @@ bool CMugmanAnimation2D::Init()
 	AddAnimationSequence2D("Mugman_AimDown_Digonal_R");
 	AddAnimationSequence2D("Mugman_AimDown_Digonal_L");
 
+	SetSequencePlayRate("Mugman_Aim_R", 2.0f);
+	SetSequencePlayRate("Mugman_Aim_L", 2.0f);
+	SetSequencePlayRate("Mugman_AimUp_R", 2.0f);
+	SetSequencePlayRate("Mugman_AimUp_L", 2.0f);
+	SetSequencePlayRate("Mugman_AimDown_R", 2.0f);
+	SetSequencePlayRate("Mugman_AimDown_L", 2.0f);
+	SetSequencePlayRate("Mugman_AimUp_Digonal_R", 2.0f);
+	SetSequencePlayRate("Mugman_AimUp_Digonal_L", 2.0f);
+	SetSequencePlayRate("Mugman_AimDown_Digonal_R", 2.0f);
+	SetSequencePlayRate("Mugman_AimDown_Digonal_L", 2.0f);
+
 	// Run
 	AddAnimationSequence2D("Mugman_Run_Normal_R");
 	AddAnimationSequence2D("Mugman_Run_Normal_L");
