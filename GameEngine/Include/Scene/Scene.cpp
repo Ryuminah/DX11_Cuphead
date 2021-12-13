@@ -44,6 +44,8 @@ void CScene::Start()
 {
     m_StartScene = true;
 
+    m_pSceneMode->Start();
+
     auto    iter = m_ObjList.begin();
     auto    iterEnd = m_ObjList.end();
 

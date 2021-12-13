@@ -13,8 +13,10 @@ protected:
 protected:
     class CScene* m_pScene;
 
+
 public:
     virtual bool Init();
+    virtual void Start();
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
 };

@@ -5,7 +5,7 @@
 #include "ThreadManager.h"
 #include "../Object/BackGround/FG_Loading.h"
 
-CLoadingScene::CLoadingScene()
+CLoadingScene::CLoadingScene() : m_Thread(nullptr)
 {
 }
 
@@ -27,6 +27,11 @@ bool CLoadingScene::Init()
 	return true;
 }
 
+void CLoadingScene::Update(float DeltaTime)
+{
+	
+}
+
 void CLoadingScene::CreateLoadingAnim()
 {
 	m_pScene->GetResource()->CreateAnimationSequence2D("Loading");
@@ -36,5 +41,21 @@ void CLoadingScene::CreateLoadingAnim()
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Loading",
 			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
+}
+
+void CLoadingScene::SetTutorialScene(bool IsTutorialScene)
+{
+	if (m_Thread)
+	{
+		m_Thread->SetTutorialScene(IsTutorialScene);
+	}
+}
+
+void CLoadingScene::SetMainScene(bool IsMainScene)
+{
+	if (m_Thread)
+	{
+		m_Thread->SetTutorialScene(IsMainScene);
 	}
 }

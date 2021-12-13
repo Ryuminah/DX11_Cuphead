@@ -13,9 +13,6 @@
 #include "../Object/BackGround/FG_Normal_Cloud2.h"
 #include "../Object/BackGround/FG_Normal_Cloud3.h"
 
-
-
-
 CMainScene::CMainScene() : m_pGameStart(false) , m_WaitTime(2.f)
 {
 }
@@ -30,23 +27,21 @@ bool CMainScene::Init()
 	CreateAnimationSequence2D();
 	CreateParticle();
 
-	//m_pScene->GetResource()->LoadSound("UI", false, "ButtonMouseOn",
-	//	"TeemoSmile.mp3");
-	//m_pScene->GetResource()->LoadSound("UI", false, "ButtonClick",
-	//	"TeemoStartClicck.mp3");
-
-	// Create BackGround
 	CreateBackGround();
 
 	// Create GameObject
-	CGroundCollider* pGroundCollider= m_pScene->SpawnObject<CGroundCollider>("Ground");
-	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
+	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
+	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("MugmanTwo");
 	pMugman->SetIsFightScene(true);
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
-
 	CreateStepCloud();
 
 	return true;
+}
+
+void CMainScene::Start()
+{
+
 }
 
 void CMainScene::Update(float DeltaTime)
@@ -58,9 +53,7 @@ void CMainScene::Update(float DeltaTime)
 
 void CMainScene::CreateMaterial()
 {
-	m_pScene->GetResource()->CreateMaterial("PlayerChild");
-	m_pScene->GetResource()->AddMaterialTexture("PlayerChild", "PlayerChild",
-		TEXT("Teemo.jpg"));
+
 }
 
 void CMainScene::CreateAnimationSequence2D()

@@ -25,6 +25,10 @@ public:
     void CreateNextScene();
     class CScene* CreateScene();
     void SetNextScene(class CScene* Scene);
+    CScene* GetNextScene()
+    {
+        return m_pNextScene;
+    }
 
 private:
     bool ChangeScene();

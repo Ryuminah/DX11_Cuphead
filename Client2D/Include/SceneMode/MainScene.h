@@ -16,6 +16,7 @@ private:
 
 public:
     virtual bool Init();
+    virtual void Start();
     virtual void Update(float DeltaTime);
 
 

@@ -29,7 +29,7 @@ CMugman::CMugman() :
 	m_bIsParry(false),
 	m_bIsAiming(false),
 	m_bGameStart(false),
-	m_ParryTime(0.f),m_ParryAccel(50.f), m_ParryVelocity(70.f), m_StartY(0.f),
+	m_ParryTime(0.f),m_ParryAccel(70.f), m_ParryVelocity(70.f), m_StartY(0.f),
 	m_JumpTime(0.f),m_JumpVelocity(50.f),m_JumpAccel(90.f),
 	m_FallTime(0.f),
 	m_DashSpeed(50.f),m_DashTime(0.0f),
@@ -69,13 +69,12 @@ CMugman::CMugman(const CMugman& obj) : CCharacter(obj)
 
 CMugman::~CMugman()
 {
-
+	CInput::GetInst()->ClearCallback();
 }
 
 void CMugman::Start()
 {
 	CGameObject::Start();
-
 
 	CInput::GetInst()->AddKeyCallback<CMugman>("AimUp", KT_Push, this, &CMugman::AimUp);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Duck", KT_Push, this, &CMugman::Duck);
@@ -976,7 +975,7 @@ void CMugman::ParryEnd()
 	m_bCanParry = false;
 	m_bParrySuccess = false;
 
-	m_ParryVelocity = 50.f;
+	m_ParryVelocity = 70.f;
 	m_ParryTime = 0.f;
 	m_ParryAccel = 70.f;
 	m_ParryCheckTime = 0.f;

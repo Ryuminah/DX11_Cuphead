@@ -164,6 +164,7 @@
     <ClCompile Include="Animation2D\BackGround\BG_KettleHouseAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\FG_LoadingAnim.cpp" />
+    <ClCompile Include="Animation2D\BackGround\TutorialSceneAnim.cpp" />
     <ClCompile Include="Animation2D\BulletAnimation.cpp" />
     <ClCompile Include="Animation2D\DragonAnimation.cpp" />
     <ClCompile Include="Animation2D\BackGround_CloudAnim.cpp" />
@@ -174,8 +175,11 @@
     <ClCompile Include="Object\BackGround\BG_DragonMap.cpp" />
     <ClCompile Include="Object\BackGround\BG_KettleHouse.cpp" />
     <ClCompile Include="Object\BackGround\BG_TitleScene.cpp" />
+    <ClCompile Include="Object\BackGround\BG_Tutorial.cpp" />
+    <ClCompile Include="Object\BackGround\BG_TutorialMap.cpp" />
     <ClCompile Include="Object\BackGround\FG_Loading.cpp" />
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp" />
+    <ClCompile Include="Object\BackGround\FG_Tutorial.cpp" />
     <ClCompile Include="Object\Character\Bullet.cpp" />
     <ClCompile Include="Object\Character\Character.cpp" />
     <ClCompile Include="Object\Character\Dragon.cpp" />
@@ -199,6 +203,7 @@
     <ClCompile Include="SceneMode\LoadingThread.cpp" />
     <ClCompile Include="SceneMode\MainScene.cpp" />
     <ClCompile Include="SceneMode\TitleScene.cpp" />
+    <ClCompile Include="SceneMode\TutorialScene.cpp" />
     <ClCompile Include="UI\LoadingUI.cpp" />
     <ClCompile Include="UI\MainHUDWidget.cpp" />
     <ClCompile Include="UI\PlayerWorldInfoWidget.cpp" />
@@ -209,6 +214,7 @@
     <ClInclude Include="Animation2D\BackGround\BG_KettleHouseAnim.h" />
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h" />
     <ClInclude Include="Animation2D\BackGround\FG_LoadingAnim.h" />
+    <ClInclude Include="Animation2D\BackGround\TutorialSceneAnim.h" />
     <ClInclude Include="Animation2D\BulletAnimation.h" />
     <ClInclude Include="Animation2D\DragonAnimation.h" />
     <ClInclude Include="Animation2D\BackGround_CloudAnim.h" />
@@ -218,8 +224,11 @@
     <ClInclude Include="Object\BackGround\BG_DragonMap.h" />
     <ClInclude Include="Object\BackGround\BG_KettleHouse.h" />
     <ClInclude Include="Object\BackGround\BG_TitleScene.h" />
+    <ClInclude Include="Object\BackGround\BG_Tutorial.h" />
+    <ClInclude Include="Object\BackGround\BG_TutorialMap.h" />
     <ClInclude Include="Object\BackGround\FG_Loading.h" />
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h" />
+    <ClInclude Include="Object\BackGround\FG_Tutorial.h" />
     <ClInclude Include="Object\Character\Bullet.h" />
     <ClInclude Include="Object\Character\Character.h" />
     <ClInclude Include="Object\Character\Dragon.h" />
@@ -244,6 +253,7 @@
     <ClInclude Include="SceneMode\LoadingThread.h" />
     <ClInclude Include="SceneMode\MainScene.h" />
     <ClInclude Include="SceneMode\TitleScene.h" />
+    <ClInclude Include="SceneMode\TutorialScene.h" />
     <ClInclude Include="UI\LoadingUI.h" />
     <ClInclude Include="UI\MainHUDWidget.h" />
     <ClInclude Include="UI\PlayerWorldInfoWidget.h" />

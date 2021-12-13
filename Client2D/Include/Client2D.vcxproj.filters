@@ -76,6 +76,12 @@
     <Filter Include="02. Object\1. BackGround\Back\1.MainScene">
       <UniqueIdentifier>{dc4e9748-117a-4848-a1ec-d84674fcd300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\1. BackGround\Fore\4. TutorialScene">
+      <UniqueIdentifier>{627730f5-9fb6-4bef-a91b-81ea6501f4c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. BackGround\Back\3. TutorialScene">
+      <UniqueIdentifier>{fda3c0d1-6fba-4834-a4f4-e9c49449c450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -207,6 +213,21 @@
     <ClCompile Include="Animation2D\BackGround\BG_KettleHouseAnim.cpp">
       <Filter>03. Animation2D\04. BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="SceneMode\TutorialScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\BackGround\TutorialSceneAnim.cpp">
+      <Filter>03. Animation2D\04. BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\BG_Tutorial.cpp">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\BG_TutorialMap.cpp">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\FG_Tutorial.cpp">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -337,6 +358,21 @@
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround\BG_KettleHouseAnim.h">
       <Filter>03. Animation2D\04. BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMode\TutorialScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\BackGround\TutorialSceneAnim.h">
+      <Filter>03. Animation2D\04. BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\BG_Tutorial.h">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\FG_Tutorial.h">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\BG_TutorialMap.h">
+      <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

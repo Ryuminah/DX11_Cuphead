@@ -23,6 +23,5 @@ public:
 
 public:
     void SetTutorialOpen(bool TutorialOpen);
-
 };
 

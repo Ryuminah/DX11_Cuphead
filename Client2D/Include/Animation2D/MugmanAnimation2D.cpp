@@ -12,6 +12,7 @@ CMugmanAnimation2D::CMugmanAnimation2D(const CMugmanAnimation2D& anim) :
 
 CMugmanAnimation2D::~CMugmanAnimation2D()
 {
+	Active(false);
 }
 
 void CMugmanAnimation2D::Start()

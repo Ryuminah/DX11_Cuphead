@@ -14,6 +14,10 @@ bool CSceneMode::Init()
     return true;
 }
 
+void CSceneMode::Start()
+{
+}
+
 void CSceneMode::Update(float DeltaTime)
 {
   

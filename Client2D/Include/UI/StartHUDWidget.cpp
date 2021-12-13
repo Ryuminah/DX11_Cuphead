@@ -90,10 +90,7 @@ CStartHUDWidget* CStartHUDWidget::Clone()
 
 void CStartHUDWidget::StartClick()
 {
-	// 다음 장면으로 넘어간다.
-	CSceneManager::GetInst()->CreateNextScene();
 
-	CSceneManager::GetInst()->SetSceneMode<CLoadingScene>(false);
 }
 
 void CStartHUDWidget::ExitClick()

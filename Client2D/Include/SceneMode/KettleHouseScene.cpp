@@ -9,6 +9,8 @@
 #include "../Object/Collision/GroundCollider.h"
 #include "Scene/SceneManager.h"
 #include "LoadingScene.h"
+#include "TutorialScene.h"
+
 
 CKettleHouseScene::CKettleHouseScene()
 {
@@ -38,7 +40,7 @@ void CKettleHouseScene::Update(float DeltaTime)
 	if (GetAsyncKeyState(VK_RETURN) & 0x0001)
 	{
 		CSceneManager::GetInst()->CreateNextScene();
-		CSceneManager::GetInst()->SetSceneMode<CLoadingScene>(false);
+		CSceneManager::GetInst()->SetSceneMode<CTutorialScene>(false);
 	}
 }
 
