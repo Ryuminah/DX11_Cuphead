@@ -1,6 +1,7 @@
 #include "TutorialScene.h"
 #include "Scene/SceneResource.h"
 #include "Scene/Scene.h"
+#include "Scene/Viewport.h"
 #include "LoadingThread.h"
 #include "ThreadManager.h"
 #include "../Object/Character/Mugman.h"
@@ -32,9 +33,11 @@ bool CTutorialScene::Init()
 	CreateWeaponAnim();
 	CreateTutorialMap();
 
-	// 댕글링 왜 생기누
+	// 댕글링 왜 생기누 고쳤누 &^^
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
-	pMugman->SetWorldPos(240.f, 120.f, 0.f);
+	CMugman::bUseCamera = true;
+	pMugman->SetRelativePos(300.f, 120.f, 0.f);
+
 
 	return true;
 }
@@ -51,12 +54,11 @@ void CTutorialScene::Update(float DeltaTime)
 void CTutorialScene::CreateTutorialMap()
 {
 	BG_Tutorial* pBG_Tutorial = m_pScene->SpawnObject<BG_Tutorial>("BG_Tutorial");
-	FG_Tutorial* pFG_Tutorial = m_pScene->SpawnObject<FG_Tutorial>("FG_Tutorial");
+	FG_Tutorial* pFGWidget = m_pScene->GetViewport()->AddWindow<FG_Tutorial>("FG_Tutorial");
 	BG_TutorialMap* pTutorialMap = m_pScene->SpawnObject<BG_TutorialMap>("BG_TutorialMap");
 
-
 	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
-	pGroundCollider->AddWorldPos(0.f, 80.f, 0.f);
+	pGroundCollider->SetIsTutorialScene(true);
 }
 
 void CTutorialScene::CreateTutorialAnim()

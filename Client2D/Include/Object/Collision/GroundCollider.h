@@ -15,6 +15,7 @@ protected:
 
 private:
 	CSharedPtr<CColliderBox2D>	m_TestCollider;
+	bool m_bIsTutorialScene;
 
 public:
 	virtual void Start();
@@ -26,6 +27,9 @@ public:
 	virtual CGroundCollider* Clone();
 
 public:
-
+	void SetIsTutorialScene(bool IsTutorial)
+	{
+		m_bIsTutorialScene = IsTutorial;
+	}
 };
 

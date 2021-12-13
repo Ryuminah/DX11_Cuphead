@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "../../Animation2D/MugmanAnimation2D.h"
+#include "Scene/CameraManager.h"
 #include "Engine.h"
 #include "Bullet.h"
 #include "../Static/StepCloud.h"
@@ -19,6 +20,8 @@ Vector3 MuzzlePosition::Down = { 0.f, -40.f, 0.f };
 
 Vector3 CMugman::PlayerPos = {0.f,0.f,0.f};
 Vector3 CMugman::PlayerPrevPos = { 0.f, 0.f, 0.f };
+bool	CMugman::bUseCamera = false;
+
 
 CMugman::CMugman() :
 	m_bIsGround(true),
@@ -32,7 +35,7 @@ CMugman::CMugman() :
 	m_ParryTime(0.f),m_ParryAccel(70.f), m_ParryVelocity(70.f), m_StartY(0.f),
 	m_JumpTime(0.f),m_JumpVelocity(50.f),m_JumpAccel(90.f),
 	m_FallTime(0.f),
-	m_DashSpeed(50.f),m_DashTime(0.0f),
+	m_DashSpeed(70.f),m_DashTime(0.0f),
 	m_ShootCool(0.2f),
 	m_DashCool(0.5f),
 	m_IntroTime(5.f),
@@ -206,6 +209,13 @@ void CMugman::Update(float DeltaTime)
 void CMugman::PostUpdate(float DeltaTime)
 {
 	CCharacter::PostUpdate(DeltaTime);
+
+	if (!bUseCamera || CMugman::PlayerPos.x < 640.f || CMugman::PlayerPos.x >= 6090.f || GetWorldPos() == GetPrevWorldPos())
+	{
+		return;
+	}
+
+	m_pScene->GetCameraManager()->GetCurrentCamera()->SetRelativePos(GetRelativePos().x - 640.f, 0.f, 0.f);
 }
 
 void CMugman::Collision(float DeltaTime)
@@ -1023,7 +1033,7 @@ void CMugman::ParryEnd()
 
 void CMugman::DashEnd()
 {
-	m_DashSpeed = 50.f;
+	m_DashSpeed = 70.f;
 	m_DashTime = 0.f;
 
 	m_bIsDash = false;
@@ -1285,7 +1295,6 @@ void CMugman::SavePlayerPos()
 {
 	PlayerPos = GetWorldPos();
 	PlayerPrevPos = GetPrevWorldPos();
-
 }
 
 void CMugman::OnStepCloud(float MoveZ, float CloudY)
@@ -1304,6 +1313,11 @@ void CMugman::OnStepCloud(float MoveZ, float CloudY)
 
 void CMugman::InAir()
 {
+	if (m_bIsGround)
+	{
+		return;
+	}
+
 	// 떨어지기 시작할때
 	m_bIsFall = true;
 	m_bIsJump = false;
@@ -1356,19 +1370,45 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 			return;
 		}
 
-		// 구름보다 내 위치가 더 높을때만 움직임 닿은것으로 판단.
+		// 구름보다 내 위치가 더 높을때만 움직임 닿은것으로 판단(발판이기 때문).
 		if (pStepCloud->GetWorldPos().y < GetWorldPos().y)
 		{
+			SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
 			OnStepCloud(pStepCloud->GetMoveDistance(), pStepCloud->GetWorldPos().y);
 			OnGround();
 		}
 	}
 
-	// 낙사 방지용 콜리전
+	if (result.DestCollider->GetProfile()->Name == "Static" && result.DestCollider->GetName() != "GroundCollider")
+	{
+		// 올라가고 있는 중이라면 충돌하지 않음
+		if (m_bIsJump && GetWorldPos().y > GetPrevWorldPos().y)
+		{
+			SetUseBlockMovement(false);
+			return;
+		}
+
+		else
+		{
+			if (!m_bIsFall)
+			{
+				OnGround();
+			}
+
+			if (GetWorldPos().y > result.DestCollider->GetOwner()->GetWorldPos().y &&
+				(GetWorldPos().x > result.DestCollider->GetMin().x && GetWorldPos().x < result.DestCollider->GetMax().x))
+			{
+				SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
+				// 위치가 더 높을때만 땅인 것으로 간주 (y보정)
+			}
+		}
+	}
+
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
 		OnGround();
 	}
+
 
 	// 용 충돌 버그..
 	if (result.DestCollider->GetName() == "DragonCollider")
@@ -1406,7 +1446,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
-		//m_bIsGround = true;
+		m_bIsGround = true;
 	}
 
 	// 충돌 중에만 패링을 감지한다
@@ -1443,13 +1483,21 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
 	// 점프중이 아니라면 떨어지는 것으로 간주.
-	if (result.DestCollider->GetName() == "StepCloudCollider")
+	if (result.DestCollider->GetName() == "StepCloudCollider" ||
+		(result.DestCollider->GetProfile()->Name == "Static" && result.DestCollider->GetName() != "GroundCollider"))
 	{
-		if (!m_bIsJump && GetWorldPos().y  > result.DestCollider->GetWorldPos().y)
+		if (!m_bIsJump && GetWorldPos().y >= result.DestCollider->GetMax().y)
 		{
+			m_bIsGround = false;
 			InAir();
 		}
 	}
+
+	if (result.DestCollider->GetName() == "GroundCollider")
+	{
+		m_bIsGround = false;
+	}
+
 
 	// 닿았다 떨어질 경우 패링 불가 상태로 간주하고 관련된 값을 초기화
 	if (!m_bParrySuccess && result.DestCollider->GetProfile()->Name == "Parry")

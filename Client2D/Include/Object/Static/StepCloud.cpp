@@ -49,7 +49,7 @@ bool CStepCloud::Init()
 	m_Collider->SetRelativePos(0.f, 19.f, 0.f);
 
 	m_Collider->SetExtent(80.f, 10.f);
-	m_Collider->SetCollisionProfile("Static");
+	m_Collider->SetCollisionProfile("StepCloud");
 	m_Collider->SetColliderType(Collider_Type::Static);
 
 	m_Sprite->AddChild(m_Collider);

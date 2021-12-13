@@ -176,6 +176,7 @@ enum class Collision_Channel
     Bullet,
     StepCloud,
     Skill,
+    HitStatic,
     Character,
     Custom3,
     Custom4,

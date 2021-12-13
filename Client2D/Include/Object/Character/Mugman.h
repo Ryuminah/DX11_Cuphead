@@ -34,6 +34,7 @@ protected:
 public:
 	static Vector3	PlayerPos;
 	static Vector3	PlayerPrevPos;
+	static bool	bUseCamera;
 
 	static Vector3 GetPlayerPos()
 	{

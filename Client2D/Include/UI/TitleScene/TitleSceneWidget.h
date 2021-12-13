@@ -16,7 +16,6 @@ private:
     CSharedPtr<CText>   m_Text;
     CSharedPtr<CText>   m_OutlineText;
 
-
 public:
     virtual bool Init();
     virtual void Update(float DeltaTime);

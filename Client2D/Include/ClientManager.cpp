@@ -41,6 +41,9 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->CreateChannel("Bullet", Collision_Interaction::Block);
     CCollisionManager::GetInst()->CreateProfile("Bullet", Collision_Channel::Bullet);
 
+    CCollisionManager::GetInst()->CreateChannel("HitStatic", Collision_Interaction::Block);
+    CCollisionManager::GetInst()->CreateProfile("HitStatic", Collision_Channel::HitStatic);
+
     CCollisionManager::GetInst()->CreateChannel("StepCloud", Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->CreateProfile("StepCloud", Collision_Channel::StepCloud);
 
@@ -49,6 +52,12 @@ bool CClientManager::Init()
 
     CCollisionManager::GetInst()->CreateChannel("Parry", Collision_Interaction::Trigger);
     CCollisionManager::GetInst()->CreateProfile("Parry", Collision_Channel::Parry);
+
+    CCollisionManager::GetInst()->SetProfileChannelState("HitStatic", Collision_Channel::Player, Collision_Interaction::Block);
+    CCollisionManager::GetInst()->SetProfileChannelState("HitStatic", Collision_Channel::Enemy, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("HitStatic", Collision_Channel::Static, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("HitStatic", Collision_Channel::Bullet, Collision_Interaction::Trigger);
+
 
 
     CCollisionManager::GetInst()->SetProfileChannelState("Bullet", Collision_Channel::Player ,Collision_Interaction::Ignore);

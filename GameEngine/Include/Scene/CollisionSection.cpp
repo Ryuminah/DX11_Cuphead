@@ -151,13 +151,14 @@ void CCollisionSection::Collision(float DeltaTime)
                         if (abs(Vertical) > abs(Horizontal))
                         {
                             // 가로이동 이라면 block 확인
-                            if (MovePos.x > 0 || MovePos.x < 0 || MovePos.x == 0)
+                            if (MovePos.x > 0 || MovePos.x < 0)
                             {
                                 // 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
                                 if (abs(PrevDistance.x) > abs(Distance.x))
                                 {
-                                    Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
-
+                                    Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
+                                    Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
+                                    Dest->GetOwner()->SetWorldPos(prevPos.x, currentPos.y, currentPos.z);
                                 }
                             }
                         }
@@ -170,8 +171,10 @@ void CCollisionSection::Collision(float DeltaTime)
                                 // 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
                                 if (abs(PrevDistance.y) > abs(Distance.y))
                                 {
-                                    Dest->GetOwner()->SetWorldPos(Dest->GetOwner()->GetPrevWorldPos());
+                                    Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
+                                    Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
 
+                                    Dest->GetOwner()->SetWorldPos(currentPos.x, prevPos.y, prevPos.z);
                                 }
                             }
                         }

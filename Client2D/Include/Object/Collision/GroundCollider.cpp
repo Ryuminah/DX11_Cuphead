@@ -1,7 +1,7 @@
 #include "GroundCollider.h"
 
 
-CGroundCollider::CGroundCollider() 
+CGroundCollider::CGroundCollider() : m_bIsTutorialScene(false)
 {
 
 }
@@ -19,6 +19,12 @@ CGroundCollider::~CGroundCollider()
 void CGroundCollider::Start()
 {
 	CGameObject::Start();
+
+	if (m_bIsTutorialScene)
+	{
+		m_TestCollider->SetExtent(3365.f, 60.f);
+		m_TestCollider->SetRelativePos(0.f, 0.f, 0.f);
+	}
 }
 
 bool CGroundCollider::Init()

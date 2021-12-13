@@ -1,10 +1,15 @@
 #pragma once
 #include "BackGround.h"
+#include "UI/WidgetWindow.h"
+
 
 class FG_Tutorial :
-    public CBackGround
+    public CWidgetWindow
 {
-	friend class CScene;
+	friend class CViewport;
+
+private:
+	class CImage* m_Image;
 
 protected:
 	FG_Tutorial();
@@ -16,8 +21,7 @@ public:
 	virtual bool Init();
 	virtual void Update(float DeltaTime);
 	virtual void PostUpdate(float DeltaTime);
-	virtual void Collision(float DeltaTime);
-	virtual void Render(float DeltaTime);
+	virtual void Render();
 	virtual FG_Tutorial* Clone();
 };
 
