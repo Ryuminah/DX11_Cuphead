@@ -106,6 +106,19 @@ void CMugman::Start()
 	{
 
 	}
+
+	if (bUseCamera)
+	{/*
+		m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
+		m_Camera = CreateSceneComponent<CCamera>("Camera");
+		m_Arm->SetOffset(640.f, -120.f, 0.f);
+		m_Arm->SetPivot(0.5f, 0.5f, 0.f);
+		m_Arm->SetInheritPosZ(false);
+
+		m_Sprite->AddChild(m_Arm);
+		m_Arm->AddChild(m_Camera);*/
+		//m_Arm->SetDefaultZ(0.99);
+	}
 }
 
 bool CMugman::Init()
@@ -116,8 +129,9 @@ bool CMugman::Init()
 	m_Collider = CreateSceneComponent<CColliderBox2D>("MugmanCollider");
 	m_Rotation = CreateSceneComponent<CSceneComponent>("Rotation");
 	m_Muzzle = CreateSceneComponent<CSceneComponent>("Muzzle");
-	//m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
-	//m_Camera = CreateSceneComponent<CCamera>("Camera");
+
+
+
 
 	SetRootComponent(m_Sprite);
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
@@ -127,6 +141,8 @@ bool CMugman::Init()
 	m_Sprite->AddChild(m_Muzzle);
 	//m_Sprite->SetRelativeRotationZ(30.f);
 	//m_Sprite->SetPivot(0.5f, 0.f, 0.f);
+
+
 
 	m_Collider->SetExtent(45.f, 70.f);
 	m_Collider->SetCollisionProfile("Player");
@@ -203,6 +219,13 @@ void CMugman::Update(float DeltaTime)
 	
 	// 플레이어 위치 저장
 	SavePlayerPos();
+
+	if (!bUseCamera || CMugman::PlayerPos.x < 640.f || CMugman::PlayerPos.x >= 6090.f || GetWorldPos() == GetPrevWorldPos())
+	{
+		return;
+	}
+
+	m_pScene->GetCameraManager()->GetCurrentCamera()->SetRelativePos(GetRelativePos().x - 640.f, 0.f, 0.f);
 
 }
 
@@ -1406,7 +1429,14 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
+		CColliderBox2D* pColliderBox = (CColliderBox2D*)result.DestCollider;
+		if (pColliderBox->GetInfo().Center.y != 0.f)
+		{
+			SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
+		}
+		
 		OnGround();
+
 	}
 
 
@@ -1484,7 +1514,7 @@ void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
 	// 점프중이 아니라면 떨어지는 것으로 간주.
 	if (result.DestCollider->GetName() == "StepCloudCollider" ||
-		(result.DestCollider->GetProfile()->Name == "Static" && result.DestCollider->GetName() != "GroundCollider"))
+		(result.DestCollider->GetProfile()->Name == "Static"/* && result.DestCollider->GetName() != "GroundCollider"*/))
 	{
 		if (!m_bIsJump && GetWorldPos().y >= result.DestCollider->GetMax().y)
 		{

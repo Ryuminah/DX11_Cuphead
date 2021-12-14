@@ -51,6 +51,8 @@ private:
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
 	CSharedPtr<CSpriteComponent> m_GunEffect;
+	CSharedPtr<CSpringArm2D> m_Arm;
+	CSharedPtr<CCamera> m_Camera;
 
 private:
 	// Game Start

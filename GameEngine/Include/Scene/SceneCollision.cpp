@@ -113,16 +113,16 @@ void CSceneCollision::CreateSection2D()
 {
 	m_Section2D = new CollisionSectionInfo;
 
-	m_Section2D->CountX = 10;
-	m_Section2D->CountY = 10;
+	m_Section2D->CountX = 14;
+	m_Section2D->CountY = 14;
 	m_Section2D->CountZ = 1;
 	m_Section2D->SectionSize = Vector3(1000.f, 1000.f, 1.f);
-	m_Section2D->SectionTotalSize = Vector3(10000.f, 10000.f, 1.f);
+	m_Section2D->SectionTotalSize = Vector3(14000.f, 14000.f, 1.f);
 
 	m_SectionTotalSize = m_Section2D->SectionTotalSize;
 
-	m_Section2D->Min = Vector3(-5000.f, -5000.f, 0.f);
-	m_Section2D->Max = Vector3(5000.f, 5000.f, 0.f);
+	m_Section2D->Min = Vector3(-7000.f, -7000.f, 0.f);
+	m_Section2D->Max = Vector3(7000.f, 7000.f, 0.f);
 
 	for (int i = 0; i < m_Section2D->CountY; ++i)
 	{
@@ -139,7 +139,7 @@ void CSceneCollision::CreateSection2D()
 			Section->m_IndexX = j;
 			Section->m_IndexY = i;
 			Section->m_IndexZ = 0;
-			Section->m_Index = i * 10 + j;
+			Section->m_Index = i * 14 + j;
 		}
 	}
 }
