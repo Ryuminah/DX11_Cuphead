@@ -102,6 +102,66 @@ void CCollisionSection::Collision(float DeltaTime)
                     Src->AddPrevCollider(Dest);
                     Dest->AddPrevCollider(Src);
 
+                    // 둘다 서로 Block 해야하는 경우 막아야 하는 방향 판단을 판단해서 저장한다
+                    if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
+                    && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
+                    { 
+						// 현재 콜리전의 캐릭터 콜리전의 어느 분면에 위치해있는지 판단
+						Vector3 MovePos = Dest->GetWorldPos() - Dest->GetPrevWorldPos();
+						Vector3 Distance = Src->GetWorldPos() - Dest->GetWorldPos();
+						Vector3 PrevDistance = Src->GetPrevWorldPos() - Dest->GetPrevWorldPos();
+
+						//Vector2 ComparePivot = { abs(Src->GetMax().x - Src->GetMin().x) *0.5f , abs(Src->GetMax().y- Src->GetMin().y) *0.5f};
+						Vector2 ComparePivot = { Src->GetMax().x - Src->GetWorldPos().x ,Src->GetMax().y - Src->GetWorldPos().y };
+
+						Vector2 TopRight = { Dest->GetMax().x , Dest->GetMax().y };
+						Vector2 TopLeft = { Dest->GetMin().x , Dest->GetMax().y };
+						Vector2 BottomRight = { Dest->GetMax().x , Dest->GetMin().y };
+						Vector2 BottomLeft = { Dest->GetMin().x , Dest->GetMin().y };
+
+						Vector2 DestPivot[4] = { TopRight, TopLeft, BottomRight, BottomLeft };
+						Vector2 NearPivot = DestPivot[0];
+
+						for (size_t i = 0; i < 4; ++i)
+						{
+							Vector2 NearDistance = { Src->GetPrevWorldPos().x - NearPivot.x, Src->GetPrevWorldPos().y - NearPivot.y };
+							Vector2 CheckDistance = { Src->GetPrevWorldPos().x - DestPivot[i].x, Src->GetPrevWorldPos().y - DestPivot[i].y };
+
+							NearPivot = abs(NearDistance.x) + abs(NearDistance.y) <= abs(CheckDistance.x) + abs(CheckDistance.y) ? NearPivot : DestPivot[i];
+						}
+						NearPivot.x -= (Src->GetWorldPos().x);
+						NearPivot.y -= (Src->GetWorldPos().y);
+
+						float Vertical = abs(ComparePivot.y) - abs(NearPivot.y);
+						float Horizontal = abs(ComparePivot.x) - abs(NearPivot.x);
+
+						// 수직으로 무조건 이동할 수 있는 경우
+						if (abs(Vertical) > abs(Horizontal))
+						{
+							// 가로이동 이라면 block 확인
+							if (MovePos.x > 0 || MovePos.x < 0)
+							{
+								Dest->GetOwner()->SetBlockDirection(BlockDirection::HORIZONTAL);
+							}
+						}
+
+						// 수평으로 이동할 수 있는 경우
+						if (abs(Vertical) < abs(Horizontal))
+						{
+							if (MovePos.y > 0 || MovePos.y < 0)
+							{
+								Dest->GetOwner()->SetBlockDirection(BlockDirection::VERTICAL);
+							}
+						}
+                    }
+
+                    // 충돌은 시작했지만 막혀야 할 방향이 없다면
+                    else
+                    {
+                        Src->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+                        Dest->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+                    }
+
                     // Callback 함수 호출
                     Src->CallCollisionCallback(Collision_State::Begin);
                     Dest->CallCollisionCallback(Collision_State::Begin);
@@ -110,76 +170,44 @@ void CCollisionSection::Collision(float DeltaTime)
                 // 충돌 중 일 경우,
                 else
                 {
-                    // 겹칠때의 함수 실행
-                    Src->CallCollisionCallback(Collision_State::Overlap);
-                    Dest->CallCollisionCallback(Collision_State::Overlap);
-
-                    // 부딪치는 콜리전이 캐릭터이고, 충돌을 사용하고, CollisionInteraction이 Block일 경우
+                    // 막아야 하는 애라면
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                         && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     {
-                        // 현재 콜리전의 캐릭터 콜리전의 어느 분면에 위치해있는지 판단
-                        Vector3 MovePos = Dest->GetWorldPos() - Dest->GetPrevWorldPos();
-                        Vector3 Distance = Src->GetWorldPos() - Dest->GetWorldPos();
-                        Vector3 PrevDistance = Src->GetPrevWorldPos() - Dest->GetPrevWorldPos();
+                        // 이동방향과 막혀야하는 방향이 같은지 판단한다.
+                        Vector3 MovePosition = Dest->GetOwner()->GetWorldPos() - Dest->GetOwner()->GetPrevWorldPos();
 
-                        //Vector2 ComparePivot = { abs(Src->GetMax().x - Src->GetMin().x) *0.5f , abs(Src->GetMax().y- Src->GetMin().y) *0.5f};
-                        Vector2 ComparePivot = { Src->GetMax().x - Src->GetWorldPos().x ,Src->GetMax().y - Src->GetWorldPos().y };
-
-                        Vector2 TopRight = { Dest->GetMax().x , Dest->GetMax().y };
-                        Vector2 TopLeft = { Dest->GetMin().x , Dest->GetMax().y };
-                        Vector2 BottomRight = { Dest->GetMax().x , Dest->GetMin().y };
-                        Vector2 BottomLeft = { Dest->GetMin().x , Dest->GetMin().y };
-
-                        Vector2 DestPivot[4] = { TopRight, TopLeft, BottomRight, BottomLeft };
-                        Vector2 NearPivot = DestPivot[0];
-
-                        for (size_t i = 0; i < 4; ++i)
+                        // 막혀야 할 방향이 수평일 경우 x이동이 있는지를 확인한다
+                        if (/*MovePosition.x != 0.f &&*/
+                            Dest->GetOwner()->GetBlockDirection() == BlockDirection::HORIZONTAL)
                         {
-                            Vector2 NearDistance = { Src->GetPrevWorldPos().x - NearPivot.x, Src->GetPrevWorldPos().y - NearPivot.y };
-                            Vector2 CheckDistance = { Src->GetPrevWorldPos().x - DestPivot[i].x, Src->GetPrevWorldPos().y - DestPivot[i].y };
+                            Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
+                            Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
+                            Dest->GetOwner()->SetWorldPos(prevPos.x, currentPos.y, currentPos.z);
+                            Dest->GetOwner()->SetBlockDirection(BlockDirection::HORIZONTAL);
 
-                            NearPivot = abs(NearDistance.x) + abs(NearDistance.y) <= abs(CheckDistance.x) + abs(CheckDistance.y) ? NearPivot : DestPivot[i];
-                        }
-                        NearPivot.x -= (Src->GetWorldPos().x);
-                        NearPivot.y -= (Src->GetWorldPos().y);
-
-                        float Vertical = abs(ComparePivot.y) - abs(NearPivot.y);
-                        float Horizontal = abs(ComparePivot.x) - abs(NearPivot.x);
-
-                        // 수직으로 무조건 이동할 수 있는 경우
-                        if (abs(Vertical) > abs(Horizontal))
-                        {
-                            // 가로이동 이라면 block 확인
-                            if (MovePos.x > 0 || MovePos.x < 0)
-                            {
-                                // 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
-                                if (abs(PrevDistance.x) > abs(Distance.x))
-                                {
-                                    Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
-                                    Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
-                                    Dest->GetOwner()->SetWorldPos(prevPos.x, currentPos.y, currentPos.z);
-                                }
-                            }
                         }
 
-                        // 수평으로 이동할 수 있는 경우
-                        if (abs(Vertical) < abs(Horizontal))
+                        else if (/*MovePosition.y != 0.f &&*/
+                            Dest->GetOwner()->GetBlockDirection() == BlockDirection::VERTICAL)
                         {
-                            if (MovePos.y > 0 || MovePos.y < 0)
-                            {
-                                // 이전 프레임에서 움직인 거리보다 가까워졌다면 박스 방향으로 이동한 것
-                                if (abs(PrevDistance.y) > abs(Distance.y))
-                                {
-                                    Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
-                                    Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
-
-                                    Dest->GetOwner()->SetWorldPos(currentPos.x, prevPos.y, prevPos.z);
-                                }
-                            }
+                            Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
+                            Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
+                            Dest->GetOwner()->SetWorldPos(currentPos.x, prevPos.y, prevPos.z);
+                            Dest->GetOwner()->SetBlockDirection(BlockDirection::VERTICAL);
                         }
-
                     }
+
+                    else
+                    {
+                        Src->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+                        Dest->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+                    }
+                       
+                    // block 방향을 위해 콜백함수는 가장 마지막에 호출한다.
+                    Src->CallCollisionCallback(Collision_State::Overlap);
+                    Dest->CallCollisionCallback(Collision_State::Overlap);
+
                 }
             }
 
@@ -195,7 +223,9 @@ void CCollisionSection::Collision(float DeltaTime)
                 Src->CallCollisionCallback(Collision_State::End);
                 Dest->CallCollisionCallback(Collision_State::End);
                 
-                
+                Src->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+                Dest->GetOwner()->SetBlockDirection(BlockDirection::NONE);
+
                 Src->DeletePrevCollider(Dest);
                 Dest->DeletePrevCollider(Src);
             }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+
 class CColliderBox2D :
     public CCollider
 {

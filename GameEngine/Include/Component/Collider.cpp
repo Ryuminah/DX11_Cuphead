@@ -46,8 +46,7 @@ CCollider::~CCollider()
 	for (; iter != iterEnd; ++iter)
 	{
 		(*iter)->DeletePrevCollider(this);
-		/*(*iter)->CallCollisionCallback(Collision_State::End);
-		CallCollisionCallback(Collision_State::End);*/
+
 	}
 
 	SAFE_DELETE(m_CBuffer);

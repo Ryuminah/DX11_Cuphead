@@ -42,7 +42,7 @@ bool BG_TutorialMap::Init()
 	m_BackGroundImage = m_Sprite->GetAnimation2D();
 	m_BackGroundImage->ChangeAnimation("TutorialMap");
 
-	//CreateCollision();
+	CreateCollision();
 	SetUseBlockMovement(false);
 
 	return true;
@@ -90,23 +90,44 @@ BG_TutorialMap* BG_TutorialMap::Clone()
 void BG_TutorialMap::CreateCollision()
 {
 	m_Jump = CreateSceneComponent<CColliderBox2D>("Jump");
-	m_Jump->SetExtent(45.f, 70.f);
+	m_Jump->SetExtent(95.f, 75.f);
 	m_Jump->SetRelativePos(1580.f, 120.f, 0.f);
 	m_Jump->SetCollisionProfile("Static");
 	m_Jump->SetColliderType(Collider_Type::Static);
 
 	m_Sprite->AddChild(m_Jump);
 
-
 	m_Descend = CreateSceneComponent<CColliderBox2D>("Descend");
-	m_Descend->SetExtent(45.f, 70.f);
-	m_Descend->SetRelativePos(2300.f, 120.f, 0.f);
+	m_Descend->SetExtent(100.f, 30.f);
+	m_Descend->SetRelativePos(2300.f, 360.f, 0.f);
+	m_Descend->SetCollisionProfile("FootStep");
+	m_Descend->SetColliderType(Collider_Type::Static);
+
+	m_Sprite->AddChild(m_Descend);
+
+	m_Descend = CreateSceneComponent<CColliderBox2D>("DescendWall");
+	m_Descend->SetExtent(45.f,180.f);
+	m_Descend->SetRelativePos(2490.f, 360.f, 0.f);
+	m_Descend->SetCollisionProfile("Static");
+	m_Descend->SetColliderType(Collider_Type::Static);
+
+	m_Sprite->AddChild(m_Descend);
+
+	m_Descend = CreateSceneComponent<CColliderBox2D>("DescendCylinder");
+	m_Descend->SetExtent(80.f, 150.f);
+	m_Descend->SetRelativePos(2077.f, 120.f, 0.f);
 	m_Descend->SetCollisionProfile("Static");
 	m_Descend->SetColliderType(Collider_Type::Static);
 
 	m_Sprite->AddChild(m_Descend);
 
 	m_ParryBox = CreateSceneComponent<CColliderBox2D>("ParryBox");
+	m_ParryBox->SetExtent(45.f, 70.f);
+	m_ParryBox->SetRelativePos(4860.f, 120.f, 0.f);
+	m_ParryBox->SetCollisionProfile("Static");
+	m_ParryBox->SetColliderType(Collider_Type::Static);
+
+	m_ParryBox = CreateSceneComponent<CColliderBox2D>("ParryCylinder");
 	m_ParryBox->SetExtent(45.f, 70.f);
 	m_ParryBox->SetRelativePos(4860.f, 120.f, 0.f);
 	m_ParryBox->SetCollisionProfile("Static");

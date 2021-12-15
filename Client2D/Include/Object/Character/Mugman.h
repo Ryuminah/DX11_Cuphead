@@ -53,6 +53,7 @@ private:
 	CSharedPtr<CSpriteComponent> m_GunEffect;
 	CSharedPtr<CSpringArm2D> m_Arm;
 	CSharedPtr<CCamera> m_Camera;
+	std::list<std::string> m_CurrentColliderName;			// 어떤 종류의 콜리전이 overlap되고 있는지 저장
 
 private:
 	// Game Start
@@ -62,6 +63,7 @@ private:
 
 	// Basic Movement
 	bool m_bCanDuck;
+	bool m_bCanDuckFall;
 	bool m_bIsDuck;
 	bool m_bIsDuckLoop;
 
@@ -189,5 +191,8 @@ public:
 	void CollisionBegin(const HitResult& result, CCollider* Collider);
 	void CollisionOverlap(const HitResult& result, CCollider* Collider);
 	void CollisionEnd(const HitResult& result, CCollider* Collider);
+	void AddColliderName(std::string colliderName);
+	void DeleteCurrentCollider(std::string colliderName);
+	void ClearColliderName();
 
 };

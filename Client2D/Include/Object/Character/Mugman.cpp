@@ -55,6 +55,7 @@ CMugman::CMugman() :
 	m_bCanParry = false;
 	m_bCanDuck = true;
 	m_bParrySuccess = false;
+	m_bCanDuckFall = false;
 
 	m_bIsFightScene = true;
 }
@@ -244,6 +245,8 @@ void CMugman::PostUpdate(float DeltaTime)
 void CMugman::Collision(float DeltaTime)
 {
 	CCharacter::Collision(DeltaTime);
+
+	ClearColliderName();
 }
 
 void CMugman::Render(float DeltaTime)
@@ -316,6 +319,7 @@ void CMugman::Duck(float DeltaTime)
 	}
 
 	// 공격중이면 공격하는 애님으로
+	m_bCanJump = false;
 	m_bIsDuck = true;
 	m_bCanMove = false;
 	m_Collider->SetExtent(45.f, 20.f);
@@ -347,7 +351,7 @@ void CMugman::Duck(float DeltaTime)
 	}
 
 	// 땅에서 아래로 내려가려고 하는 경우
-	if (m_bIsGround && (GetAsyncKeyState('Z') & 0x8000))
+	if (m_bIsGround && m_bCanDuckFall && (GetAsyncKeyState('Z') & 0x8000))
 	{
 		InAir();
 		return;
@@ -457,8 +461,9 @@ void CMugman::Jump(float DeltaTime)
 	m_bCanJump = false;
 	m_bCanAim = false;
 	m_bCanDuck = false;
+	m_bCanDuckFall = false;
 
-	m_bIsFall = false;
+	//m_bIsFall = false;
 	m_bIsJump = true;
 	m_bIsGround = false;
 
@@ -796,6 +801,7 @@ void CMugman::MoveEnd(float DeltaTime)
 void CMugman::DuckEnd(float DeltaTime)
 {
 	m_bCanMove = true;
+	m_bCanJump = true;
 
 	if (m_bIsAiming)
 	{
@@ -906,6 +912,11 @@ void CMugman::JumpCheck(float DeltaTime)
 		AddRelativePos(GetAxis(AXIS_Y) * (jumpHeight)*DeltaTime);
 
 		m_JumpAccel -= GetGravityAccel() * DeltaTime;
+
+		if (jumpHeight <= 0.f && !GetUseBlockMovement())
+		{
+			SetUseBlockMovement(true);
+		}
 	}
 
 	// 점프 중이 아닐 경우
@@ -1065,7 +1076,6 @@ void CMugman::DashEnd()
 	m_bCanMove = true;
 	m_bCanAttack = true;
 	m_bCanAim = true;
-
 
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 
@@ -1336,13 +1346,20 @@ void CMugman::OnStepCloud(float MoveZ, float CloudY)
 
 void CMugman::InAir()
 {
-	if (m_bIsGround)
+	if (m_bIsFall)
 	{
 		return;
 	}
 
-	// 떨어지기 시작할때
+	// 떨어지기 시작할때 
 	m_bIsFall = true;
+
+	if (m_bIsJump)
+	{
+		JumpEnd();
+			
+	}
+
 	m_bIsJump = false;
 	m_bIsGround = false;
 	m_bIsAttack = false;
@@ -1384,6 +1401,7 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 {	
 	if (result.DestCollider->GetName() == "StepCloudCollider")
 	{
+		m_bCanDuckFall = true;
 		CStepCloud* pStepCloud = (CStepCloud*)result.DestCollider->GetOwner();
 
 		// 올라가고 있는 중이라면 충돌하지 않음
@@ -1402,43 +1420,90 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		}
 	}
 
-	if (result.DestCollider->GetProfile()->Name == "Static" && result.DestCollider->GetName() != "GroundCollider")
+	if (result.DestCollider->GetProfile()->Name == "FootStep")
 	{
+		m_bCanDuckFall = true;
+		AddColliderName("FootStep");
+
 		// 올라가고 있는 중이라면 충돌하지 않음
 		if (m_bIsJump && GetWorldPos().y > GetPrevWorldPos().y)
 		{
 			SetUseBlockMovement(false);
-			return;
+			
 		}
 
-		else
+		// 구름보다 내 위치가 더 높을때만 움직임 닿은것으로 판단(발판이기 때문).
+		if (result.DestCollider->GetWorldPos().y < GetWorldPos().y /*&&!m_bIsDuck && !m_bIsFall*/) 
 		{
-			if (!m_bIsFall)
-			{
-				OnGround();
-			}
+			SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
+			OnGround();
+		}
+	}
 
-			if (GetWorldPos().y > result.DestCollider->GetOwner()->GetWorldPos().y &&
-				(GetWorldPos().x > result.DestCollider->GetMin().x && GetWorldPos().x < result.DestCollider->GetMax().x))
+	if (result.DestCollider->GetProfile()->Name == "Static" && result.DestCollider->GetName() != "GroundCollider")
+	{
+		AddColliderName("Static");
+		m_bCanDuckFall = false;
+
+		// 점프중일 시 아래서 위로 올라갈때는 장애물의 층돌을 막아야한다.
+		if (m_bIsJump)
+		{
+
+			// 수직으로 막혀야 할 상황인 경우
+			if (GetBlockDirection() == BlockDirection::VERTICAL)
+			{
+				if (GetWorldPos().y > GetPrevWorldPos().y)
+				{
+					InAir();
+				}
+
+				else
+				{
+					SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
+					OnGround();
+				}
+			}
+		}
+
+		if (m_bIsFall)
+		{
+			if (GetBlockDirection() == BlockDirection::VERTICAL)
 			{
 				SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
+				OnGround();
 				// 위치가 더 높을때만 땅인 것으로 간주 (y보정)
 			}
 		}
+		
 	}
 
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
+		auto	iter = m_CurrentColliderName.begin();
+		auto	iterEnd = m_CurrentColliderName.end();
+		bool checkGround = false;
+
+		for (; iter != iterEnd; ++iter)
+		{
+			if (*iter == "GroundCollider")
+			{
+				checkGround = true;
+			}
+		}
+		
+		if (!checkGround)
+			AddColliderName("GroundCollider");
+
+		m_bCanDuckFall = false;
+
 		CColliderBox2D* pColliderBox = (CColliderBox2D*)result.DestCollider;
 		if (pColliderBox->GetInfo().Center.y != 0.f)
 		{
 			SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
 		}
-		
+
 		OnGround();
-
 	}
-
 
 	// 용 충돌 버그..
 	if (result.DestCollider->GetName() == "DragonCollider")
@@ -1474,9 +1539,29 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 		OnStepCloud(pStepCloud->GetMoveDistance(), pStepCloud->GetWorldPos().y);
 	}
 
-	if (result.DestCollider->GetName() == "GroundCollider")
+	if (result.DestCollider->GetProfile()->Name == "Static")
 	{
-		m_bIsGround = true;
+		if (result.DestCollider->GetName() == "GroundCollider")
+		{
+			m_bCanDuckFall = false;
+			m_bIsGround = true;
+			return;
+		}
+
+		if (GetBlockDirection() != BlockDirection::HORIZONTAL && 
+			!m_bIsJump && !m_bIsFall && !m_bIsDash)
+		{
+			m_bIsGround = true;
+		}
+	}
+
+	if (result.DestCollider->GetProfile()->Name == "FootStep")
+	{
+		if (GetBlockDirection() != BlockDirection::VERTICAL &&
+			!m_bIsJump && !m_bIsFall && !m_bIsDash)
+		{
+			m_bCanDuckFall = true;
+		}
 	}
 
 	// 충돌 중에만 패링을 감지한다
@@ -1497,6 +1582,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 			if (GetAsyncKeyState('Z') & 0x8000)
 			{
 				Parry();
+				result.DestObject->Active(false);
 			}
 		}
 
@@ -1513,27 +1599,93 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
 	// 점프중이 아니라면 떨어지는 것으로 간주.
-	if (result.DestCollider->GetName() == "StepCloudCollider" ||
-		(result.DestCollider->GetProfile()->Name == "Static"/* && result.DestCollider->GetName() != "GroundCollider"*/))
+	if (result.DestCollider->GetName() == "StepCloudCollider")
 	{
-		if (!m_bIsJump && GetWorldPos().y >= result.DestCollider->GetMax().y)
+		if (!m_bIsJump)
 		{
-			m_bIsGround = false;
 			InAir();
+			DeleteCurrentCollider("StepCloudCollider");
 		}
 	}
 
 	if (result.DestCollider->GetName() == "GroundCollider")
 	{
-		m_bIsGround = false;
+		DeleteCurrentCollider("GroundCollider");
 	}
 
+
+	if (result.DestCollider->GetProfile()->Name == "Static")
+	{
+		DeleteCurrentCollider("Static");
+
+		if (m_CurrentColliderName.size() > 0)
+		{
+			// 플레이어를 막는 애가 있는지 체크한다.
+			auto	iter = m_CurrentColliderName.begin();
+			auto	iterEnd = m_CurrentColliderName.end();
+
+			int StaticCollider = 0;
+
+			for (; iter != iterEnd; iter++)
+			{
+				if (*iter == "StaticCollider")
+					++StaticCollider;
+
+				if (StaticCollider >=2 || *iter == "FootStep")
+				{
+					return;
+				}
+
+				if (*iter == "GroundCollider" && !m_bIsJump)
+				{
+					OnGround();
+				}
+			}
+		}
+
+		else if (GetBlockDirection() != BlockDirection::HORIZONTAL&& !m_bIsJump && !m_bIsDuck)
+		{
+			InAir();
+		}
+	}
+
+	if (result.DestCollider->GetProfile()->Name == "FootStep")
+	{
+		DeleteCurrentCollider("FootStep");
+
+	}
 
 	// 닿았다 떨어질 경우 패링 불가 상태로 간주하고 관련된 값을 초기화
 	if (!m_bParrySuccess && result.DestCollider->GetProfile()->Name == "Parry")
 	{
 		//ResetParry();
 	}
+}
+
+void CMugman::AddColliderName(std::string colliderName)
+{
+	m_CurrentColliderName.push_back(colliderName);
+}
+
+void CMugman::DeleteCurrentCollider(std::string colliderName)
+{
+	auto	iter = m_CurrentColliderName.begin();
+	auto	iterEnd = m_CurrentColliderName.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if (*iter == colliderName)
+		{
+			m_CurrentColliderName.erase(iter);
+			return;
+		}
+	}
+}
+
+void CMugman::ClearColliderName()
+{
+	m_CurrentColliderName.clear();
+
 }
 
 

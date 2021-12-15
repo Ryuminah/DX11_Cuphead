@@ -116,6 +116,7 @@ bool CCollision::CollisionCircleToPixel(HitResult& SrcResult, HitResult& DestRes
 bool CCollision::CollisionBox2DToBox2D(HitResult& SrcResult, HitResult& DestResult, 
 	const Box2DInfo& Src, const Box2DInfo& Dest)
 {
+	// 피봇이 다를경우 센터를 다시 보정해서 계산해줘야한다..
 	Vector2 CenterDir = Src.Center - Dest.Center;
 
 	// Src의 X축으로 투영

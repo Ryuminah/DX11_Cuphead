@@ -7,7 +7,8 @@ CGameObject::CGameObject() :
 	m_pScene(nullptr),
 	m_LifeTime(0.f),
 	m_LifeTimeEnable(false),
-	m_PrevDirection(Direction::NONE)
+	m_PrevDirection(Direction::NONE),
+	m_BlockDirection(BlockDirection::NONE)
 {
 	m_RootComponent = CreateSceneComponent<CSceneComponent>("DefaultRoot");
 
@@ -178,6 +179,8 @@ void CGameObject::Collision(float DeltaTime)
 		m_vecObjectComponent[i]->Collision(DeltaTime);
 	}
 
+	// 충돌이 끝난 이후에는 충돌 관련 정보를 항상 초기화해준다.
+	m_BlockDirection = BlockDirection::NONE;
 }
 
 void CGameObject::PrevRender(float DeltaTime)

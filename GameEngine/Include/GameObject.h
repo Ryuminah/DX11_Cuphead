@@ -5,6 +5,11 @@
 #include "Component/Camera.h"
 #include "Component/ObjectComponent.h"
 
+enum class BlockDirection
+{
+	HORIZONTAL, VERTICAL, NONE
+};
+
 enum class Direction
 {
 	UP, DOWN, RIGHT, LEFT, NONE
@@ -26,6 +31,7 @@ protected:
 	float			m_LifeTime;
 	bool			m_LifeTimeEnable;
 	Direction		m_PrevDirection;
+	BlockDirection	m_BlockDirection;
 	
 
 public:
@@ -42,6 +48,11 @@ public:
 		m_LifeTime = Time;
 	}
 
+	void SetBlockDirection(BlockDirection blockDirection)
+	{
+		m_BlockDirection = blockDirection;
+	}
+
 public:
 	bool IsStart()  const
 	{
@@ -51,6 +62,11 @@ public:
 	Direction GetPrevDirection()
 	{
 		return m_PrevDirection;
+	}
+
+	BlockDirection GetBlockDirection()
+	{
+		return m_BlockDirection;
 	}
 
 protected:
@@ -68,7 +84,7 @@ public:
 		{
 			vecName.push_back((*iter)->GetName());
 		}
-	}
+	}	
 
 public:
 	CSceneComponent* GetRootComponent()   const

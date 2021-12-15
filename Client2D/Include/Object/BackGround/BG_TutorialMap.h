@@ -12,6 +12,8 @@ private:
 	// Only Block
 	CSharedPtr<CColliderBox2D>	m_Jump;
 	CSharedPtr<CColliderBox2D>	m_Descend;
+	CSharedPtr<CColliderBox2D>	m_DescendWall;
+	CSharedPtr<CColliderBox2D>	m_DescendCylinder;
 	CSharedPtr<CColliderBox2D>	m_ParryBox;
 	CSharedPtr<CColliderBox2D>	m_ParryCylinder;
 	CSharedPtr<CColliderBox2D>	m_Lock;

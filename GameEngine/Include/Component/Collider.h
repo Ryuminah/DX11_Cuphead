@@ -39,6 +39,11 @@ protected:
 
 
 public:
+	std::list<CCollider*>	GetCurrentCollisionList() const
+	{
+		return m_CurrentCollisionList;
+	}
+
 	std::list<CCollider*>	GetPrevCollisionList() const
 	{
 		return m_PrevCollisionList;
@@ -99,11 +104,11 @@ public:
 		m_HitResult = result;
 	}
 
-	void SetHitResult(CCollider* DestCollider, Vector3 HitPoint = {0.f,0.f,0.f})
+	void SetHitResult(CCollider* DestCollider, Vector3 HitPoint = { 0.f,0.f,0.f })
 	{
 		m_HitResult.DestCollider = DestCollider;
 		m_HitResult.DestObject = DestCollider->GetOwner();
-		m_HitResult.HitPoint= HitPoint;
+		m_HitResult.HitPoint = HitPoint;
 	}
 
 public:
@@ -126,7 +131,6 @@ public:
 	bool CheckPrevCollision(CCollider* Collider);
 	bool CheckCurrentFrameCollision(CCollider* Collider);
 	void AddCurrentFrameCollision(CCollider* Collider);
-	bool CheckEndCollision(CCollider* Collider);
 
 public:
 	void CallCollisionCallback(Collision_State State);
