@@ -78,7 +78,8 @@ private:
 	// Parry
 	bool m_bCanParry;
 	bool m_bIsParry;
-	bool m_bParrySuccess;		// 기본 상태는 true 이다	
+	bool m_bIsParryFall;
+	bool m_bParrySuccess;		
 	float m_ParryTime;
 	float m_ParryVelocity;
 	float m_ParryAccel;
@@ -158,6 +159,11 @@ public: //Get Set
 	bool GetIsGround()
 	{
 		return m_bIsGround;
+	}
+
+	bool GetParrySuccess()
+	{
+		return m_bParrySuccess;
 	}
 
 	void SetIsFightScene(bool IsFightScene)

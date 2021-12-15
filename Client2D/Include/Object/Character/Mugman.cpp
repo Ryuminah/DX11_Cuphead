@@ -56,6 +56,7 @@ CMugman::CMugman() :
 	m_bCanDuck = true;
 	m_bParrySuccess = false;
 	m_bCanDuckFall = false;
+	m_bIsParryFall = false;
 
 	m_bIsFightScene = true;
 }
@@ -451,6 +452,12 @@ void CMugman::MoveLeft(float DeltaTime)
 
 void CMugman::Jump(float DeltaTime)
 {
+	if (m_bIsJump && (GetAsyncKeyState('Z') & 0x8001))
+	{
+		m_bIsParry = true;
+		Parry();
+	}
+
 	// 점프 할 수 없는 상태라면 반환
 	if (!m_bCanJump)
 	{
@@ -484,25 +491,31 @@ void CMugman::Jump(float DeltaTime)
 
 void CMugman::Parry()
 {
-	if (m_bIsJump)
+	// 패링이 성공했는데 점프중이면 종료
+	if (m_bParrySuccess)
 	{
-		JumpEnd();
+		if (m_bIsJump)
+		{
+			JumpEnd();
+		}
+
+		m_bCanAttack = false;
+		m_bCanJump = false;
+		m_bCanAim = false;
+		m_bCanDash = true;
+		m_bCanDamaged = false;
+
+		m_bIsFall = false;
+		m_bIsGround = false;
+		m_bParrySuccess = true;
+
+		ResetPhysicsSimulate();
+		SetPhysicsSimulate(true);
+		m_StartY = GetRelativePos().y;
+
 	}
 
-	m_bCanAttack = false;
-	m_bCanJump = false;
-	m_bCanAim = false;
-	m_bCanDash = true;
-	m_bCanDamaged = false;
-
-	m_bIsFall = false;
-	m_bIsGround = false;
-	m_bParrySuccess = true;
-
-	ResetPhysicsSimulate();
-	SetPhysicsSimulate(true);
-
-	m_StartY = GetRelativePos().y;
+	
 	m_Sprite->SetRelativeScale(150.f, 150.f, 1.f);
 
 	if (m_PrevDirection == Direction::RIGHT)
@@ -514,6 +527,9 @@ void CMugman::Parry()
 	{
 		m_Animation->ChangeAnimation("Mugman_Parry_L");
 	}
+
+
+	
 }
 
 void CMugman::Shoot(float DeltaTime)
@@ -865,11 +881,19 @@ void CMugman::AnimationFrameEnd(const std::string& Name)
 	// 애니메이션이 종료되면 점프와 같은 상태로 되돌아간다. (완전한 종료는 아님 )
 	if (Name == "Mugman_Parry_R" || Name == "Mugman_Parry_L")
 	{
-		m_bCanAttack = false;
-		m_bCanJump = false;
-		m_bCanAim = false;
-		m_bCanDash = true;
-		m_bCanDamaged = true;
+		if (m_bParrySuccess)
+		{
+			m_bCanAttack = false;
+			m_bCanJump = false;
+			m_bCanAim = false;
+			m_bCanDash = true;
+			m_bCanDamaged = true;
+		}
+
+		else
+		{
+			m_bIsParry = false;
+		}
 
 		m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
 
@@ -929,7 +953,7 @@ void CMugman::JumpCheck(float DeltaTime)
 void CMugman::ParryCheck(float DeltaTime)
 {
 	// 패링 시간에 패링에 성공했을 경우
-	if (m_bIsParry && m_bParrySuccess)
+	if (m_bCanParry && m_bParrySuccess)
 	{
 		if (m_bIsJump)
 		{
@@ -949,6 +973,10 @@ void CMugman::ParryCheck(float DeltaTime)
 
 		m_ParryAccel -= GetGravityAccel() * DeltaTime;
 
+		if (ParryHeight <= 0.f)
+		{
+			m_bIsParryFall = true;
+		}
 		// 처음 위치보다 낮아지려고 할 경우 패링을 종료하고 Fall 상태로 전환함
 	/*	if (m_StartY > GetRelativePos().y)
 		{
@@ -1169,6 +1197,7 @@ void CMugman::OnGround()
 	// 땅에 닿았을때 정지하거나 수행 가능한 모든 행동을 처리
 	m_FallTime = 0.f;
 	m_bIsFall = false;
+	m_bIsParryFall = false;
 
 	m_bIsJump = false;
 	m_bIsGround = true;
@@ -1181,7 +1210,7 @@ void CMugman::OnGround()
 
 	m_bCanJump = true;
 	m_bCanAttack = true;
-	m_bCanDash = true;
+	//m_bCanDash = true;
 	m_bCanAim = true;
 	m_bCanDuck = true;
 
@@ -1189,7 +1218,7 @@ void CMugman::OnGround()
 	SetPhysicsSimulate(false);
 	SetUseBlockMovement(true);
 
-	if (m_PrevDirection == Direction::RIGHT)
+	/*if (m_PrevDirection == Direction::RIGHT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Idle_R");
 
@@ -1198,7 +1227,7 @@ void CMugman::OnGround()
 	if (m_PrevDirection == Direction::LEFT)
 	{
 		m_Animation->ChangeAnimation("Mugman_Idle_L");
-	}
+	}*/
 }
 
 void CMugman::TimeCheck(float DeltaTime)
@@ -1232,7 +1261,7 @@ void CMugman::TimeCheck(float DeltaTime)
 	}
 
 	// 패링 가능 시간중 패링에 성공하지 않았을 때만 남은 시간을 잰다.
-	if (m_bIsParry && !m_bParrySuccess)
+	if (m_bCanParry && !m_bParrySuccess)
 	{
 		m_ParryCheckTime += DeltaTime;
 	}
@@ -1429,7 +1458,6 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		if (m_bIsJump && GetWorldPos().y > GetPrevWorldPos().y)
 		{
 			SetUseBlockMovement(false);
-			
 		}
 
 		// 구름보다 내 위치가 더 높을때만 움직임 닿은것으로 판단(발판이기 때문).
@@ -1448,7 +1476,6 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		// 점프중일 시 아래서 위로 올라갈때는 장애물의 층돌을 막아야한다.
 		if (m_bIsJump)
 		{
-
 			// 수직으로 막혀야 할 상황인 경우
 			if (GetBlockDirection() == BlockDirection::VERTICAL)
 			{
@@ -1465,7 +1492,7 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 			}
 		}
 
-		if (m_bIsFall)
+		if (m_bIsFall || m_bIsParryFall)
 		{
 			if (GetBlockDirection() == BlockDirection::VERTICAL)
 			{
@@ -1567,7 +1594,6 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 	// 충돌 중에만 패링을 감지한다
 	if (result.DestCollider->GetProfile()->Name == "Parry")
 	{
-		// 이미 패링을 했다면 
 		if (m_bParrySuccess)
 		{
 			return;
@@ -1576,22 +1602,35 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 		if (m_bCanParry)
 		{
 			m_bCanDamaged = false;
-			m_bIsParry = true;
 
 			// 만약 점프가 눌린 상태라면 패링을 실행한다
-			if (GetAsyncKeyState('Z') & 0x8000)
+			if (m_bIsParry)
 			{
+				if (m_bParrySuccess)
+				{
+					ParryEnd();
+				}
+
+				m_bParrySuccess = true;
 				Parry();
-				result.DestObject->Active(false);
+				
+				if (!bUseCamera)
+				{
+					result.DestObject->Active(false);
+				}
 			}
 		}
 
 		// 충돌 중이나 패링 가능 시간이 종료 됐을 경우 피격 체크
-		if (!m_bCanParry && !m_bIsParry && !m_bParrySuccess)
+		if (!m_bCanParry && !m_bParrySuccess)
 		{
 			m_bCanDamaged = true;
 			ParryEnd();
-			Hit();
+
+			if (!bUseCamera)
+			{
+				Hit();
+			}
 		}
 	}
 }
@@ -1643,7 +1682,7 @@ void CMugman::CollisionEnd(const HitResult& result, CCollider* Collider)
 			}
 		}
 
-		else if (GetBlockDirection() != BlockDirection::HORIZONTAL&& !m_bIsJump && !m_bIsDuck)
+		else if (GetBlockDirection() != BlockDirection::HORIZONTAL&& !m_bIsJump && !m_bIsDuck )
 		{
 			InAir();
 		}
