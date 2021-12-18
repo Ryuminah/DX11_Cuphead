@@ -4,12 +4,18 @@
 #include "../Character/Mugman.h"
 #include "../../Animation2D/BackGround/TutorialSceneAnim.h"
 #include "Scene/CameraManager.h"
+#include "Input.h"
+#include "Scene/CameraManager.h"
+
+
+bool BG_TutorialMap::IsExit = false;
 
 BG_TutorialMap::BG_TutorialMap()
 {
 	m_PyramidHitCount = 0;
 	m_ParryNumber = 1;
 	m_ParrySuccessNumber = 0;
+	m_bCanExit = false;
 }
 
 BG_TutorialMap::BG_TutorialMap(const BG_TutorialMap& obj) :
@@ -20,11 +26,15 @@ BG_TutorialMap::BG_TutorialMap(const BG_TutorialMap& obj) :
 
 BG_TutorialMap::~BG_TutorialMap()
 {
+	CInput::GetInst()->ClearCallback();
 }
 
 void BG_TutorialMap::Start()
 {
-	CBackGround::Start();;
+	CBackGround::Start();
+	CInput::GetInst()->AddKeyCallback<BG_TutorialMap>("Jump", KT_Down, this, &BG_TutorialMap::Exit);
+	m_Sprite->AddChild(m_FadeIn);
+	//m_FadeAnim->ChangeAnimation("FadeIn");
 }
 
 bool BG_TutorialMap::Init()
@@ -51,6 +61,12 @@ bool BG_TutorialMap::Init()
 	m_ParryOne->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::Overlap, this, &BG_TutorialMap::Parry_CollisionOverlap);
 	m_ParryTwo->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::Overlap, this, &BG_TutorialMap::Parry_CollisionOverlap);
 	m_ParryThree->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::Overlap, this, &BG_TutorialMap::Parry_CollisionOverlap);
+
+	m_Exit->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::Begin, this, &BG_TutorialMap::Exit_CollisionBegin);
+	m_Exit->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::Overlap, this, &BG_TutorialMap::Exit_CollisionOverlap);
+	m_Exit->AddCollisionCallbackFunction<BG_TutorialMap>(Collision_State::End, this, &BG_TutorialMap::Exit_CollisionEnd);
+
+	m_FadeAnim->SetFrameEndFunction<BG_TutorialMap>(this, &BG_TutorialMap::AnimEnd);
 
 
 	return true;
@@ -99,7 +115,7 @@ BG_TutorialMap* BG_TutorialMap::Clone()
 
 void BG_TutorialMap::PyramidDestroyCheck()
 {
-	if (m_PyramidHitCount >= 15)
+	if (m_PyramidHitCount >= 10)
 	{
 		m_Lock->SetExtent(105.f, 120.f);
 
@@ -274,7 +290,13 @@ void BG_TutorialMap::CreateCollision()
 
 	CreateParry();
 
-	
+	m_Exit = CreateSceneComponent<CColliderBox2D>("Exit");
+	m_Exit->SetExtent(70.f, 100.f);
+	m_Exit->SetRelativePos(6400.f, 120.f, 0.f);
+	m_Exit->SetCollisionProfile("Event");
+	m_Exit->SetColliderType(Collider_Type::Static);
+	m_Sprite->AddChild(m_Exit);
+
 }
 
 void BG_TutorialMap::CreateParry()
@@ -360,3 +382,53 @@ void BG_TutorialMap::Parry_CollisionOverlap(const HitResult& result, CCollider* 
 		}
 	}
 }
+
+void BG_TutorialMap::AnimEnd(const std::string& Name)
+{
+	if (Name == "FadeOut")
+	{
+		IsExit = true;
+	}
+}
+
+void BG_TutorialMap::Exit_CollisionBegin(const HitResult& result, CCollider* Collider)
+{
+	if (result.DestObject->GetName() == "Mugman")
+	{
+		CMugman* pMugman = (CMugman*)result.DestObject;
+		pMugman->SetbCanJump(false);
+
+		m_bCanExit = true;
+	}
+}
+
+void BG_TutorialMap::Exit_CollisionOverlap(const HitResult& result, CCollider* Collider)
+{
+	if (result.DestObject->GetName() == "Mugman")
+	{
+		CMugman* pMugman = (CMugman*)result.DestObject;
+		pMugman->SetbCanJump(false);
+	}
+}
+
+void BG_TutorialMap::Exit_CollisionEnd(const HitResult& result, CCollider* Collider)
+{
+	if (result.DestObject->GetName() == "Mugman")
+	{
+		CMugman* pMugman = (CMugman*)result.DestObject;
+		pMugman->SetbCanJump(true);
+
+		m_bCanExit = false;
+	}
+}
+
+void BG_TutorialMap::Exit(float DeltaTime)
+{
+	if (m_bCanExit)
+	{
+		m_FadeIn->SetRelativePos(m_pScene->GetCameraManager()->GetCurrentCamera()->GetWorldPos());
+		m_FadeIn->Enable(true);
+		m_FadeAnim->ChangeAnimation("FadeOut");
+	}
+}
+ 

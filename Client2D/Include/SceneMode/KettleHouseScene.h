@@ -20,6 +20,8 @@ public:
 public:
     void CreateKettleHouseAnim();
     void CreateMugmanAnim();
+    void CreateWeaponAnim();
+    void CreateElderKettleAnim();
 
 public:
     void SetTutorialOpen(bool TutorialOpen);

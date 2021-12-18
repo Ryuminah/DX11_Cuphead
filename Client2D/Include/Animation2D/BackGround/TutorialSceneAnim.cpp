@@ -33,6 +33,7 @@ bool CTutorialSceneAnim::Init()
 	AddAnimationSequence2D("Pyramid_Body", false);
 	AddAnimationSequence2D("Pyramid_Head", false);
 	AddAnimationSequence2D("TutorialMap", false);
+	AddAnimationSequence2D("FieryFrolic", false);
 
 	return true;
 }

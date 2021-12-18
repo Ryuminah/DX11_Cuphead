@@ -16,6 +16,9 @@ protected:
 	CSharedPtr<CSpriteComponent> m_Sprite;
 	class CAnimation2D* m_BackGroundImage;
 
+	CSharedPtr<CSpriteComponent> m_FadeIn;
+	class CAnimation2D* m_FadeAnim;
+
 
 public:
 	virtual void Start();

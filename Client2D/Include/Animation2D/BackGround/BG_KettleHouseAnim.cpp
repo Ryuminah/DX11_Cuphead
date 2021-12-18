@@ -28,6 +28,20 @@ bool BG_KettleHouseAnim::Init()
 	// Title BackGround
 	AddAnimationSequence2D("BG_KettleHouse", false);
 	AddAnimationSequence2D("FG_KettleHouse", false);
+	AddAnimationSequence2D("SpeechBubble", false);
+	AddAnimationSequence2D("BubbleTail", false);
+	AddAnimationSequence2D("Z", false);
+	AddAnimationSequence2D("TutorialZ", false);
+	AddAnimationSequence2D("FadeIn", false);
+	AddAnimationSequence2D("FadeOut", false);
+
+	AddAnimationSequence2D("ElderKettle_Idle");
+	AddAnimationSequence2D("Arrow");
+
+	SetSequencePlayRate("ElderKettle_Idle", 2.0f);
+	SetSequencePlayRate("FadeIn", 1.2f);
+	SetSequencePlayRate("FadeOut", 1.5f);
+
 
 	return true;
 }

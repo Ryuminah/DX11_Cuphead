@@ -177,9 +177,11 @@
     <ClCompile Include="Object\BackGround\BG_TitleScene.cpp" />
     <ClCompile Include="Object\BackGround\BG_Tutorial.cpp" />
     <ClCompile Include="Object\BackGround\BG_TutorialMap.cpp" />
+    <ClCompile Include="Object\BackGround\ElderKettle.cpp" />
     <ClCompile Include="Object\BackGround\FG_Loading.cpp" />
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp" />
     <ClCompile Include="Object\BackGround\FG_Tutorial.cpp" />
+    <ClCompile Include="Object\BackGround\SpeechBubble.cpp" />
     <ClCompile Include="Object\Character\Bullet.cpp" />
     <ClCompile Include="Object\Character\Character.cpp" />
     <ClCompile Include="Object\Character\Dragon.cpp" />
@@ -189,6 +191,8 @@
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud2.cpp" />
     <ClCompile Include="Object\Collision\DragonCollider.cpp" />
     <ClCompile Include="Object\Collision\GroundCollider.cpp" />
+    <ClCompile Include="Object\Effect\BulletDeath.cpp" />
+    <ClCompile Include="Object\Effect\BulletSpawn.cpp" />
     <ClCompile Include="Object\Effect\Dust.cpp" />
     <ClCompile Include="Object\Effect\Effect.cpp" />
     <ClCompile Include="Object\Effect\MeteorSmoke.cpp" />
@@ -204,6 +208,7 @@
     <ClCompile Include="SceneMode\MainScene.cpp" />
     <ClCompile Include="SceneMode\TitleScene.cpp" />
     <ClCompile Include="SceneMode\TutorialScene.cpp" />
+    <ClCompile Include="UI\KettleHouse\BubbleTextWidget.cpp" />
     <ClCompile Include="UI\LoadingUI.cpp" />
     <ClCompile Include="UI\MainHUDWidget.cpp" />
     <ClCompile Include="UI\PlayerWorldInfoWidget.cpp" />
@@ -226,9 +231,11 @@
     <ClInclude Include="Object\BackGround\BG_TitleScene.h" />
     <ClInclude Include="Object\BackGround\BG_Tutorial.h" />
     <ClInclude Include="Object\BackGround\BG_TutorialMap.h" />
+    <ClInclude Include="Object\BackGround\ElderKettle.h" />
     <ClInclude Include="Object\BackGround\FG_Loading.h" />
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h" />
     <ClInclude Include="Object\BackGround\FG_Tutorial.h" />
+    <ClInclude Include="Object\BackGround\SpeechBubble.h" />
     <ClInclude Include="Object\Character\Bullet.h" />
     <ClInclude Include="Object\Character\Character.h" />
     <ClInclude Include="Object\Character\Dragon.h" />
@@ -238,6 +245,8 @@
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud1.h" />
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud2.h" />
     <ClInclude Include="Object\Collision\GroundCollider.h" />
+    <ClInclude Include="Object\Effect\BulletDeath.h" />
+    <ClInclude Include="Object\Effect\BulletSpawn.h" />
     <ClInclude Include="Object\Effect\Dust.h" />
     <ClInclude Include="Object\Effect\Effect.h" />
     <ClInclude Include="Object\Effect\MeteorSmoke.h" />
@@ -254,6 +263,7 @@
     <ClInclude Include="SceneMode\MainScene.h" />
     <ClInclude Include="SceneMode\TitleScene.h" />
     <ClInclude Include="SceneMode\TutorialScene.h" />
+    <ClInclude Include="UI\KettleHouse\BubbleTextWidget.h" />
     <ClInclude Include="UI\LoadingUI.h" />
     <ClInclude Include="UI\MainHUDWidget.h" />
     <ClInclude Include="UI\PlayerWorldInfoWidget.h" />

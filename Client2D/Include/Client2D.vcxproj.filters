@@ -82,6 +82,15 @@
     <Filter Include="02. Object\1. BackGround\Back\3. TutorialScene">
       <UniqueIdentifier>{fda3c0d1-6fba-4834-a4f4-e9c49449c450}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\6 .Effect\Dragon">
+      <UniqueIdentifier>{dba602fd-a747-4116-897a-c838dab93fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\6 .Effect\Weapon">
+      <UniqueIdentifier>{bebe0216-1303-4ee7-be6a-75e0cf7fd0dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\1. BackGround\Back\2. KettleHouse">
+      <UniqueIdentifier>{c0dc7bc9-15d8-4f13-8ea4-132ba5b5e6ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,9 +171,6 @@
     <ClCompile Include="Animation2D\DragonAnimation.cpp">
       <Filter>03. Animation2D\01. Character</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Effect\Effect.cpp">
-      <Filter>02. Object\6 .Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Skill\FireBoy.cpp">
       <Filter>02. Object\4. Skill</Filter>
     </ClCompile>
@@ -176,12 +182,6 @@
     </ClCompile>
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp">
       <Filter>03. Animation2D\04. BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
-      <Filter>02. Object\6 .Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Effect\Dust.cpp">
-      <Filter>02. Object\6 .Effect</Filter>
     </ClCompile>
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud1.cpp">
       <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
@@ -200,9 +200,6 @@
     </ClCompile>
     <ClCompile Include="Object\BackGround\BG_DragonMap.cpp">
       <Filter>02. Object\1. BackGround\Back\1.MainScene</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\BackGround\BG_KettleHouse.cpp">
-      <Filter>02. Object\1. BackGround\Back</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D\BackGround\FG_LoadingAnim.cpp">
       <Filter>03. Animation2D\04. BackGround</Filter>
@@ -227,6 +224,33 @@
     </ClCompile>
     <ClCompile Include="Object\BackGround\FG_Tutorial.cpp">
       <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\Dust.cpp">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\Effect.cpp">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\MeteorSmoke.cpp">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\BulletSpawn.cpp">
+      <Filter>02. Object\6 .Effect\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Effect\BulletDeath.cpp">
+      <Filter>02. Object\6 .Effect\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\ElderKettle.cpp">
+      <Filter>02. Object\2. Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\BG_KettleHouse.cpp">
+      <Filter>02. Object\1. BackGround\Back\2. KettleHouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround\SpeechBubble.cpp">
+      <Filter>02. Object\1. BackGround\Back\2. KettleHouse</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\KettleHouse\BubbleTextWidget.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +335,6 @@
     <ClInclude Include="Animation2D\DragonAnimation.h">
       <Filter>03. Animation2D\01. Character</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Effect\Effect.h">
-      <Filter>02. Object\6 .Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Skill\FireBoy.h">
       <Filter>02. Object\4. Skill</Filter>
     </ClInclude>
@@ -325,12 +346,6 @@
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h">
       <Filter>03. Animation2D\04. BackGround</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Effect\MeteorSmoke.h">
-      <Filter>02. Object\6 .Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Effect\Dust.h">
-      <Filter>02. Object\6 .Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud1.h">
       <Filter>02. Object\1. BackGround\Fore\1. MainScene</Filter>
@@ -349,9 +364,6 @@
     </ClInclude>
     <ClInclude Include="Object\BackGround\BG_DragonMap.h">
       <Filter>02. Object\1. BackGround\Back\1.MainScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\BackGround\BG_KettleHouse.h">
-      <Filter>02. Object\1. BackGround\Back</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D\BackGround\FG_LoadingAnim.h">
       <Filter>03. Animation2D\04. BackGround</Filter>
@@ -373,6 +385,33 @@
     </ClInclude>
     <ClInclude Include="Object\BackGround\BG_TutorialMap.h">
       <Filter>02. Object\1. BackGround\Back\3. TutorialScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\Dust.h">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\Effect.h">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\MeteorSmoke.h">
+      <Filter>02. Object\6 .Effect\Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\BulletSpawn.h">
+      <Filter>02. Object\6 .Effect\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Effect\BulletDeath.h">
+      <Filter>02. Object\6 .Effect\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\ElderKettle.h">
+      <Filter>02. Object\2. Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\BG_KettleHouse.h">
+      <Filter>02. Object\1. BackGround\Back\2. KettleHouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\SpeechBubble.h">
+      <Filter>02. Object\1. BackGround\Back\2. KettleHouse</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\KettleHouse\BubbleTextWidget.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

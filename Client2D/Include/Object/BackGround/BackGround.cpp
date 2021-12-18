@@ -1,7 +1,7 @@
 #include "BackGround.h"
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
-#include "../../Animation2D/BackGround_CloudAnim.h"
+#include "../../Animation2D/BackGround/BG_KettleHouseAnim.h"
 
 CBackGround::CBackGround()
 {
@@ -27,6 +27,12 @@ bool CBackGround::Init()
 {
 	CGameObject::Init();
 
+	m_FadeIn= CreateSceneComponent<CSpriteComponent>("FadeIn");
+	m_FadeIn->CreateAnimation2D<BG_KettleHouseAnim>();
+	m_FadeAnim = m_FadeIn->GetAnimation2D();
+	m_FadeIn->SetPivot(0.f, 0.f, 0.f);
+	m_FadeIn->SetRelativeScale(1280.f, 720.f, 1.f);
+	m_FadeIn->Enable(false);
 
 	return true;
 }

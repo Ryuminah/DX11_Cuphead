@@ -27,10 +27,12 @@ bool CBulletAnimation::Init()
 
 	AddAnimationSequence2D("Bullet_Loop_R");
 	AddAnimationSequence2D("Bullet_Loop_L");
+	AddAnimationSequence2D("Bullet_Spawn", false);
+	AddAnimationSequence2D("Bullet_Death", false);
 
-	//ChangeAnimation("Bullet_Loop_R");
-	//SetSequencePlayRate("Mugman_Dash_R", 2.0);
-	//SetSequencePlayRate("Mugman_Dash_L", 2.0);
+	SetSequencePlayRate("Bullet_Spawn", 4.0f);
+	SetSequencePlayRate("Bullet_Death", 4.0f);
+
 
 	return true;
 }

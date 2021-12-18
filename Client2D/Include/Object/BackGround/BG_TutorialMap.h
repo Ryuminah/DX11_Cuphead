@@ -7,6 +7,8 @@ class BG_TutorialMap :
 {
 	friend class CScene;
 
+public:
+	static bool IsExit;
 // 맵에서 충돌해야할 모든 콜리전들을 여기서 전부 제작한다.
 private:
 	// Only Block
@@ -43,6 +45,7 @@ private:
 	int m_PyramidHitCount;
 	int m_ParryNumber;					// 현재 활성화 된 패링
 	int m_ParrySuccessNumber;
+	bool m_bCanExit;
 
 protected:
 	BG_TutorialMap();
@@ -71,7 +74,13 @@ public:
 public:
 	void Pyramid_CollisionBegin(const HitResult& result, CCollider* Collider);
 	void Parry_CollisionOverlap(const HitResult& result, CCollider* Collider);
+	void AnimEnd(const std::string& Name);
 
+public:
+	void Exit_CollisionBegin(const HitResult& result, CCollider* Collider);
+	void Exit_CollisionOverlap(const HitResult& result, CCollider* Collider);
+	void Exit_CollisionEnd(const HitResult& result, CCollider* Collider);
+	void Exit(float DeltaTime);
 	
 };
 

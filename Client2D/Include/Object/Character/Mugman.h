@@ -50,7 +50,6 @@ private:
 	// Component
 	CSharedPtr<CSceneComponent> m_Rotation;
 	CSharedPtr<CSceneComponent> m_Muzzle;
-	CSharedPtr<CSpriteComponent> m_GunEffect;
 	CSharedPtr<CSpringArm2D> m_Arm;
 	CSharedPtr<CCamera> m_Camera;
 	std::list<std::string> m_CurrentColliderName;			// 어떤 종류의 콜리전이 overlap되고 있는지 저장
@@ -144,6 +143,7 @@ public:
 	void Parry();
 	void Shoot(float DeltaTime);
 	void Dash(float DeltaTime);
+	void Enter(float DeltaTime);
 	virtual void Hit();
 
 public:
@@ -166,12 +166,21 @@ public: //Get Set
 		return m_bParrySuccess;
 	}
 
+	bool GetIsParry()
+	{
+		return m_bIsParry;
+	}
+
 	void SetIsFightScene(bool IsFightScene)
 	{
 		m_bIsFightScene = IsFightScene;
 	}
 
-	
+	void SetbCanJump(bool CanJump)
+	{
+		m_bCanJump = CanJump;
+	}
+
 public: //Check Logic
 	void AnimCheck(float DeltaTime);
 	void FallCheck(float DeltaTime);
@@ -188,6 +197,7 @@ public: // Move 관련
 	void ParryEnd();			
 	void DashEnd();
 	void FallEnd();
+
 	virtual void HitEnd();
 	void OnGround();
 	void OnStepCloud(float MoveZ, float CloudY);
@@ -200,5 +210,4 @@ public:
 	void AddColliderName(std::string colliderName);
 	void DeleteCurrentCollider(std::string colliderName);
 	void ClearColliderName();
-
 };

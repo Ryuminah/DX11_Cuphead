@@ -101,11 +101,11 @@ bool CMugmanAnimation2D::Init()
 	SetSequencePlayRate("Mugman_Idle_R", 2.0f);
 	SetSequencePlayRate("Mugman_Idle_L", 2.0f);
 
-	SetSequencePlayRate("Mugman_Shoot_R", 6.0f);
-	SetSequencePlayRate("Mugman_Shoot_L", 6.0f);
+	SetSequencePlayRate("Mugman_Shoot_R", 4.0f);
+	SetSequencePlayRate("Mugman_Shoot_L", 4.0f);
 
-	SetSequencePlayRate("Mugman_Jump_R", 4.0f);
-	SetSequencePlayRate("Mugman_Jump_L", 4.0f);
+	SetSequencePlayRate("Mugman_Jump_R", 2.0f);
+	SetSequencePlayRate("Mugman_Jump_L", 2.0f);
 
 	
 

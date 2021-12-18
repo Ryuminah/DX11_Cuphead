@@ -2,26 +2,28 @@
 #include "UI/WidgetWindow.h"
 #include "UI/Text.h"
 
-class CTitleSceneWidget :
+class CBubbleTextWidget :
     public CWidgetWindow
 {
     friend class CViewport;
 
-protected:
-    CTitleSceneWidget();
-    CTitleSceneWidget(const CTitleSceneWidget& widget);
-    virtual ~CTitleSceneWidget();
+public:
+    CBubbleTextWidget();
+    CBubbleTextWidget(const CBubbleTextWidget& widget);
+    virtual ~CBubbleTextWidget();
 
 private:
     CSharedPtr<CText>   m_Text;
-    CSharedPtr<CText>   m_OutlineText;
 
 public:
     virtual bool Init();
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual void Render();
-    virtual CTitleSceneWidget* Clone();
+    virtual CBubbleTextWidget* Clone();
 
+
+public:
+    void SetTextWidget(const TCHAR* text, Vector2 BoxSize = { 500.f, 130.f });
 };
 

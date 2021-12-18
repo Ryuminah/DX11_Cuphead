@@ -349,9 +349,9 @@ bool CResourceManager::Init()
 	//FontFaceName = GetFontFaceName("Tutorial");
 	//CreateTextFormat("Tutorial", FontFaceName, 600, 20.f, TEXT("Tutorial"));
 
-	//CreateFontFile("KettleHouse", TEXT("KettleHouse.otf"));
-	//FontFaceName = GetFontFaceName("KettleHouse");
-	//CreateTextFormat("KettleHouse", FontFaceName, 600, 20.f, TEXT("KettleHouse"));
+	CreateFontFile("KettleHouse", TEXT("KettleHouse.otf"));
+	FontFaceName = GetFontFaceName("KettleHouse");
+	CreateTextFormat("KettleHouse", FontFaceName, 600, 20.f, TEXT("ko"));
 
 	return true;
 }

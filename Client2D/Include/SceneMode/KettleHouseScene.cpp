@@ -10,6 +10,7 @@
 #include "Scene/SceneManager.h"
 #include "LoadingScene.h"
 #include "TutorialScene.h"
+#include "../Object/BackGround/ElderKettle.h"
 
 
 CKettleHouseScene::CKettleHouseScene()
@@ -24,20 +25,26 @@ CKettleHouseScene::~CKettleHouseScene()
 bool CKettleHouseScene::Init()
 {
 	CreateKettleHouseAnim();
-	//CreateMugmanAnim();
+	CreateMugmanAnim();
+	CreateWeaponAnim();
 
 	BG_KettleHouse* pKettleHouse = m_pScene->SpawnObject<BG_KettleHouse>("BG_KettleHouse");
 	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
 	pGroundCollider->AddWorldPos(0.f, 50.f, 0.f);
 
-	//CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
+	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
+	pMugman->SetIsFightScene(false);
+	pMugman->SetRelativePos(100.f, 90.f, 0.f);
+
+	CElderKettle* pElderKettle = m_pScene->SpawnObject<CElderKettle>("ElderKettle");
+	pElderKettle->CreateSpeechBubble();
 
 	return true;
 }
 
 void CKettleHouseScene::Update(float DeltaTime)
 {
-	if (GetAsyncKeyState(VK_RETURN) & 0x0001)
+	if (GetAsyncKeyState(VK_RETURN) & 0x0001 || CElderKettle::IsTutorialOpen)
 	{
 		CSceneManager::GetInst()->CreateNextScene();
 		CSceneManager::GetInst()->SetSceneMode<CTutorialScene>(false);
@@ -57,10 +64,13 @@ void CKettleHouseScene::CreateKettleHouseAnim()
 		"FG_KettleHouse", TEXT("BackGround/FG_KettleHouse.png"));
 	m_pScene->GetResource()->AddAnimationSequence2DFrame("FG_KettleHouse",
 		Vector2(0.f, 0.f), Vector2(1280.f, 629.f));
+
+	CreateElderKettleAnim();
 }
 
 void CKettleHouseScene::CreateMugmanAnim()
 {
+
 	// Idle
 	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Idle_R");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Idle_R",
@@ -367,6 +377,117 @@ void CKettleHouseScene::CreateMugmanAnim()
 			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
 	}
 }
+
+void CKettleHouseScene::CreateWeaponAnim()
+{
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_R");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_R",
+		"Bullet_Loop_R", TEXT("Weapon/Bullet_Loop_R.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_R",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_L");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_L",
+		"Bullet_Loop_L", TEXT("Weapon/Bullet_Loop_L.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_L",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Spawn");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Spawn",
+		"Bullet_Spawn", TEXT("Weapon/Bullet_Spawn.png"));
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Spawn",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 180.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Death");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Death",
+		"Bullet_Death", TEXT("Weapon/Bullet_Death.png"));
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Death",
+			Vector2(i * 280.f, 0), Vector2((i + 1) * 280.f, 280.f));
+	}
+}
+
+void CKettleHouseScene::CreateElderKettleAnim()
+{
+	m_pScene->GetResource()->CreateAnimationSequence2D("Arrow");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Arrow",
+		"Arrow", TEXT("ElderHouse/Arrow.png"));
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Arrow",
+			Vector2(i * 50.f, 0), Vector2((i + 1) * 50.f, 40.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("BubbleTail");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("BubbleTail",
+		"BubbleTail", TEXT("ElderHouse/BubbleTail.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("BubbleTail",
+		Vector2(0.f, 0.f), Vector2(29.f, 59.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("SpeechBubble");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("SpeechBubble",
+		"SpeechBubble", TEXT("ElderHouse/SpeechBubble.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("SpeechBubble",
+		Vector2(0.f, 0.f), Vector2(677.f, 417.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Z");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Z",
+		"Z", TEXT("ElderHouse/Z.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("Z",
+		Vector2(0.f, 0.f), Vector2(65.f, 65.f));
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("TutorialZ");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("TutorialZ",
+		"TutorialZ", TEXT("ElderHouse/TutorialZ.png"));
+	m_pScene->GetResource()->AddAnimationSequence2DFrame("TutorialZ",
+		Vector2(0.f, 0.f), Vector2(240.f, 60.f));
+
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("ElderKettle_Idle");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("ElderKettle_Idle",
+		"ElderKettle_Idle", TEXT("ElderHouse/ElderKettle_Idle.png"));
+	for (int i = 0; i < 7; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("ElderKettle_Idle",
+			Vector2(i * 280.f, 0), Vector2((i + 1) * 280.f, 280.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FadeIn");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FadeIn",
+		"FadeIn", TEXT("BackGround/FadeIn.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int x = 0; x < 8; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("FadeIn",
+				Vector2(x * 512.f, y * 288.f), Vector2((x + 1) * 512.f, (y + 1) * 288.f));
+		}
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("FadeOut");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("FadeOut",
+		"FadeOut", TEXT("BackGround/FadeIn.png"));
+	for (int y = 2; y > 0; --y)
+	{
+		for (int x = 8; x > 0; --x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("FadeOut",
+				Vector2(x * 512.f, y * 288.f), Vector2((x -1) * 512.f, (y - 1) * 288.f));
+		}
+	}
+}
+
+
 
 
 void CKettleHouseScene::SetTutorialOpen(bool TutorialOpen)

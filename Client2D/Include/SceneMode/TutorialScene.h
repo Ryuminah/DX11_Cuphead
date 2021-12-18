@@ -21,6 +21,8 @@ public:
     void CreateTutorialAnim();
     void CreateMugmanAnim();
     void CreateWeaponAnim();
+    void CreateElderKettleAnim();
+
 
 };
 

@@ -3,9 +3,11 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "../../Animation2D/MugmanAnimation2D.h"
+#include "../../Animation2D/BulletAnimation.h"
 #include "Scene/CameraManager.h"
 #include "Engine.h"
 #include "Bullet.h"
+#include "../Effect/BulletSpawn.h"
 #include "../Static/StepCloud.h"
 #include  "../Effect/Dust.h"
 
@@ -86,9 +88,7 @@ void CMugman::Start()
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Push, this, &CMugman::MoveRight);
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveLeft", KT_Push, this, &CMugman::MoveLeft);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Aim", KT_Push, this, &CMugman::Aim);
-	CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
 	CInput::GetInst()->AddKeyCallback<CMugman>("Dash", KT_Down, this, &CMugman::Dash);
-
 
 	// End CallBack Func
 	CInput::GetInst()->AddKeyCallback<CMugman>("MoveRight", KT_Up, this, &CMugman::MoveEnd);
@@ -102,25 +102,15 @@ void CMugman::Start()
 	{
 		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
 		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd);
+		CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
 	}
 
 	else
 	{
 
+
 	}
 
-	if (bUseCamera)
-	{/*
-		m_Arm = CreateSceneComponent<CSpringArm2D>("Arm");
-		m_Camera = CreateSceneComponent<CCamera>("Camera");
-		m_Arm->SetOffset(640.f, -120.f, 0.f);
-		m_Arm->SetPivot(0.5f, 0.5f, 0.f);
-		m_Arm->SetInheritPosZ(false);
-
-		m_Sprite->AddChild(m_Arm);
-		m_Arm->AddChild(m_Camera);*/
-		//m_Arm->SetDefaultZ(0.99);
-	}
 }
 
 bool CMugman::Init()
@@ -133,18 +123,14 @@ bool CMugman::Init()
 	m_Muzzle = CreateSceneComponent<CSceneComponent>("Muzzle");
 
 
-
-
 	SetRootComponent(m_Sprite);
 	m_Sprite->SetRelativeScale(200.f, 200.f, 1.f);
-	m_Sprite->SetRelativePos(150.f, 265.f, 0.f);
+	m_Sprite->SetRelativePos(0.f, 0.f, 0.f);
 
 	m_Sprite->AddChild(m_Collider);
 	m_Sprite->AddChild(m_Muzzle);
 	//m_Sprite->SetRelativeRotationZ(30.f);
 	//m_Sprite->SetPivot(0.5f, 0.f, 0.f);
-
-
 
 	m_Collider->SetExtent(45.f, 70.f);
 	m_Collider->SetCollisionProfile("Player");
@@ -152,16 +138,8 @@ bool CMugman::Init()
 
 	
 	m_Muzzle->SetInheritRotZ(true);
-	m_Muzzle->SetRelativePos(Vector3(10.f, 40.f, 0.f));
+	m_Muzzle->SetRelativePos(Vector3(20.f, 40.f, 0.f));
 	m_Muzzle->SetPivot(0.5f, 0.5f, 0.f);
-
-	//m_Arm->SetOffset(0.f, 0.f, 0.f);
-	//m_Arm->SetInheritPosZ(false);
-
-	//m_Sprite->AddChild(m_Arm);
-	//m_Arm->AddChild(m_Camera);
-
-	//CSharedPtr<CMaterial>   SpriteMtrl = m_Sprite->GetMaterial(0);
 
 	m_Sprite->CreateAnimation2D<CMugmanAnimation2D>();
 	m_Animation = m_Sprite->GetAnimation2D();
@@ -543,6 +521,7 @@ void CMugman::Shoot(float DeltaTime)
 	{
 		--m_BulletCount;
 		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
+		CBulletSpawn* pBulletSpawn = m_pScene->SpawnObject<CBulletSpawn>("BulletSpawn");
 
 
 		// 대각선인지를 우선 체크한다.
@@ -554,6 +533,9 @@ void CMugman::Shoot(float DeltaTime)
 				pBullet->SetBulletDirection(Direction::RIGHT);
 				m_Muzzle->SetWorldRotationZ(45.f);
 				m_Muzzle->SetRelativePos(MuzzlePosition::Up_Digonal_R);
+				pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+				pBulletSpawn->AddRelativePos(40.f, -30.f, 0.f);
+
 			}
 
 			else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
@@ -561,6 +543,8 @@ void CMugman::Shoot(float DeltaTime)
 				pBullet->SetBulletDirection(Direction::LEFT);
 				m_Muzzle->SetWorldRotationZ(-45.f);
 				m_Muzzle->SetRelativePos(MuzzlePosition::Up_Digonal_L);
+				pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+				pBulletSpawn->AddRelativePos(-40.f, -30.f, 0.f);
 			}
 
 			else
@@ -569,6 +553,8 @@ void CMugman::Shoot(float DeltaTime)
 				pBullet->SetBulletDirection(Direction::RIGHT);
 				m_Muzzle->SetRelativePos(MuzzlePosition::Up);
 				m_Muzzle->SetWorldRotationZ(90.f);
+				pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+				pBulletSpawn->AddRelativePos(-10.f, 20.f, 0.f);
 			}
 		}
 
@@ -581,12 +567,16 @@ void CMugman::Shoot(float DeltaTime)
 				{
 					pBullet->SetBulletDirection(Direction::RIGHT);
 					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Duck_R);
+					pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+					pBulletSpawn->AddRelativePos(50.f, -60.f, 0.f);
 				}
 
 				if(m_PrevDirection == Direction::LEFT)
 				{
 					pBullet->SetBulletDirection(Direction::LEFT);
 					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Duck_L);
+					pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+					pBulletSpawn->AddRelativePos(-50.f, -60.f, 0.f);
 				}
 			}
 
@@ -598,6 +588,8 @@ void CMugman::Shoot(float DeltaTime)
 					pBullet->SetBulletDirection(Direction::RIGHT);
 					m_Muzzle->SetWorldRotationZ(-45.f);
 					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Digonal_R);
+					pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+					pBulletSpawn->AddRelativePos(30.f, -50.f, 0.f);
 				}
 
 				else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
@@ -605,6 +597,8 @@ void CMugman::Shoot(float DeltaTime)
 					pBullet->SetBulletDirection(Direction::LEFT);
 					m_Muzzle->SetWorldRotationZ(45.f);
 					m_Muzzle->SetRelativePos(MuzzlePosition::Down_Digonal_L);
+					pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+					pBulletSpawn->AddRelativePos(-30.f, -50.f, 0.f);
 				}
 
 				else
@@ -613,6 +607,8 @@ void CMugman::Shoot(float DeltaTime)
 					pBullet->SetBulletDirection(Direction::RIGHT);
 					m_Muzzle->SetRelativePos(MuzzlePosition::Down);
 					m_Muzzle->SetWorldRotationZ(-90.f);
+					pBulletSpawn->SetRelativePos(m_Muzzle->GetWorldPos().x, m_Muzzle->GetWorldPos().y, m_Muzzle->GetWorldPos().z);
+					pBulletSpawn->AddRelativePos(10.f, -60.f, 0.f);
 				}
 			}
 		}
@@ -620,32 +616,40 @@ void CMugman::Shoot(float DeltaTime)
 		// 위 아래에 대한 키 입력이 없는 경우
 		else
 		{
+			pBullet->SetBulletDirection(Direction::RIGHT);
+			Vector3 SpawnPoint = GetWorldPos();
+
 			if (m_PrevDirection == Direction::RIGHT)
 			{
-				pBullet->SetBulletDirection(Direction::RIGHT);
-
+				
 				// 정지 사격일 경우만 애니메이션을 바꿔준다.
 				if (!m_bIsMove && !m_bIsJump)
 				{
 					m_Animation->ChangeAnimation("Mugman_Shoot_R");
+
 				}
+					pBulletSpawn->SetRelativePos(SpawnPoint);
+					pBulletSpawn->AddRelativePos(50.f, -10.f, 0.f);
 			}
 
 			if (m_PrevDirection == Direction::LEFT)
 			{
 				pBullet->SetBulletDirection(Direction::LEFT);
-				Vector3 CurrentMuzzlePos = m_Muzzle->GetRelativePos();
-				m_Muzzle->SetRelativePos(-CurrentMuzzlePos.x, CurrentMuzzlePos.y, CurrentMuzzlePos.z);
 
 				if (!m_bIsMove && !m_bIsJump)
 				{
 					m_Animation->ChangeAnimation("Mugman_Shoot_L");
 				}
+					pBulletSpawn->SetRelativePos(SpawnPoint);
+					pBulletSpawn->AddRelativePos(-50.f, -10.f, 0.f);
 			}
 		}
 
 		pBullet->SetWorldRotationZ(m_Muzzle->GetWorldRotation().z);
 		pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
+
+		
+		//pBulletSpawn->SetWorldRotationZ(m_Muzzle->GetWorldRotation().z);
 
 		m_bCanAttack = false;
 		m_bIsAttack = true;
@@ -851,6 +855,8 @@ void CMugman::AimEnd(float DeltaTime)
 		m_Animation->ChangeAnimation("Mugman_Idle_L");
 	}
 }
+
+
 
 
 //void CMugman::Triple(float DeltaTime)
@@ -1523,8 +1529,9 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 
 		m_bCanDuckFall = false;
 
+		// 키가 한번이라도 눌렸을때만 상대 콜리전의 y값을 가져온다.
 		CColliderBox2D* pColliderBox = (CColliderBox2D*)result.DestCollider;
-		if (pColliderBox->GetInfo().Center.y != 0.f)
+		if (pColliderBox->GetInfo().Center.y != 0.f && (GetAsyncKeyState(VK_RIGHT)))
 		{
 			SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
 		}

@@ -12,6 +12,8 @@ protected:
 
 private:
     void CreateTitleSceneAnim();
+    void CreateElderKettleAnim();
+
 
 public:
     virtual bool Init();

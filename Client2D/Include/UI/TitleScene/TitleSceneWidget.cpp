@@ -35,7 +35,6 @@ bool CTitleSceneWidget::Init()
 	m_Text->SetSize(400.f, 50.f);
 	m_Text->SetFontSize(40.f);
 	m_Text->SetShadowEnable(false);
-
 	
 	/*m_Text->SetShadowColor(1.f, 1.f, 0.f);
 	m_Text->SetShadowAlphaEnable(true);

@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Scene/Scene.h"
 #include "../../Animation2D/BulletAnimation.h"
+#include "../Effect/BulletDeath.h"
 
 CBullet::CBullet() :
     m_Range(1280.f), m_Speed(1300.f)
@@ -134,7 +135,12 @@ CBullet* CBullet::Clone()
 
 void CBullet::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
+    CBulletDeath* pBulletDeath = m_pScene->SpawnObject<CBulletDeath>("BulletDeath");
+    pBulletDeath->SetRelativePos(GetWorldPos());
+
     m_bIsHit = true;
+    Enable(false);
+
 }
 
 void CBullet::CollisionEnd(const HitResult& result, CCollider* Collider)

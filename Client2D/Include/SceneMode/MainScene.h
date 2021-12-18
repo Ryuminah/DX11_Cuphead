@@ -32,6 +32,8 @@ private:
     void CreateWeaponAnim();
     void CreateDragonAnim();
     void CreateBackGroundImage();
+    void CreateElderKettleAnim();
+
     
     // Game Object »ý¼º
     void CreateStepCloud();
