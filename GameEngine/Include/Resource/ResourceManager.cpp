@@ -1592,8 +1592,10 @@ bool CResourceManager::SetVolume(int Volume)
 {
 	m_MasterGroup->setVolume(Volume / 100.f);
 
+
 	return true;
 }
+
 
 bool CResourceManager::SetVolume(const std::string& GroupName, int Volume)
 {

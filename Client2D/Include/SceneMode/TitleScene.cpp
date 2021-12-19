@@ -6,7 +6,7 @@
 #include "../Object/BackGround/BG_TitleScene.h"
 #include "Scene/SceneManager.h"
 #include "KettleHouseScene.h"
-
+#include "../Object/BackGround/ScreenFX.h"
 
 
 CTitleScene::CTitleScene()
@@ -15,6 +15,7 @@ CTitleScene::CTitleScene()
 
 CTitleScene::~CTitleScene()
 {
+
 }
 
 void CTitleScene::CreateTitleSceneAnim()
@@ -125,6 +126,9 @@ bool CTitleScene::Init()
 
 	BG_TitleScene* pTitleScene = m_pScene->SpawnObject<BG_TitleScene>("BG_TitleScene");
 	CTitleSceneWidget* Widget = m_pScene->GetViewport()->AddWindow<CTitleSceneWidget>("TitleSceneWidget");
+
+	m_pScene->GetResource()->LoadSound("BGM", true, "bgm_title_screen", "BGM/bgm_title_screen.wav");
+	m_pScene->GetResource()->SoundPlay("bgm_title_screen");
 
 	return true;
 }

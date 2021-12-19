@@ -36,6 +36,7 @@ public:
 	static Vector3	PlayerPrevPos;
 	static bool	bUseCamera;
 
+
 	static Vector3 GetPlayerPos()
 	{
 		return PlayerPos;
@@ -57,6 +58,8 @@ private:
 private:
 	// Game Start
 	bool m_bGameStart;
+	bool m_bUseGameStart;
+
 	bool m_bIsFightScene;	// Scene마다 등록해야하는 콜백 함수를 변경해준다.
 	float m_IntroTime;		// 나중에 intro Animation 종료시로 조건을 변경한다.
 
@@ -179,6 +182,11 @@ public: //Get Set
 	void SetbCanJump(bool CanJump)
 	{
 		m_bCanJump = CanJump;
+	}
+
+	void SetbUseGameStart(bool bUseGameStart)
+	{
+		m_bUseGameStart = bUseGameStart;
 	}
 
 public: //Check Logic

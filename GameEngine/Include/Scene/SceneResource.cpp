@@ -843,7 +843,7 @@ bool CSceneResource::AddAnimationSequence2DFrame(const std::string& SequenceName
 	if (!pSequence)
 		return false;
 
-	pSequence->AddFrame(Start, End);
+ 	pSequence->AddFrame(Start, End);
 
 	return true;
 }
@@ -1162,6 +1162,8 @@ bool CSceneResource::SetVolume(int Volume)
 {
 	return CResourceManager::GetInst()->SetVolume(Volume);
 }
+
+
 
 bool CSceneResource::SetVolume(const std::string& GroupName, int Volume)
 {

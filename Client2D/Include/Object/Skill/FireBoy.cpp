@@ -4,6 +4,7 @@
 #include "../../Animation2D/DragonAnimation.h"
 #include "../Character/Dragon.h"
 #include "../Effect/MeteorSmoke.h"
+#include "Scene/SceneResource.h"
 
 float CFireboy::AttackUnitCoolTime = 0.f;
 
@@ -101,7 +102,9 @@ void CFireboy::SkillStart(float DeltaTime)
 
 	if (m_bIsAttackUnit)
 	{
-		m_Sprite->GetMaterial(0)->SetBaseColor(0.5f, 0.f, 0.1f, 0.2f);
+		bool FakeUnit = rand() % 2;
+		m_bIsAttackUnit = FakeUnit == 0 ? true : false;
+		m_Sprite->GetMaterial(0)->SetBaseColor(1.0f, 0.39f, 0.39f, 0.4f);
 		m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
 		m_Sprite->SetDefaultZ(0.1f);
 		m_CoolTime = 1.f;
@@ -147,6 +150,7 @@ void CFireboy::MoveCheck(float DeltaTime)
 		m_bIsAttack= true;
 		m_Sprite->SetRelativeScale(130.f, 160.f, 0.f);
 		m_Animation->ChangeAnimation("Fireboy_Cast");
+		m_pScene->GetResource()->SoundPlay("sfx_dragon_fireboy_start");
 	}
 
 	else
@@ -212,12 +216,14 @@ void CFireboy::TimeCheck(float DeltaTime)
 	{
 		m_bIsJump = true;
 		SetPhysicsSimulate(true);
+		m_pScene->GetResource()->SoundPlay("sfx_dragon_fireboy_jump");
 
 		// 뛰기 직전에 점프 방향을 확정해준다.
 		if (CMugman::PlayerPos.x >= GetWorldPos().x)
 		{
 			m_JumpDirection = Direction::RIGHT;
 			m_Animation->ChangeAnimation("Fireboy_Jump_Start");
+
 		}
 
 		else

@@ -2,8 +2,9 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "../../Animation2D/BackGround_CloudAnim.h"
+#include "Scene/SceneResource.h"
 
-bool BG_DragonMap::bIsNight = false;
+bool BG_DragonMap::bIsEnd= false;
 
 BG_DragonMap::BG_DragonMap()
 {
@@ -18,6 +19,7 @@ BG_DragonMap::BG_DragonMap(const BG_DragonMap& obj) :
 
 BG_DragonMap::~BG_DragonMap()
 {
+	
 }
 
 void BG_DragonMap::Start()
@@ -49,12 +51,21 @@ bool BG_DragonMap::Init()
 	m_BackGroundImage = m_Sprite->GetAnimation2D();
 	m_BackGroundImage->ChangeAnimation("BG_Normal_DragonMap");
 
+	m_FadeAnim->SetFrameEndFunction<BG_DragonMap>(this, &BG_DragonMap::AnimFrameEnd);
+
+
 	return true;
 }
 
 void BG_DragonMap::Update(float DeltaTime)
 {
 	CBackGround::Update(DeltaTime);
+
+	if (bIsEnd)
+	{
+		m_FadeIn->Enable(true);
+		m_FadeAnim->ChangeAnimation("FadeOut");
+	}
 }
 
 void BG_DragonMap::PostUpdate(float DeltaTime)
@@ -76,3 +87,13 @@ BG_DragonMap* BG_DragonMap::Clone()
 {
 	return new BG_DragonMap(*this);
 }
+
+void BG_DragonMap::AnimFrameEnd(const std::string& Name)
+{
+	if (Name == "FadeOut")
+	{
+		m_pScene->GetResource()->SoundStop("MUS_FieryFrolic");
+	}
+}
+
+

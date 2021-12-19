@@ -2,6 +2,7 @@
 #include "Scene/Scene.h"
 #include "../../Animation2D/BulletAnimation.h"
 #include "../Effect/BulletDeath.h"
+#include "Scene/SceneResource.h"
 
 CBullet::CBullet() :
     m_Range(1280.f), m_Speed(1300.f)
@@ -137,18 +138,19 @@ void CBullet::CollisionBegin(const HitResult& result, CCollider* Collider)
 {
     CBulletDeath* pBulletDeath = m_pScene->SpawnObject<CBulletDeath>("BulletDeath");
     pBulletDeath->SetRelativePos(GetWorldPos());
+    pBulletDeath->AddRelativePos(0.f, -100.f,0.f);
 
-    m_bIsHit = true;
-    Enable(false);
+    m_pScene->GetResource()->SoundPlay("sfx_player_shoot_hit");
+
+
+    Active(false);
+   
 
 }
 
 void CBullet::CollisionEnd(const HitResult& result, CCollider* Collider)
 {
-    Active(false);
-
-    m_bIsHit = false;
-    m_bIsFire = false;
+    
 }
 
 void CBullet::AnimationFrameEnd(const std::string& Name)

@@ -11,11 +11,12 @@
 #include "../Skill/Tail.h"
 #include "../Skill/Meteor.h"
 #include "../Skill/FireBoy.h"
-
+#include "Scene/SceneResource.h"
 #include "../Collision/DragonCollider.h"
+#include "../BackGround/BG_DragonMap.h"
 
 
-CDragon::CDragon() : m_CurrentPhase(Phase::Phase1), m_NextAttackTime(5.f),
+CDragon::CDragon() : m_CurrentPhase(Phase::Phase1), m_NextAttackTime(3.f),
 		m_LastPattern("Meteor"), m_NextPattern(0), m_TailTime(3.f), m_IsAnimEnd(false),
 	m_bIsPhaseStart(false), m_GunPointAnim(nullptr), m_AttackFireBoyTime(0.f)
 {
@@ -141,6 +142,8 @@ void CDragon::AnimFrameEnd(const std::string& Name)
 	if (Name == "Dragon_Peashot_Start")
 	{
 		Peashot();
+		m_pScene->GetResource()->SoundPlay("sfx_dragon_peashot_start");
+
 		return;
 	}
 
@@ -168,6 +171,11 @@ void CDragon::AnimFrameEnd(const std::string& Name)
 		return;
 	}
 
+	if (Name == "Dragon_Tounge_End")
+	{
+		m_GunPointAnim->Active(false);
+		return;
+	}
 
 }
 
@@ -237,14 +245,19 @@ void CDragon::PhaseOne()
 	m_bIsPhaseStart = true;
 }
 
-void CDragon::PhaseEnd()
+void CDragon::PhaseOneEnd()
 {
 	m_bIsPhaseStart = false;
+}
+
+void CDragon::PhaseTwoEnd()
+{
 }
 
 void CDragon::SetPhaseTwoOpening()
 {
 	m_Animation->ChangeAnimation("Dragon_Dash");
+	m_pScene->GetResource()->SoundPlay("sfx_dragon_dash");
 	// 충돌체 비활성화
 	m_pDragonCollider->Enable(false);
 	SetRelativeScale(480.f, 130.f, 0.f);
@@ -314,6 +327,8 @@ void CDragon::Peashot()
 	m_LastPattern = m_vecSkill[PEASHOT].SkillName;
 
 	CPeashot* pPeashot = m_pScene->SpawnObject<CPeashot>("Peashot");
+	m_pScene->GetResource()->SoundPlay("sfx_dragon_peashot_fire");
+
 	m_CurrentSkill = pPeashot;
 	pPeashot->SetRelativePos(m_GunPoint->GetWorldPos());
 	pPeashot->SetIsHead(true);
@@ -387,11 +402,14 @@ void CDragon::ChangeSkill()
 			if (m_NextPattern == PEASHOT)
 			{
 				m_Animation->ChangeAnimation("Dragon_Peashot_Start");
+				m_pScene->GetResource()->SoundPlay("sfx_dragon_peashot_start");
+
 			}
 
 			if (m_NextPattern == METEOR)
 			{
 				m_Animation->ChangeAnimation("Dragon_Meteor_Start");
+				m_pScene->GetResource()->SoundPlay("sfx_dragon_meteor_start");
 			}
 		}
 
@@ -448,6 +466,7 @@ void CDragon::SkillEnd(std::string SkillName)
 	{
 		m_vecSkill[PEASHOT].IsActive = false;
 		m_Animation->ChangeAnimation("Dragon_Peashot_End");
+		m_pScene->GetResource()->SoundPlay("sfx_dragon_peashot_end");
 	}
 
 	if (SkillName == "Meteor")
@@ -549,6 +568,25 @@ void CDragon::PhaseEndCheck(float DeltaTime)
 	if (m_CurrentPhase == Phase::Phase2 && m_bIsPhaseStart == false)
 	{
 		PhaseTwo(DeltaTime);
+	}
+
+	if (m_HitCount >= 10 && m_CurrentPhase == Phase::Phase2)
+	{
+		// 공격중이 아닐때 페이즈를 종료한다.
+		if (m_bIsAttack)
+		{
+			return;
+		}
+
+		m_bCanAttack = false;
+		m_bIsPhaseStart = false;
+
+		SetRelativeScale(670.f, 670.f, 1.f);
+		m_Animation->ChangeAnimation("Dragon_Death");
+		m_Sprite->SetRelativePos(640.f, 0.f,0.f);
+		m_NextAttackTime = 0.f;
+		BG_DragonMap::bIsEnd = true;
+
 	}
 }
 

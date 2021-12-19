@@ -252,6 +252,12 @@
     <ClCompile Include="UI\KettleHouse\BubbleTextWidget.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BackGround\ScreenFX.cpp">
+      <Filter>02. Object\1. BackGround\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation2D\BackGround\ScreenFXAnim.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -411,6 +417,12 @@
       <Filter>02. Object\1. BackGround\Back\2. KettleHouse</Filter>
     </ClInclude>
     <ClInclude Include="UI\KettleHouse\BubbleTextWidget.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround\ScreenFX.h">
+      <Filter>02. Object\1. BackGround\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D\BackGround\ScreenFXAnim.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

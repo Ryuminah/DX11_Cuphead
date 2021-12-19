@@ -33,6 +33,7 @@ private:
     void CreateDragonAnim();
     void CreateBackGroundImage();
     void CreateElderKettleAnim();
+    void CreateSound();
 
     
     // Game Object »ý¼º

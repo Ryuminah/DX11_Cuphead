@@ -10,6 +10,7 @@
 #include "../Effect/BulletSpawn.h"
 #include "../Static/StepCloud.h"
 #include  "../Effect/Dust.h"
+#include "Scene/SceneResource.h"
 
 Vector3 MuzzlePosition::Up = { 10.f, 50.f, 0.f };
 Vector3 MuzzlePosition::Up_Digonal_R = { 20.f, 70.f, 0.f };
@@ -40,7 +41,7 @@ CMugman::CMugman() :
 	m_DashSpeed(70.f),m_DashTime(0.0f),
 	m_ShootCool(0.2f),
 	m_DashCool(0.5f),
-	m_IntroTime(5.f),
+	m_IntroTime(3.f),
 	m_ParryCheckTime(0.f),
 	m_InvincibleTime(0.f),
 	m_TimeToFrame(0.f),
@@ -59,7 +60,7 @@ CMugman::CMugman() :
 	m_bParrySuccess = false;
 	m_bCanDuckFall = false;
 	m_bIsParryFall = false;
-
+	m_bUseGameStart = false;
 	m_bIsFightScene = true;
 }
 
@@ -103,6 +104,12 @@ void CMugman::Start()
 		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Push, this, &CMugman::Shoot);
 		CInput::GetInst()->AddKeyCallback<CMugman>("Shoot", KT_Up, this, &CMugman::ShootEnd);
 		CInput::GetInst()->AddKeyCallback<CMugman>("Jump", KT_Down, this, &CMugman::Jump);
+
+		if (m_bUseGameStart)
+		{
+			m_pScene->GetResource()->SoundPlay("MUS_FieryFrolic");
+
+		}
 	}
 
 	else
@@ -154,6 +161,7 @@ bool CMugman::Init()
 	SetPhysicsSimulate(true);
 	SetUseBlockMovement(true);
 	SetPrevDirection(Direction::RIGHT);
+	SetDefaultZ(0.5f);
 	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
 
 	//SetDefaultZ(0.3f);
@@ -454,6 +462,8 @@ void CMugman::Jump(float DeltaTime)
 
 	ResetPhysicsSimulate();
 	SetPhysicsSimulate(true);
+	m_pScene->GetResource()->SoundPlay("sfx_player_jump");
+
 
 	if (m_PrevDirection == Direction::RIGHT)
 	{
@@ -491,6 +501,8 @@ void CMugman::Parry()
 		SetPhysicsSimulate(true);
 		m_StartY = GetRelativePos().y;
 
+		m_pScene->GetResource()->SoundPlay("sfx_player_parry");
+
 	}
 
 	
@@ -520,9 +532,16 @@ void CMugman::Shoot(float DeltaTime)
 	if (m_BulletCount > 0)
 	{
 		--m_BulletCount;
+
+		if (!m_bIsAttack)
+		{
+			m_pScene->GetResource()->SoundPlay("sfx_player_shoot_start");
+
+			m_bIsAttack = true;
+		}
+
 		CBullet* pBullet = m_pScene->SpawnObject<CBullet>("Bullet");
 		CBulletSpawn* pBulletSpawn = m_pScene->SpawnObject<CBulletSpawn>("BulletSpawn");
-
 
 		// 대각선인지를 우선 체크한다.
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
@@ -647,7 +666,6 @@ void CMugman::Shoot(float DeltaTime)
 
 		pBullet->SetWorldRotationZ(m_Muzzle->GetWorldRotation().z);
 		pBullet->SetRelativePos(m_Muzzle->GetWorldPos());
-
 		
 		//pBulletSpawn->SetWorldRotationZ(m_Muzzle->GetWorldRotation().z);
 
@@ -683,7 +701,6 @@ void CMugman::AimDown()
 		// Digonal Down
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
-			float   Angle = GetWorldRotation().z - 30.f;
 			m_Animation->ChangeAnimation("Mugman_AimDown_Digonal_R");
 			return;
 
@@ -734,6 +751,8 @@ void CMugman::Dash(float DeltaTime)
 	
 	ResetPhysicsSimulate();
 	SetPhysicsSimulate(true);
+	m_pScene->GetResource()->SoundPlay("sfx_player_dash");
+
 
 	// 원래 스프라이트 크기로 맞춰줌
 	m_Sprite->SetRelativeScale(330.f, 330.f, 1.f);
@@ -779,6 +798,7 @@ void CMugman::Hit()
 	}
 
 	// 할 수 있는 행동 전부 막고 모든 상태를 즉시 종료함
+	m_pScene->GetResource()->SoundPlay("sfx_player_hit");
 	m_bCanAim = false;
 	m_bCanAttack = false;
 	m_bCanDash = false;
@@ -807,9 +827,10 @@ void CMugman::ShootEnd(float DeltaTime)
 {
 	m_bIsAttack = false;
 	m_ShootCool = 0.2f;
-	// Z값을 항상 초기화 해준다.
+	// 위치와 회전값을 항상 초기화 해준다.
 	m_Muzzle->SetWorldRotationZ(0.f);
-	
+	m_Muzzle->SetRelativePos(20.f, 40.f, 0.f);
+	m_pScene->GetResource()->SoundStop("sfx_player_shoot_start");
 }
 
 void CMugman::MoveEnd(float DeltaTime)
@@ -884,6 +905,13 @@ void CMugman::AnimationFrameEnd(const std::string& Name)
 		HitEnd();
 	}
 
+	if (Name == "Mugman_Intro")
+	{
+		m_Animation->ChangeAnimation("Mugman_Idle_R");
+		m_bGameStart = true;
+		CStepCloud::m_bIsStageStart = true;
+	}
+
 	// 애니메이션이 종료되면 점프와 같은 상태로 되돌아간다. (완전한 종료는 아님 )
 	if (Name == "Mugman_Parry_R" || Name == "Mugman_Parry_L")
 	{
@@ -952,6 +980,7 @@ void CMugman::JumpCheck(float DeltaTime)
 	// 점프 중이 아닐 경우
 	else
 	{
+		//m_pScene->GetResource()->SoundPlay("sfx_player_land");
 		JumpEnd();
 	}
 }
@@ -1239,16 +1268,15 @@ void CMugman::OnGround()
 void CMugman::TimeCheck(float DeltaTime)
 {
 	// 게임이 아직 시작하지 않았다면 시간초를 재지 않게 끔 변경하기..
-	if (!m_bGameStart)
+	if (!m_bGameStart && m_bUseGameStart)
 	{
-		m_IntroTime -= DeltaTime;
+		m_Animation->ChangeAnimation("Mugman_Intro");
+		/*m_IntroTime -= DeltaTime;
 
 		if (m_IntroTime < 0.f)
 		{
 			m_IntroTime = 0.f;
-			m_bGameStart = true;
-			CStepCloud::m_bIsStageStart = true;
-		}
+		}*/
 	}
 
 	// Add Time
@@ -1320,6 +1348,11 @@ void CMugman::AnimCheck(float DeltaTime)
 {
 	Vector2 PrevWorldPos = { GetPrevWorldPos().x , GetPrevWorldPos().y };
 	Vector2 WorldPos = { GetWorldPos().x , GetWorldPos().y };
+
+	if (m_Animation->GetCurrentSequenceName() == "Mugman_Intro")
+	{
+		return;
+	}
 
 	if (!m_bIsAttack && !m_bIsDash && !m_bIsFall && !m_bIsJump && !m_bIsAiming && 
 		!m_bIsMove && !m_bIsDamaged && !m_bIsDuck && (!m_bIsParry && !m_bParrySuccess))
@@ -1434,6 +1467,19 @@ void CMugman::FallEnd()
 
 void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 {	
+	// 충돌체 종류가 스킬이고 무적이 아닐 경우
+	if (result.DestCollider->GetProfile()->Name == "Skill" ||
+		result.DestCollider->GetProfile()->Name == "Enemy")
+	{
+		Hit();
+	}
+
+	// 충돌체 종류가 스킬이고 무적이 아닐 경우
+	if (result.DestCollider->GetProfile()->Name == "Parry")
+	{
+		m_bCanParry = true;
+	}
+
 	if (result.DestCollider->GetName() == "StepCloudCollider")
 	{
 		m_bCanDuckFall = true;
@@ -1504,7 +1550,7 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 			{
 				SetWorldPos(GetWorldPos().x, result.DestCollider->GetMax().y, GetWorldPos().z);
 				OnGround();
-				// 위치가 더 높을때만 땅인 것으로 간주 (y보정)
+				m_pScene->GetResource()->SoundPlay("sfx_player_land");
 			}
 		}
 		
@@ -1537,6 +1583,8 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		}
 
 		OnGround();
+		m_pScene->GetResource()->SoundPlay("sfx_player_land");
+
 	}
 
 	// 용 충돌 버그..
@@ -1551,17 +1599,6 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 		}
 	}
 
-	// 충돌체 종류가 스킬이고 무적이 아닐 경우
-	if (result.DestCollider->GetProfile()->Name == "Skill" && m_bCanDamaged)
-	{
-		//Hit();
-	}
-
-	// 충돌체 종류가 스킬이고 무적이 아닐 경우
-	if (result.DestCollider->GetProfile()->Name == "Parry")
-	{
-		m_bCanParry = true;
-	}
 }
 
 void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
@@ -1589,14 +1626,14 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 		}
 	}
 
-	if (result.DestCollider->GetProfile()->Name == "FootStep")
+	/*if (result.DestCollider->GetProfile()->Name == "FootStep")
 	{
 		if (GetBlockDirection() != BlockDirection::VERTICAL &&
 			!m_bIsJump && !m_bIsFall && !m_bIsDash)
 		{
 			m_bCanDuckFall = true;
 		}
-	}
+	}*/
 
 	// 충돌 중에만 패링을 감지한다
 	if (result.DestCollider->GetProfile()->Name == "Parry")

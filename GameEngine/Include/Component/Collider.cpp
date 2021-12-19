@@ -4,6 +4,7 @@
 #include "../Scene/SceneCollision.h"
 #include "../CollisionManager.h"
 #include "../Resource/ColliderConstantBuffer.h"
+#include "../Resource/Material.h"
 
 CCollider::CCollider()
 {
@@ -242,6 +243,7 @@ void CCollider::Collision(float DeltaTime)
 void CCollider::PrevRender(float DeltaTime)
 {
 	CPrimitiveComponent::PrevRender(DeltaTime);
+
 }
 
 void CCollider::Render(float DeltaTime)
@@ -265,6 +267,8 @@ void CCollider::Render(float DeltaTime)
 
 		m_DebugMesh->Render();
 	}
+
+
 }
 
 CCollider* CCollider::Clone()

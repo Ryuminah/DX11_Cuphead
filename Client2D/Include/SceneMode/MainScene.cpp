@@ -26,14 +26,17 @@ bool CMainScene::Init()
 	CreateMaterial();
 	CreateAnimationSequence2D();
 	CreateParticle();
+	CreateSound();
 
 	CreateBackGround();
 
 	// Create GameObject
 	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
-	CMugman::bUseCamera = false;
+	pMugman ->SetWorldPos(150.f, 240.f, 0.f);
 	pMugman->SetIsFightScene(true);
+	pMugman->SetbUseGameStart(true);
+	CMugman::bUseCamera = false;
 	CDragon* pDragon = m_pScene->SpawnObject<CDragon>("Dragon");
 	CreateStepCloud();
 
@@ -63,6 +66,7 @@ void CMainScene::CreateAnimationSequence2D()
 	CreateStepCloudAnim();
 	CreateWeaponAnim();
 	CreateDragonAnim();
+	CreateElderKettleAnim();
 	CreateBackGroundImage();
 }
 
@@ -242,6 +246,18 @@ void CMainScene::CreateMugmanAnim()
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Duck_Loop_R",
 		"Mugman_Duck_Loop_R", TEXT("Mugman/Mugman_Duck_Loop_R.png"));
 
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Intro");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Intro",
+		"Mugman_Intro", TEXT("Mugman/Mugman_Intro.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int i = 0; i < 14; ++i)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Intro",
+				Vector2(i * 200.f, y * 200.f), Vector2((i + 1) * 200.f, (y + 1) * 200.f));
+		}
+	}
+
 }
 
 void CMainScene::CreateStepCloudAnim()
@@ -288,21 +304,38 @@ void CMainScene::CreateWeaponAnim()
 	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_R");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_R",
 		"Bullet_Loop_R", TEXT("Weapon/Bullet_Loop_R.png"));
-
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_R",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
+	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Loop_L");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Loop_L",
 		"Bullet_Loop_L", TEXT("Weapon/Bullet_Loop_L.png"));
-
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Loop_L",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 40.f));
+	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Spawn");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Spawn",
 		"Bullet_Spawn", TEXT("Weapon/Bullet_Spawn.png"));
-
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Spawn",
+			Vector2(i * 180.f, 0), Vector2((i + 1) * 180.f, 180.f));
+	}
 
 	m_pScene->GetResource()->CreateAnimationSequence2D("Bullet_Death");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Bullet_Death",
 		"Bullet_Death", TEXT("Weapon/Bullet_Death.png"));
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Bullet_Death",
+			Vector2(i * 280.f, 0), Vector2((i + 1) * 280.f, 280.f));
+	}
 }
 
 void CMainScene::CreateDragonAnim()
@@ -350,8 +383,8 @@ void CMainScene::CreateDragonAnim()
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Peashot_End",
 			Vector2(i * 900.f, 0), Vector2((i + 1) * 900.f, 900.f));
 	}
-	
-	
+
+
 	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tail");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tail",
 		"Dragon_Tail", TEXT("Enemy/Dragon_Tail.png"));
@@ -430,6 +463,18 @@ void CMainScene::CreateDragonAnim()
 		}
 	}
 
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tounge_End");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tounge_End",
+		"Dragon_Tounge_End", TEXT("Enemy/Phase2/Dragon_Tounge_Start.png"));
+	for (int y = 7; y > 0; --y)
+	{
+		for (int x = 2; x > 0; --x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Tounge_End",
+				Vector2(x * 1180.f, y * 150.f), Vector2((x - 1) * 1180.f, (y - 1) * 150.f));
+		}
+	}
+
 	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Tounge_Loop");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Tounge_Loop",
 		"Dragon_Tounge_Loop", TEXT("Enemy/Phase2/Dragon_Tounge_Loop.png"));
@@ -496,6 +541,14 @@ void CMainScene::CreateDragonAnim()
 			Vector2(i * 130.f, 0), Vector2((i + 1) * 130.f, 160.f));
 	}
 
+	m_pScene->GetResource()->CreateAnimationSequence2D("Dragon_Death");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Dragon_Death",
+		"Dragon_Death", TEXT("Enemy/Phase2/Dragon_Death.png"));
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pScene->GetResource()->AddAnimationSequence2DFrame("Dragon_Death",
+			Vector2(i * 670.f, 0), Vector2((i + 1) * 670.f, 670.f));
+	}
 
 
 	// Dragon sfx
@@ -537,6 +590,7 @@ void CMainScene::CreateDragonAnim()
 				Vector2(i * 240.f, y * 240.f), Vector2((i + 1) * 240.f, (y + 1) * 240.f));
 		}
 	}
+
 }
 
 void CMainScene::CreateStepCloud()
@@ -651,8 +705,6 @@ void CMainScene::CreateBackGroundImage()
 	m_pScene->GetResource()->AddAnimationSequence2DFrame("BG_Normal_Cloud5",
 		Vector2(0.f, 0.f), Vector2(1870.f, 342.f));
 
-
-
 	
 	m_pScene->GetResource()->CreateAnimationSequence2D("BG_Normal_DragonMap");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("BG_Normal_DragonMap",
@@ -741,4 +793,73 @@ void CMainScene::CreateElderKettleAnim()
 				Vector2(x * 512.f, y * 288.f), Vector2((x - 1) * 512.f, (y - 1) * 288.f));
 		}
 	}
+}
+
+void CMainScene::CreateSound()
+{
+	m_pScene->GetResource()->LoadSound("Effect", false, "MUS_FieryFrolic",
+		"BGM/MUS_FieryFrolic.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "Menu_Move",
+		"Menu_Move.wav");
+
+	//PlayerSound
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_dash",
+		"Mugman/sfx_player_dash.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_hit",
+		"Mugman/sfx_player_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_intro_cuphead",
+		"Mugman/sfx_player_intro_cuphead.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_jump",
+		"Mugman/sfx_player_jump.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_land",
+		"Mugman/sfx_player_land.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_walk",
+		"Mugman/sfx_player_walk.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_shoot_hit",
+		"Mugman/sfx_player_shoot_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", true, "sfx_player_shoot_start",
+		"Mugman/sfx_player_shoot_start.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_parry",
+		"Mugman/sfx_player_parry.wav");
+
+	// Dragon
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_dash",
+		"Dragon/sfx_dragon_dash.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_death",
+		"Dragon/sfx_dragon_death.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_fireboy_jump",
+		"Dragon/sfx_dragon_fireboy_jump.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_fireboy_start",
+		"Dragon/sfx_dragon_fireboy_start.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_meteor_attack",
+		"Dragon/sfx_dragon_meteor_attack.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", true, "sfx_dragon_meteor_loop",
+		"Dragon/sfx_dragon_meteor_loop.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_meteor_start",
+		"Dragon/sfx_dragon_meteor_start.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_peashot_fire",
+		"Dragon/sfx_dragon_peashot_fire.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_peashot_start",
+		"Dragon/sfx_dragon_peashot_start.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_dragon_peashot_end",
+		"Dragon/sfx_dragon_peashot_end.wav");
+
 }

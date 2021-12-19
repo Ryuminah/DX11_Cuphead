@@ -6,6 +6,8 @@
 #include "Scene/CameraManager.h"
 #include "Input.h"
 #include "Scene/CameraManager.h"
+#include "Scene/SceneResource.h"
+
 
 
 bool BG_TutorialMap::IsExit = false;
@@ -34,6 +36,8 @@ void BG_TutorialMap::Start()
 	CBackGround::Start();
 	CInput::GetInst()->AddKeyCallback<BG_TutorialMap>("Jump", KT_Down, this, &BG_TutorialMap::Exit);
 	m_Sprite->AddChild(m_FadeIn);
+
+	m_pScene->GetResource()->SoundPlay("MUS_Tutorial");
 	//m_FadeAnim->ChangeAnimation("FadeIn");
 }
 
@@ -211,7 +215,7 @@ void BG_TutorialMap::ParryModeOn(CColliderBox2D* parryCollision,
 void BG_TutorialMap::CreateCollision()
 {
 	m_Jump = CreateSceneComponent<CColliderBox2D>("Jump");
-	m_Jump->SetExtent(95.f, 75.f);
+	m_Jump->SetExtent(95.f, 65.f);
 	m_Jump->SetRelativePos(1580.f, 120.f, 0.f);
 	m_Jump->SetCollisionProfile("Static");
 	m_Jump->SetColliderType(Collider_Type::Static);
@@ -219,42 +223,43 @@ void BG_TutorialMap::CreateCollision()
 	m_Sprite->AddChild(m_Jump);
 
 	m_Descend = CreateSceneComponent<CColliderBox2D>("Descend");
-	m_Descend->SetExtent(100.f, 30.f);
+	m_Descend->SetExtent(100.f, 20.f);
 	m_Descend->SetRelativePos(2300.f, 360.f, 0.f);
 	m_Descend->SetCollisionProfile("FootStep");
 	m_Descend->SetColliderType(Collider_Type::Static);
 
 	m_Sprite->AddChild(m_Descend);
 
-	m_Descend = CreateSceneComponent<CColliderBox2D>("DescendWall");
-	m_Descend->SetExtent(45.f,180.f);
-	m_Descend->SetRelativePos(2490.f, 360.f, 0.f);
-	m_Descend->SetCollisionProfile("Static");
-	m_Descend->SetColliderType(Collider_Type::Static);
+	m_DescendWall = CreateSceneComponent<CColliderBox2D>("DescendWall");
+	m_DescendWall->SetExtent(45.f,180.f);
+	m_DescendWall->SetRelativePos(2490.f, 360.f, 0.f);
+	m_DescendWall->SetCollisionProfile("Static");
+	m_DescendWall->SetColliderType(Collider_Type::Static);
 
-	m_Sprite->AddChild(m_Descend);
+	m_Sprite->AddChild(m_DescendWall);
 
-	m_Descend = CreateSceneComponent<CColliderBox2D>("DescendCylinder");
-	m_Descend->SetExtent(80.f, 150.f);
-	m_Descend->SetRelativePos(2077.f, 120.f, 0.f);
-	m_Descend->SetCollisionProfile("Static");
-	m_Descend->SetColliderType(Collider_Type::Static);
+	m_DescendCylinder = CreateSceneComponent<CColliderBox2D>("DescendCylinder");
+	m_DescendCylinder->SetExtent(80.f, 140.f);
+	m_DescendCylinder->SetRelativePos(2077.f, 120.f, 0.f);
+	m_DescendCylinder->SetCollisionProfile("Static");
+	m_DescendCylinder->SetColliderType(Collider_Type::Static);
 
-	m_Sprite->AddChild(m_Descend);
+	m_Sprite->AddChild(m_DescendCylinder);
 
 	m_ParryBox = CreateSceneComponent<CColliderBox2D>("ParryBox");
-	m_ParryBox->SetExtent(45.f, 70.f);
+	m_ParryBox->SetExtent(90.f, 160.f);
 	m_ParryBox->SetRelativePos(4860.f, 120.f, 0.f);
 	m_ParryBox->SetCollisionProfile("Static");
 	m_ParryBox->SetColliderType(Collider_Type::Static);
-
-	m_ParryBox = CreateSceneComponent<CColliderBox2D>("ParryCylinder");
-	m_ParryBox->SetExtent(45.f, 70.f);
-	m_ParryBox->SetRelativePos(4860.f, 120.f, 0.f);
-	m_ParryBox->SetCollisionProfile("Static");
-	m_ParryBox->SetColliderType(Collider_Type::Static);
-
 	m_Sprite->AddChild(m_ParryBox);
+
+	m_ParryCylinder = CreateSceneComponent<CColliderBox2D>("ParryCylinder");
+	m_ParryCylinder->SetExtent(90.f, 50.f);
+	m_ParryCylinder->SetRelativePos(5030.f, 120.f, 0.f);
+	m_ParryCylinder->SetCollisionProfile("Static");
+	m_ParryCylinder->SetColliderType(Collider_Type::Static);
+	m_Sprite->AddChild(m_ParryCylinder);
+
 
 	// Pyramid
 	m_Lock = CreateSceneComponent<CColliderBox2D>("Lock");
@@ -296,6 +301,16 @@ void BG_TutorialMap::CreateCollision()
 	m_Exit->SetCollisionProfile("Event");
 	m_Exit->SetColliderType(Collider_Type::Static);
 	m_Sprite->AddChild(m_Exit);
+
+	m_FieryFrolic = CreateSceneComponent<CSpriteComponent>("FieryFrolic");
+	m_FieryFrolic->SetPivot(0.5f, 0.5f, 0.f);
+	m_FieryFrolic->SetRelativePos(6400.f, 420.0f, 0.f);
+	m_FieryFrolic->SetRelativeScale(180.f, 45.f, 1.0f);
+	m_FieryFrolic->CreateAnimation2D<CTutorialSceneAnim>();
+	m_FieryFrolicAnim = m_FieryFrolic->GetAnimation2D();
+	m_FieryFrolic->Enable(false);
+	m_FieryFrolicAnim->ChangeAnimation("FieryFrolic");
+	m_Sprite->AddChild(m_FieryFrolic);
 
 }
 
@@ -357,6 +372,8 @@ void BG_TutorialMap::CreateParry()
 	m_ParryThreeAnim = m_spriteParryThree->GetAnimation2D();
 	m_ParryThreeAnim->ChangeAnimation("Parry_Off");
 	m_Sprite->AddChild(m_spriteParryThree);
+
+
 }
 
 void BG_TutorialMap::Pyramid_CollisionBegin(const HitResult& result, CCollider* Collider)
@@ -376,7 +393,8 @@ void BG_TutorialMap::Parry_CollisionOverlap(const HitResult& result, CCollider* 
 		CMugman* pMugman = (CMugman*)result.DestObject;
 
 		// 아직 패링에 성공하지 못했을 때만 성공 여부를 체크한다.
-		if (pMugman->GetParrySuccess() && (m_ParrySuccessNumber != m_ParryNumber))
+		if (pMugman->GetParrySuccess() && pMugman->GetIsParry() && 
+			(m_ParrySuccessNumber != m_ParryNumber))
 		{
 			m_ParrySuccessNumber = m_ParryNumber;
 		}
@@ -398,6 +416,7 @@ void BG_TutorialMap::Exit_CollisionBegin(const HitResult& result, CCollider* Col
 		CMugman* pMugman = (CMugman*)result.DestObject;
 		pMugman->SetbCanJump(false);
 
+		m_FieryFrolic->Enable(true);
 		m_bCanExit = true;
 	}
 }
@@ -418,6 +437,7 @@ void BG_TutorialMap::Exit_CollisionEnd(const HitResult& result, CCollider* Colli
 		CMugman* pMugman = (CMugman*)result.DestObject;
 		pMugman->SetbCanJump(true);
 
+		m_FieryFrolic->Enable(false);
 		m_bCanExit = false;
 	}
 }

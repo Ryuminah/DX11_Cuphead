@@ -164,6 +164,7 @@
     <ClCompile Include="Animation2D\BackGround\BG_KettleHouseAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\BG_TitleSceneAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\FG_LoadingAnim.cpp" />
+    <ClCompile Include="Animation2D\BackGround\ScreenFXAnim.cpp" />
     <ClCompile Include="Animation2D\BackGround\TutorialSceneAnim.cpp" />
     <ClCompile Include="Animation2D\BulletAnimation.cpp" />
     <ClCompile Include="Animation2D\DragonAnimation.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Object\BackGround\FG_Loading.cpp" />
     <ClCompile Include="Object\BackGround\FG_Normal_Cloud3.cpp" />
     <ClCompile Include="Object\BackGround\FG_Tutorial.cpp" />
+    <ClCompile Include="Object\BackGround\ScreenFX.cpp" />
     <ClCompile Include="Object\BackGround\SpeechBubble.cpp" />
     <ClCompile Include="Object\Character\Bullet.cpp" />
     <ClCompile Include="Object\Character\Character.cpp" />
@@ -219,6 +221,7 @@
     <ClInclude Include="Animation2D\BackGround\BG_KettleHouseAnim.h" />
     <ClInclude Include="Animation2D\BackGround\BG_TitleSceneAnim.h" />
     <ClInclude Include="Animation2D\BackGround\FG_LoadingAnim.h" />
+    <ClInclude Include="Animation2D\BackGround\ScreenFXAnim.h" />
     <ClInclude Include="Animation2D\BackGround\TutorialSceneAnim.h" />
     <ClInclude Include="Animation2D\BulletAnimation.h" />
     <ClInclude Include="Animation2D\DragonAnimation.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="Object\BackGround\FG_Loading.h" />
     <ClInclude Include="Object\BackGround\FG_Normal_Cloud3.h" />
     <ClInclude Include="Object\BackGround\FG_Tutorial.h" />
+    <ClInclude Include="Object\BackGround\ScreenFX.h" />
     <ClInclude Include="Object\BackGround\SpeechBubble.h" />
     <ClInclude Include="Object\Character\Bullet.h" />
     <ClInclude Include="Object\Character\Character.h" />

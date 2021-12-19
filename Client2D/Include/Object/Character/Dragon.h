@@ -81,7 +81,9 @@ public:
 public:
 	int MakeRandomNumber();
 	void PhaseOne();
-	void PhaseEnd();
+	void PhaseOneEnd();
+	void PhaseTwoEnd();
+
 
 	void SetPhaseTwoOpening();
 	void PhaseTwo(float DeltaTime);

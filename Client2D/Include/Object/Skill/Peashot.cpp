@@ -3,6 +3,7 @@
 #include "../Character/Dragon.h"
 #include "../../Animation2D/DragonAnimation.h"
 #include <time.h>
+#include "Scene/SceneResource.h"
 
 float CPeashot::RingAngle = 0.f;
 int	CPeashot::AllRingCount = 0;
@@ -58,6 +59,7 @@ bool CPeashot::Init()
 	m_Sprite->GetMaterial(0)->SetOpacity(0.1f);
 	m_Animation = m_Sprite->GetAnimation2D();
 	m_Animation->ChangeAnimation("Dragon_Peashot_Ring");
+
 
 	//m_Animation->SetFrameEndFunction<CDragon>(this, &CDragon::AnimationFrameEnd);
 

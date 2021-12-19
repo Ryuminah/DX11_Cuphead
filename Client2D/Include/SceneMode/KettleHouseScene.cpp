@@ -11,6 +11,7 @@
 #include "LoadingScene.h"
 #include "TutorialScene.h"
 #include "../Object/BackGround/ElderKettle.h"
+#include "../Object/BackGround/ScreenFX.h"
 
 
 CKettleHouseScene::CKettleHouseScene()
@@ -27,6 +28,7 @@ bool CKettleHouseScene::Init()
 	CreateKettleHouseAnim();
 	CreateMugmanAnim();
 	CreateWeaponAnim();
+	CreateSound();
 
 	BG_KettleHouse* pKettleHouse = m_pScene->SpawnObject<BG_KettleHouse>("BG_KettleHouse");
 	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
@@ -38,6 +40,9 @@ bool CKettleHouseScene::Init()
 
 	CElderKettle* pElderKettle = m_pScene->SpawnObject<CElderKettle>("ElderKettle");
 	pElderKettle->CreateSpeechBubble();
+
+	ScreenFX* pScreenFX = m_pScene->SpawnObject<ScreenFX>("ScreenFX");
+
 
 	return true;
 }
@@ -88,6 +93,18 @@ void CKettleHouseScene::CreateMugmanAnim()
 	{
 		m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Idle_L",
 			Vector2(i * 200.f, 0), Vector2((i + 1) * 200.f, 200.f));
+	}
+
+	m_pScene->GetResource()->CreateAnimationSequence2D("Mugman_Intro");
+	m_pScene->GetResource()->SetAnimationSequence2DTexture("Mugman_Intro",
+		"Mugman_Intro", TEXT("Mugman/Mugman_Intro.png"));
+	for (int y = 0; y < 2; ++y)
+	{
+		for (int x = 0; x < 14; ++x)
+		{
+			m_pScene->GetResource()->AddAnimationSequence2DFrame("Mugman_Intro",
+				Vector2(x * 200.f, y * 200.f), Vector2((x + 1) * 200.f, (y + 1) * 200.f));
+		}
 	}
 
 	// Run
@@ -485,6 +502,47 @@ void CKettleHouseScene::CreateElderKettleAnim()
 				Vector2(x * 512.f, y * 288.f), Vector2((x -1) * 512.f, (y - 1) * 288.f));
 		}
 	}
+}
+
+void CKettleHouseScene::CreateSound()
+{
+	m_pScene->GetResource()->LoadSound("BGM", true, "MUS_ElderKettle",
+		"BGM/MUS_ElderKettle.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false , "Menu_Move",
+		"Menu_Move.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "Menu_CardUp",
+		"Menu_CardUp.wav");
+
+	//PlayerSound
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_dash",
+		"Mugman/sfx_player_dash.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect",false, "sfx_player_hit",
+		"Mugman/sfx_player_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_intro_cuphead",
+		"Mugman/sfx_player_intro_cuphead.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_jump",
+		"Mugman/sfx_player_jump.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_land",
+		"Mugman/sfx_player_land.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_walk",
+		"Mugman/sfx_player_walk.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_shoot_hit",
+		"Mugman/sfx_player_shoot_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", true, "sfx_player_shoot_start",
+		"Mugman/sfx_player_shoot_start.wav");
+
+	m_pScene->GetResource()->SetVolume("BGM", 30);
+	m_pScene->GetResource()->SetVolume("Effect", 30);
+
 }
 
 

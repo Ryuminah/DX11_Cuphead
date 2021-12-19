@@ -24,7 +24,6 @@ bool CDragonAnimation::Init()
 	if (!CAnimation2D::Init())
 		return false;
 
-
 	// Phase1
 	AddAnimationSequence2D("Dragon_Idle");
 	AddAnimationSequence2D("Dragon_Peashot_Start",false);
@@ -47,7 +46,9 @@ bool CDragonAnimation::Init()
 	AddAnimationSequence2D("Dragon_Idle2");
 	AddAnimationSequence2D("Dragon_Tounge_Start", false);
 	AddAnimationSequence2D("Dragon_Tounge_Loop");
-	AddAnimationSequence2D("Dragon_Tounge_Start", false);
+	AddAnimationSequence2D("Dragon_Tounge_End", false);
+	AddAnimationSequence2D("Dragon_Death");
+
 	AddAnimationSequence2D("Dragon_Tounge_Loop");
 	AddAnimationSequence2D("Fireboy_Idle");
 	AddAnimationSequence2D("Fireboy_Cast", false);
@@ -55,9 +56,6 @@ bool CDragonAnimation::Init()
 	AddAnimationSequence2D("Fireboy_Jump_Start", false);
 	AddAnimationSequence2D("Fireboy_Jump_Loop_L");
 	AddAnimationSequence2D("Fireboy_Jump_Loop_R");
-
-
-
 
 	// Set Anim Play Speed
 	SetSequencePlayRate("Dragon_Idle2", 1.5f);
@@ -74,7 +72,6 @@ bool CDragonAnimation::Init()
 	SetSequencePlayRate("Fireboy_Jump_Start", 5.0f);
 	SetSequencePlayRate("Fireboy_Jump_Loop_L", 4.0f);
 	SetSequencePlayRate("Fireboy_Jump_Loop_R", 4.0f);
-
 
 	ChangeAnimation("Dragon_Idle");
 

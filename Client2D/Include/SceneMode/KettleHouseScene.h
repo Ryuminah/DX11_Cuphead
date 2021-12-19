@@ -22,6 +22,7 @@ public:
     void CreateMugmanAnim();
     void CreateWeaponAnim();
     void CreateElderKettleAnim();
+    void CreateSound();
 
 public:
     void SetTutorialOpen(bool TutorialOpen);

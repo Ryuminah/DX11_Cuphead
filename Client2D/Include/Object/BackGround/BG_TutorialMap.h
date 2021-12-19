@@ -40,6 +40,9 @@ private:
 	class CAnimation2D* m_ParryTwoAnim;
 	class CAnimation2D* m_ParryThreeAnim;
 
+	// Ç¥ÁöÆÇ
+	CSharedPtr<CSpriteComponent>	m_FieryFrolic;
+	class CAnimation2D* m_FieryFrolicAnim;
 
 private:
 	int m_PyramidHitCount;

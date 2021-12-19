@@ -9,7 +9,7 @@ class BG_DragonMap :
 	friend class CScene;
 
 public:
-	static bool bIsNight;
+	static bool bIsEnd;
 
 protected:
 	BG_DragonMap();
@@ -24,5 +24,8 @@ public:
 	virtual void Collision(float DeltaTime);
 	virtual void Render(float DeltaTime);
 	virtual BG_DragonMap* Clone();
+
+public:
+	void AnimFrameEnd(const std::string& Name);
 };
 

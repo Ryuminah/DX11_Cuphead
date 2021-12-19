@@ -2,6 +2,7 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "../../Animation2D/MugmanAnimation2D.h"
+#include "Scene/SceneResource.h"
 
 CDust::CDust()
 {
@@ -39,6 +40,8 @@ bool CDust::Init()
 	m_Animation->ChangeAnimation("Mugman_Dust");
 
 	m_Animation->SetFrameEndFunction<CDust>(this, &CDust::AnimEnd);
+
+	m_pScene->GetResource()->SoundPlay("sfx_player_walk");
 
 	return true;
 }

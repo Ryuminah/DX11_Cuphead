@@ -47,6 +47,7 @@ bool BG_KettleHouse::Init()
 	m_FG_KettleHouse->SetRelativePos(0.f, 0.f, 0.f);
 	m_FG_KettleHouse->SetRelativeScale(1280.f, 629.f, 1.f);
 	m_FG_KettleHouse->SetRender2DType(Render_Type_2D::RT2D_Particle);
+	m_FG_KettleHouse->SetDefaultZ(0.3f);
 
 	m_FG_KettleHouse->CreateAnimation2D<BG_KettleHouseAnim>();
 	m_FG_KettleHouseImage = m_FG_KettleHouse->GetAnimation2D();

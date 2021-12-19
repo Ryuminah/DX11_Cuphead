@@ -4,6 +4,7 @@
 #include "../../Animation2D/DragonAnimation.h"
 #include "../Character/Dragon.h"
 #include "../Effect/MeteorSmoke.h"
+#include "Scene/SceneResource.h"
 
 Vector3	CMeteor::StartPosition = Vector3(0.f, 0.f, 0.f);
 Direction CMeteor::LastDirection = Direction::DOWN;
@@ -26,7 +27,7 @@ CMeteor::CMeteor(const CMeteor& obj) : CSkill(obj)
 
 CMeteor ::~CMeteor()
 {
-
+	m_pScene->GetResource()->SoundStop("sfx_dragon_meteor_loop");
 }
 
 void CMeteor::Start()
@@ -59,6 +60,7 @@ bool CMeteor::Init()
 	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
 	m_Animation = m_Sprite->GetAnimation2D();
 	m_Animation->ChangeAnimation("Dragon_Meteor");
+	m_pScene->GetResource()->SoundPlay("sfx_dragon_meteor_attack");
 
 	//m_Animation->SetFrameEndFunction<CDragon>(this, &CDragon::AnimationFrameEnd);
 
@@ -124,6 +126,9 @@ void CMeteor::SkillStart(float DeltaTime)
 	++RepeatCount;
 	m_bIsStarted = true;
 	m_CurrentDirection = LastDirection;
+
+	m_pScene->GetResource()->SoundPlay("sfx_dragon_meteor_loop");
+
 }
 
 void CMeteor::SkillActive(float DeltaTime)
@@ -196,6 +201,7 @@ void CMeteor::SkillEnd(float DeltaTime)
 		m_pSkillOwner->SkillEnd(GetName());
 		m_bIsEnd = false;
 	}
+
 
 }
 

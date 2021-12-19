@@ -11,7 +11,7 @@ CMeteorSmoke::CMeteorSmoke()
 CMeteorSmoke::CMeteorSmoke(const CMeteorSmoke& obj) :
 	CEffect(obj)
 {
-	m_Sprite = (CSpriteComponent*)FindSceneComponent("MeteorSmoke");
+	//m_Sprite = (CSpriteComponent*)FindSceneComponent("MeteorSmoke");
 }
 
 CMeteorSmoke::~CMeteorSmoke()
@@ -21,7 +21,7 @@ CMeteorSmoke::~CMeteorSmoke()
 void CMeteorSmoke::Start()
 {
 	CEffect::Start();
-	SetDefaultZ(0.5f);
+	//SetDefaultZ(0.5f);
 }
 
 bool CMeteorSmoke::Init()
@@ -35,7 +35,7 @@ bool CMeteorSmoke::Init()
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	m_Sprite->CreateAnimation2D<CDragonAnimation>();
-	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
+	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Default);
 	m_Animation = m_Sprite->GetAnimation2D();
 	m_Animation->ChangeAnimation("Dragon_MeteorSmoke");
 

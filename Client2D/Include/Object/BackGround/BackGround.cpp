@@ -2,6 +2,7 @@
 #include "Scene/Scene.h"
 #include "Resource/Material.h"
 #include "../../Animation2D/BackGround/BG_KettleHouseAnim.h"
+#include "Scene/SceneResource.h"
 
 CBackGround::CBackGround()
 {

@@ -22,7 +22,6 @@ public:
     void CreateMugmanAnim();
     void CreateWeaponAnim();
     void CreateElderKettleAnim();
-
-
+    void CreateSound();
 };
 

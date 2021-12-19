@@ -37,7 +37,7 @@ bool CBulletDeath::Init()
 	m_Sprite->CreateAnimation2D<CBulletAnimation>();
 	m_Sprite->SetRender2DType(Render_Type_2D::RT2D_Particle);
 	m_Animation = m_Sprite->GetAnimation2D();
-	m_Animation->ChangeAnimation("Bullet_Spawn");
+	m_Animation->ChangeAnimation("Bullet_Death");
 
 	m_Animation->SetFrameEndFunction<CBulletDeath>(this, &CBulletDeath::AnimEnd);
 

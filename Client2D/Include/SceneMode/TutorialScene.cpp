@@ -14,6 +14,7 @@
 #include "../Object/BackGround/BG_TutorialMap.h"
 #include "../Object/BackGround/FG_Tutorial.h"
 #include "../UI/KettleHouse/BubbleTextWidget.h"
+#include "../Object/BackGround/ScreenFX.h"
 
 
 
@@ -33,12 +34,15 @@ bool CTutorialScene::Init()
 	CreateMugmanAnim();
 	CreateWeaponAnim();
 	CreateElderKettleAnim();
+	CreateSound();
 	CreateTutorialMap();
 
 	// ´ó±Û¸µ ¿Ö »ý±â´© °íÃÆ´© &^^
 	CMugman* pMugman = m_pScene->SpawnObject<CMugman>("Mugman");
 	CMugman::bUseCamera = true;
 	pMugman->SetRelativePos(300.f, 120.f, 0.f);
+
+	ScreenFX* pScreenFX = m_pScene->SpawnObject<ScreenFX>("ScreenFX");
 
 	return true;
 }
@@ -60,6 +64,7 @@ void CTutorialScene::CreateTutorialMap()
 
 	CGroundCollider* pGroundCollider = m_pScene->SpawnObject<CGroundCollider>("Ground");
 	pGroundCollider->SetIsTutorialScene(true);
+
 }
 
 void CTutorialScene::CreateTutorialAnim()
@@ -356,6 +361,43 @@ void CTutorialScene::CreateElderKettleAnim()
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("FadeOut",
 		"FadeOut", TEXT("BackGround/FadeIn.png"));
 
+}
+
+void CTutorialScene::CreateSound()
+{
+	m_pScene->GetResource()->LoadSound("Effect", false, "MUS_Tutorial",
+		"BGM/MUS_Tutorial.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "Menu_Move",
+		"Menu_Move.wav");
+
+	//PlayerSound
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_dash",
+		"Mugman/sfx_player_dash.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_hit",
+		"Mugman/sfx_player_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_intro_cuphead",
+		"Mugman/sfx_player_intro_cuphead.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_jump",
+		"Mugman/sfx_player_jump.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_land",
+		"Mugman/sfx_player_land.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_walk",
+		"Mugman/sfx_player_walk.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_shoot_hit",
+		"Mugman/sfx_player_shoot_hit.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", true, "sfx_player_shoot_start",
+		"Mugman/sfx_player_shoot_start.wav");
+
+	m_pScene->GetResource()->LoadSound("Effect", false, "sfx_player_parry",
+		"Mugman/sfx_player_parry.wav");
 }
 
 

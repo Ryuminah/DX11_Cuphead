@@ -5,6 +5,7 @@
 #include "../BackGround/SpeechBubble.h"
 #include "Input.h"
 #include "../../SceneMode/KettleHouseScene.h"
+#include "Scene/SceneResource.h"
 
 
 bool CElderKettle::IsTutorialOpen = false;
@@ -32,6 +33,7 @@ void CElderKettle::Start()
 	m_FadeIn->SetRelativePos(-1100.f, -90.f, 0.f);
 	m_FadeAnim->ChangeAnimation("FadeIn");
 	m_FadeIn->Enable(true);
+	m_pScene->GetResource()->SoundPlay("MUS_ElderKettle");
 }
 
 bool CElderKettle::Init()
@@ -124,6 +126,7 @@ void CElderKettle::EventCollisionBegin(const HitResult& result, CCollider* Colli
 		if (!m_bCanDialogStart)
 		{
 			m_Sign->Enable(true);
+			m_pScene->GetResource()->SoundPlay("Menu_Move");
 		}
 
 		else
@@ -139,6 +142,7 @@ void CElderKettle::EventCollisionBegin(const HitResult& result, CCollider* Colli
 		if (m_bCanTutorialStart)
 		{
 			m_Sign->Enable(true);
+			m_pScene->GetResource()->SoundPlay("Menu_Move");
 		}
 
 		/*m_Sprite->Enable(true);
@@ -237,6 +241,7 @@ void CElderKettle::Interaction(float DeltaTime)
 		else if (m_bCanDialogStart && (m_DialogCount < m_SpeechBubble->GetDialogMax()))
 		{
 			++m_DialogCount;
+			m_pScene->GetResource()->SoundPlay("Menu_CardUp");
 
 			// 이떄 대화가 종료되었을때 입력이 또 들어오면 튜토리얼을 활성화 시켜준다.
 			if (m_DialogCount == m_SpeechBubble->GetDialogMax() && !m_bCanTutorialStart)
