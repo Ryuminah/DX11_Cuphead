@@ -39,8 +39,6 @@ bool BG_KettleHouseAnim::Init()
 	AddAnimationSequence2D("Arrow");
 
 	SetSequencePlayRate("ElderKettle_Idle", 2.0f);
-	SetSequencePlayRate("FadeIn", 1.2f);
-	SetSequencePlayRate("FadeOut", 1.5f);
 
 
 	return true;

@@ -864,6 +864,7 @@ void CMugman::AimEnd(float DeltaTime)
 	m_bIsAiming = false;
 
 	SetRelativeScale(200.f, 200.f, 1.f);
+	m_Muzzle->SetRelativePos(20.f, 40.f, 0.f);
 
 	if (GetPrevDirection() == Direction::RIGHT)
 	{
@@ -1471,7 +1472,7 @@ void CMugman::CollisionBegin(const HitResult& result, CCollider* Collider)
 	if (result.DestCollider->GetProfile()->Name == "Skill" ||
 		result.DestCollider->GetProfile()->Name == "Enemy")
 	{
-		Hit();
+		//Hit();
 	}
 
 	// 충돌체 종류가 스킬이고 무적이 아닐 경우
@@ -1673,7 +1674,7 @@ void CMugman::CollisionOverlap(const HitResult& result, CCollider* Collider)
 
 			if (!bUseCamera)
 			{
-				Hit();
+				//Hit();
 			}
 		}
 	}

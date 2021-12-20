@@ -356,7 +356,6 @@ void CTutorialScene::CreateElderKettleAnim()
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("FadeIn",
 		"FadeIn", TEXT("BackGround/FadeIn.png"));
 
-
 	m_pScene->GetResource()->CreateAnimationSequence2D("FadeOut");
 	m_pScene->GetResource()->SetAnimationSequence2DTexture("FadeOut",
 		"FadeOut", TEXT("BackGround/FadeIn.png"));

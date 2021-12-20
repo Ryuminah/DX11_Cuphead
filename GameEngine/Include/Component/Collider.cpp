@@ -22,6 +22,8 @@ CCollider::CCollider()
 	m_CBuffer = nullptr;
 
 	m_MouseCollision = false;
+
+	SetDefaultZ(0.98f);
 }
 
 CCollider::CCollider(const CCollider& com) :

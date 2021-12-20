@@ -90,7 +90,7 @@ bool CDragon::Init()
 	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::Begin, this, &CDragon::CollisionBegin);
 	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::Overlap, this, &CDragon::CollisionOverlap);
 	//m_Collider->AddCollisionCallbackFunction<CDragon>(Collision_State::End, this, &CDragon::CollisionEnd);
-
+	SetDefaultZ(0.5f);
 	return true;
 }
 
@@ -146,6 +146,8 @@ void CDragon::AnimFrameEnd(const std::string& Name)
 
 		return;
 	}
+
+
 
 	if (Name == "Dragon_Peashot_End")
 	{
@@ -535,8 +537,13 @@ void CDragon::TimeCheck(float DeltaTime)
 
 void CDragon::PhaseEndCheck(float DeltaTime)
 {
+	if (BG_DragonMap::bIsEnd)
+	{
+		return;
+	}
+
 	// Phase1 End 조건을 달성했다면
-	if (m_HitCount >= 5 && m_CurrentPhase == Phase::Phase1)
+	if (m_HitCount >= 30 && m_CurrentPhase == Phase::Phase1)
 	{
 		// 공격중이 아닐때 페이즈를 종료한다.
 		if (m_bIsAttack)
@@ -570,7 +577,7 @@ void CDragon::PhaseEndCheck(float DeltaTime)
 		PhaseTwo(DeltaTime);
 	}
 
-	if (m_HitCount >= 10 && m_CurrentPhase == Phase::Phase2)
+	if (m_HitCount >= 50 && m_CurrentPhase == Phase::Phase2)
 	{
 		// 공격중이 아닐때 페이즈를 종료한다.
 		if (m_bIsAttack)
@@ -579,13 +586,15 @@ void CDragon::PhaseEndCheck(float DeltaTime)
 		}
 
 		m_bCanAttack = false;
-		m_bIsPhaseStart = false;
-
 		SetRelativeScale(670.f, 670.f, 1.f);
+		AddRelativePos(-20.f, -100.f, 0.f);
+		m_GunPoint->AddRelativePos(20.f, 100.f, 0.f);
 		m_Animation->ChangeAnimation("Dragon_Death");
-		m_Sprite->SetRelativePos(640.f, 0.f,0.f);
-		m_NextAttackTime = 0.f;
+		m_pScene->GetResource()->SoundPlay("sfx_dragon_death");
 		BG_DragonMap::bIsEnd = true;
+		m_NextAttackTime = 0.f;
+		m_bIsPhaseStart = false;
+	
 
 	}
 }

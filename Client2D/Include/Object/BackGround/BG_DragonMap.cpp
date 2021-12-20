@@ -50,9 +50,10 @@ bool BG_DragonMap::Init()
 	m_Sprite->CreateAnimation2D<CBackGround_CloudAnim>();
 	m_BackGroundImage = m_Sprite->GetAnimation2D();
 	m_BackGroundImage->ChangeAnimation("BG_Normal_DragonMap");
+	m_Sprite->AddChild(m_FadeIn);
 
 	m_FadeAnim->SetFrameEndFunction<BG_DragonMap>(this, &BG_DragonMap::AnimFrameEnd);
-
+	m_FadeIn->Enable(false);
 
 	return true;
 }
@@ -63,8 +64,13 @@ void BG_DragonMap::Update(float DeltaTime)
 
 	if (bIsEnd)
 	{
-		m_FadeIn->Enable(true);
-		m_FadeAnim->ChangeAnimation("FadeOut");
+		if (!m_FadeIn->IsEnable())
+		{
+			m_FadeIn->Enable(true);
+			m_FadeIn->SetDefaultZ(0.1f);
+;			m_FadeAnim->ChangeAnimation("FadeOut");
+		}
+
 	}
 }
 
