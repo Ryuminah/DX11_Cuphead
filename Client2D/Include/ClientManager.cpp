@@ -130,6 +130,8 @@ bool CClientManager::Init()
     CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::StepCloud, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::Skill, Collision_Interaction::Ignore);
     CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::Parry, Collision_Interaction::Ignore);
+    CCollisionManager::GetInst()->SetProfileChannelState("Parry", Collision_Channel::FootStep, Collision_Interaction::Ignore);
+
 
     CSceneManager::GetInst()->SetSceneMode<CTitleScene>();
 
