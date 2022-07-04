@@ -313,7 +313,7 @@ void CEngine::Register(const TCHAR* pClass, int IconID, int SmallIconID)
 
 bool CEngine::Create(const TCHAR* pClass, const TCHAR* pTitle)
 {
-	m_hWnd = CreateWindow(pClass, pTitle, WS_OVERLAPPEDWINDOW, -1500, 0, m_RS.Width, m_RS.Height,
+	m_hWnd = CreateWindow(pClass, pTitle, WS_OVERLAPPEDWINDOW, 0, 0, m_RS.Width, m_RS.Height,
 		nullptr, nullptr, m_hInst, nullptr);
 
 	if (!m_hWnd)

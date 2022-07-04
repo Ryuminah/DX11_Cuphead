@@ -118,6 +118,8 @@ void CMugman::Start()
 
 	}
 
+	// 첫 프레임에만 이전 위치와 현재 위치를 동일시 해줌.
+	SetPrevWorldPos(GetWorldPos());
 }
 
 bool CMugman::Init()

@@ -76,7 +76,7 @@ private:
 
 	float	m_GravityAccel;
 	float	m_Gravity;
-	bool	m_PhysicsSimulate;
+	bool	m_PhysicsSimulate;			// 중력 적용할건지
 	bool	m_bUseBlockMovement;		// 충돌을 잠깐 해제하고싶을때
 
 public:

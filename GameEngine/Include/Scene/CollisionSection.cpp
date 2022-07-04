@@ -52,19 +52,6 @@ void CCollisionSection::Collision(float DeltaTime)
 {
     size_t	Size = m_vecCollider.size();
 
-    //for (size_t i = 0; i < Size; ++i)
-    //{
-    //	CCollider* Collider = m_vecCollider[i];
-
-    //	if (Collider->GetCurrentSectionCheck())
-    //		continue;
-
-    //	Collider->CurrentSectionCheck();
-
-    //	// 이전 프레임에 충돌되었던 충돌체들을 체크해본다.
-    //	Collider->CheckPrevColliderSection();
-    //}
-
     if (Size < 2)
         return;
 
@@ -102,7 +89,26 @@ void CCollisionSection::Collision(float DeltaTime)
                     Src->AddPrevCollider(Dest);
                     Dest->AddPrevCollider(Src);
 
-                    // 둘다 서로 Block 해야하는 경우 막아야 하는 방향 판단을 판단해서 저장한다
+                    // 수정중 . . . . .
+      //              if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
+      //                  && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
+      //              {
+      //                  CGameObject* DestOwner = Dest->GetOwner();
+
+      //                  // 여기서 걸림 .
+      //                  Vector3 FowardVector = DestOwner->GetWorldPos() - DestOwner->GetPrevWorldPos();
+						//FowardVector.Normalize();
+
+      //                  float MoveSpeed = (FowardVector / DestOwner->GetVelocity().Length()).Length();
+      //                  Vector3 ReflectionVector = FowardVector * -1.f;
+      //                       
+      //                  Vector3 BlockPos = ReflectionVector * MoveSpeed;
+      //                  BlockPos.z = DestOwner->GetWorldPos().z;
+
+      //                  DestOwner->SetWorldPos(BlockPos);
+      //              }
+
+      //              // 둘다 서로 Block 해야하는 경우 막아야 하는 방향 판단을 판단해서 저장한다
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                     && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     { 

@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include "GameObject.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/ColliderCircle.h"
 #include "Component/ColliderPixel.h"
@@ -13,6 +14,26 @@ bool CCollision::CollisionBox2DToBox2D(HitResult& SrcResult, HitResult& DestResu
 
 		DestResult.DestCollider = Src;
 		DestResult.DestObject = Src->GetOwner();
+
+		// 반사벡터 충돌코드 작성
+		//if (Dest->GetColliderType() == Collider_Type::Character)
+		//{
+		//	CGameObject* DestOwner = Dest->GetOwner();
+
+		//	// 입사 벡터
+		//	Vector3 FowardVector = DestOwner->GetWorldPos() - DestOwner->GetPrevWorldPos();
+		//	FowardVector.Normalize();
+		//	Vector3 ReflectionVector = FowardVector * -1.f;
+
+		//	Vector3 BlockPos = ReflectionVector * DestOwner->GetVelocity();
+		//	BlockPos.z = DestOwner->GetWorldPos().z;
+
+		//	DestOwner->SetWorldPos(BlockPos);
+		//}
+
+
+		// 블락을 사용하는 오브젝트는 캐릭터밖에..
+
 		return true;
 	}
 
