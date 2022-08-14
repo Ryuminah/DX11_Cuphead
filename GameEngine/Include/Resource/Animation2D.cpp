@@ -15,7 +15,11 @@ CAnimation2D::CAnimation2D()	:
 	m_FrameTime(0.f),
 	m_Frame(0),
 	m_CurrentSequence(nullptr),
-	m_IsFrameEnd(false)
+	m_IsFrameEnd(false),
+	m_Animation2DEnable(true),
+	m_UVFlow2DEnable(false),
+	m_UVFlow2DSpeed(0.1f),
+	m_UVFlow2DDirection(1)
 {
 }
 
@@ -171,6 +175,11 @@ void CAnimation2D::SetShader()
 	m_pCBuffer->SetStartUV(StartUV);
 	m_pCBuffer->SetEndUV(EndUV);
 	m_pCBuffer->SetAnimation2DType(m_CurrentSequence->Sequence->m_Type);
+
+	m_pCBuffer->SetAnimation2DEnable(m_Animation2DEnable);
+	m_pCBuffer->SetUVFlow2DEnable(m_UVFlow2DEnable);
+	m_pCBuffer->SetUVFlow2DDirection(m_UVFlow2DDirection);
+	m_pCBuffer->SetUVFlow2DSpeed(m_UVFlow2DSpeed);
 
 	m_pCBuffer->UpdateCBuffer();
 }

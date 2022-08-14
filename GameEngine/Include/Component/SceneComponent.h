@@ -67,13 +67,10 @@ public:
     virtual CSceneComponent* Clone();
 
 public:
-    void SetAnimation2DEnable(bool Enable);
-    void SetUVFlow2DEnable(bool Enable);
-    void SetUVFlow2DDirection(bool UVFlowDirection);
-    void SetUVFlow2DSpeed(float UVFlowSpeed);
-
-
-
+    //void SetAnimation2DEnable(bool Enable);
+    //void SetUVFlow2DEnable(bool Enable);
+    //void SetUVFlow2DDirection(bool UVFlowDirection);
+    //void SetUVFlow2DSpeed(float UVFlowSpeed);
 
 public:
     Vector3 GetVelocityScale()  const;

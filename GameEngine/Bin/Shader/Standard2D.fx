@@ -34,7 +34,7 @@ struct VS_OUTPUT_COLOR
 
 float2 ComputeAnimation2DUV(float2 UV)
 {
-	if (g_Animation2DEnable == 0 && g_UVFlow2DEnable == 0)
+	if (g_vAnimation2DEnable == 0 && g_vUVFlow2DEnable == 0)
 		return UV;
 
 	if (g_Animation2DType == Animation2DFrame ||
@@ -42,19 +42,19 @@ float2 ComputeAnimation2DUV(float2 UV)
 		return UV;
 	
 	// 이미지가 UV 애니메이션을 사용할 경우
-	if (g_Animation2DEnable == 0 && g_UVFlow2DEnable == 1)
+	if (g_vAnimation2DEnable == 0 && g_vUVFlow2DEnable == 1)
 	{
 		float2	ResultUV;
 		ResultUV = UV;
 
-		if (g_UVFlow2DDirection == 0)
+		if (g_vUVFlow2DDirection == 0)
 		{
-			ResultUV.x -= g_AccTime * g_UVFlow2DSpeed;
+			ResultUV.x -= g_AccTime * g_vUVFlow2DSpeed;
 		}
 
 		else
 		{
-			ResultUV.x += g_AccTime * g_UVFlow2DSpeed;
+			ResultUV.x += g_AccTime * g_vUVFlow2DSpeed;
 		}
 
 		return ResultUV;

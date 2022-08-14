@@ -334,25 +334,25 @@ CSceneComponent* CSceneComponent::Clone()
     return new CSceneComponent(*this);
 }
 
-void CSceneComponent::SetAnimation2DEnable(bool Enable)
-{
-    m_pTransform->SetAnimation2DEnable(Enable);
-}
-
-void CSceneComponent::SetUVFlow2DEnable(bool Enable)
-{
-    m_pTransform->SetUVFlow2DEnable(Enable);
-}
-
-void CSceneComponent::SetUVFlow2DDirection(bool UVFlowDirection)
-{
-    m_pTransform->SetUVFlow2DDirection(UVFlowDirection);
-}
-
-void CSceneComponent::SetUVFlow2DSpeed(float UVFlowSpeed)
-{
-    m_pTransform->SetUVFlow2DSpeed(UVFlowSpeed);
-}
+//void CSceneComponent::SetAnimation2DEnable(bool Enable)
+//{
+//    m_pTransform->SetAnimation2DEnable(Enable);
+//}
+//
+//void CSceneComponent::SetUVFlow2DEnable(bool Enable)
+//{
+//    m_pTransform->SetUVFlow2DEnable(Enable);
+//}
+//
+//void CSceneComponent::SetUVFlow2DDirection(bool UVFlowDirection)
+//{
+//    m_pTransform->SetUVFlow2DDirection(UVFlowDirection);
+//}
+//
+//void CSceneComponent::SetUVFlow2DSpeed(float UVFlowSpeed)
+//{
+//    m_pTransform->SetUVFlow2DSpeed(UVFlowSpeed);
+//}
 
 Vector3 CSceneComponent::GetVelocityScale() const
 {

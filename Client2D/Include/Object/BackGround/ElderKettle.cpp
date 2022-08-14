@@ -55,6 +55,7 @@ bool CElderKettle::Init()
 	m_Sprite->AddChild(m_TutorialCollider);
 	m_Sprite->AddChild(m_Sign);
 
+	m_Sprite->SetDefaultZ(0.8f);
 	m_Sprite->AddChild(m_FadeIn);
 
 	m_Sprite->CreateAnimation2D<BG_KettleHouseAnim>();

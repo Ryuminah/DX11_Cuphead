@@ -89,26 +89,7 @@ void CCollisionSection::Collision(float DeltaTime)
                     Src->AddPrevCollider(Dest);
                     Dest->AddPrevCollider(Src);
 
-                    // 수정중 . . . . .
-      //              if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
-      //                  && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
-      //              {
-      //                  CGameObject* DestOwner = Dest->GetOwner();
-
-      //                  // 여기서 걸림 .
-      //                  Vector3 FowardVector = DestOwner->GetWorldPos() - DestOwner->GetPrevWorldPos();
-						//FowardVector.Normalize();
-
-      //                  float MoveSpeed = (FowardVector / DestOwner->GetVelocity().Length()).Length();
-      //                  Vector3 ReflectionVector = FowardVector * -1.f;
-      //                       
-      //                  Vector3 BlockPos = ReflectionVector * MoveSpeed;
-      //                  BlockPos.z = DestOwner->GetWorldPos().z;
-
-      //                  DestOwner->SetWorldPos(BlockPos);
-      //              }
-
-      //              // 둘다 서로 Block 해야하는 경우 막아야 하는 방향 판단을 판단해서 저장한다
+                    // 둘다 서로 Block 해야하는 경우 막아야 하는 방향 판단을 판단해서 저장한다
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                     && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     { 
@@ -117,7 +98,6 @@ void CCollisionSection::Collision(float DeltaTime)
 						Vector3 Distance = Src->GetWorldPos() - Dest->GetWorldPos();
 						Vector3 PrevDistance = Src->GetPrevWorldPos() - Dest->GetPrevWorldPos();
 
-						//Vector2 ComparePivot = { abs(Src->GetMax().x - Src->GetMin().x) *0.5f , abs(Src->GetMax().y- Src->GetMin().y) *0.5f};
 						Vector2 ComparePivot = { Src->GetMax().x - Src->GetWorldPos().x ,Src->GetMax().y - Src->GetWorldPos().y };
 
 						Vector2 TopRight = { Dest->GetMax().x , Dest->GetMax().y };
@@ -176,7 +156,7 @@ void CCollisionSection::Collision(float DeltaTime)
                 // 충돌 중 일 경우,
                 else
                 {
-                    // 막아야 하는 애라면
+                    // 막아야 하는 충돌체 라면
                     if (Dest->GetColliderType() == Collider_Type::Character && Dest->GetOwner()->GetUseBlockMovement()
                         && DestProfile->vecChannel[(int)SrcProfile->Channel].Interaction == Collision_Interaction::Block)
                     {
@@ -184,8 +164,7 @@ void CCollisionSection::Collision(float DeltaTime)
                         Vector3 MovePosition = Dest->GetOwner()->GetWorldPos() - Dest->GetOwner()->GetPrevWorldPos();
 
                         // 막혀야 할 방향이 수평일 경우 x이동이 있는지를 확인한다
-                        if (/*MovePosition.x != 0.f &&*/
-                            Dest->GetOwner()->GetBlockDirection() == BlockDirection::HORIZONTAL)
+                        if (Dest->GetOwner()->GetBlockDirection() == BlockDirection::HORIZONTAL)
                         {
                             Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
                             Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();
@@ -194,8 +173,7 @@ void CCollisionSection::Collision(float DeltaTime)
 
                         }
 
-                        else if (/*MovePosition.y != 0.f &&*/
-                            Dest->GetOwner()->GetBlockDirection() == BlockDirection::VERTICAL)
+                        else if (Dest->GetOwner()->GetBlockDirection() == BlockDirection::VERTICAL)
                         {
                             Vector3 currentPos = Dest->GetOwner()->GetWorldPos();
                             Vector3 prevPos = Dest->GetOwner()->GetPrevWorldPos();

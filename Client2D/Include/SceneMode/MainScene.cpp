@@ -13,7 +13,7 @@
 #include "../Object/BackGround/FG_Normal_Cloud2.h"
 #include "../Object/BackGround/FG_Normal_Cloud3.h"
 
-CMainScene::CMainScene() : m_pGameStart(false) , m_WaitTime(2.f)
+CMainScene::CMainScene() 
 {
 }
 

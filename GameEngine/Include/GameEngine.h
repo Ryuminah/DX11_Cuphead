@@ -159,10 +159,6 @@ struct TransformCBuffer
 	Matrix	matVP;
 	Matrix  matWVP;
 	Vector3 Pivot;
-	int     Animation2DEnable;
-	int     UVFlow2DEnable;
-	int     UVFlow2DDirection;
-	float	UVFlow2DSpeed;
 	Vector3 MeshSize;
 	float   Empty2;
 };
@@ -183,6 +179,10 @@ struct Animation2DCBuffer
 	Vector2 EndUV;
 	int Animation2DType;
 	Vector3 Empty;
+	int     Animation2DEnable;
+	int     UVFlow2DEnable;
+	int     UVFlow2DDirection;
+	float	UVFlow2DSpeed;
 };
 
 struct CollisionChannel

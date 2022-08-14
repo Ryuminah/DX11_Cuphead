@@ -16,10 +16,6 @@ cbuffer Transform : register(b0)
 	matrix	g_matVP;
 	matrix  g_matWVP;
 	float3  g_vPivot;
-	int		g_Animation2DEnable;
-	int		g_UVFlow2DEnable;
-	int		g_UVFlow2DDirection;
-	float	g_UVFlow2DSpeed;
 	float3  g_vMeshSize;
 	float   g_fTrEmpty2;
 };
@@ -78,6 +74,10 @@ cbuffer Animation2D : register(b6)
 	float2  g_vAnimation2DEndUV;
 	int		g_Animation2DType;
 	float3	g_vAnimation2DEmpty;
+	int		g_vAnimation2DEnable;
+	int		g_vUVFlow2DEnable;
+	int		g_vUVFlow2DDirection;
+	float	g_vUVFlow2DSpeed;
 };
 
 SamplerState    g_PointSmp  : register(s0);

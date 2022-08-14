@@ -24,10 +24,18 @@ void FG_Normal_Cloud1::Start()
 
 	//UV Flow
 	// FG : Direction(true)	BG : Direction (false)
+	
+	// 여기 부분 m_Sprite->GetAnimation2D()->Set어찌구 저찌구로 변경.. .. .
 	m_Sprite->SetAnimation2DEnable(false);
 	m_Sprite->SetUVFlow2DEnable(true);
 	m_Sprite->SetUVFlow2DSpeed(0.2f);
 	m_Sprite->SetUVFlow2DDirection(true);
+
+
+	//m_Sprite->SetAnimation2DEnable(false);
+	//m_Sprite->SetUVFlow2DEnable(true);
+	//m_Sprite->SetUVFlow2DSpeed(0.2f);
+	//m_Sprite->SetUVFlow2DDirection(true);
 }
 
 bool FG_Normal_Cloud1::Init()

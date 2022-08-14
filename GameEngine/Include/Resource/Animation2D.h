@@ -38,6 +38,13 @@ protected:
 	int			m_Frame;
 	bool		m_IsFrameEnd;
 
+	bool    m_Animation2DEnable;
+	bool	m_UVFlow2DEnable;
+	bool	m_UVFlow2DDirection;
+	float	m_UVFlow2DSpeed;
+
+
+
 protected:
 	std::function<void(const std::string&)>	m_FrameEndFunction;
 
@@ -67,6 +74,25 @@ public:
 		return m_Frame;
 	}
 
+	void SetAnimation2DEnable(bool Enable)
+	{
+		m_Animation2DEnable = Enable;
+	}
+
+	void SetUVFlow2DEnable(bool Enable)
+	{
+		m_UVFlow2DEnable = Enable;
+	}
+
+	void SetUVFlow2DDirection(bool UVFlowDirection)
+	{
+		m_UVFlow2DDirection = UVFlowDirection;
+	}
+
+	void SetUVFlow2DSpeed(float UVFlowSpeed)
+	{
+		m_UVFlow2DSpeed = UVFlowSpeed;
+	}
 
 public:
 	virtual void Start();

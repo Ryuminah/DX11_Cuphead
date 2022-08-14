@@ -21,13 +21,7 @@ private:
 	std::vector<CTransform*>    m_vecChild;
 	class CTransformConstantBuffer* m_pCBuffer;
 	float		m_DefaultZ;
-
-private:
-	bool    m_Animation2DEnable;
-	bool	m_UVFlow2DEnable;
-	bool	m_UVFlow2DDirection;				// 0은 음, 1은 양
-	float	m_UVFlow2DSpeed;			
-
+		
 public:
 	void SetDefaultZ(float Z)
 	{
@@ -37,26 +31,6 @@ public:
 	float GetDefaultZ()	const
 	{
 		return m_DefaultZ;
-	}
-
-	void SetAnimation2DEnable(bool Enable)
-	{
-		m_Animation2DEnable = Enable;
-	}
-
-	void SetUVFlow2DEnable(bool Enable)
-	{
-		m_UVFlow2DEnable = Enable;
-	}
-
-	void SetUVFlow2DDirection(bool UVFlowDirection)
-	{
-		m_UVFlow2DDirection = UVFlowDirection;
-	}
-
-	void SetUVFlow2DSpeed(float UVFlowSpeed)
-	{
-		m_UVFlow2DSpeed = UVFlowSpeed;
 	}
 
 private:

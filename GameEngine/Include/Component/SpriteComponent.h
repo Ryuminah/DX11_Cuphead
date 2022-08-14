@@ -24,6 +24,26 @@ public:
     virtual void SetMesh(class CMesh* pMesh);
     virtual void SetMesh(const std::string& Name);
 
+    void SetAnimation2DEnable(bool Enable)
+    {
+        m_Animation->SetAnimation2DEnable(Enable);
+    }
+
+    void SetUVFlow2DEnable(bool Enable)
+    {
+        m_Animation->SetUVFlow2DEnable(Enable);
+    }
+
+    void SetUVFlow2DDirection(bool UVFlowDirection)
+    {
+        m_Animation->SetUVFlow2DDirection(UVFlowDirection);
+    }
+
+    void SetUVFlow2DSpeed(float UVFlowSpeed)
+    {
+        m_Animation->SetUVFlow2DSpeed(UVFlowSpeed);
+    }
+
 public:
     virtual void Start();
     virtual bool Init();
@@ -32,6 +52,7 @@ public:
     virtual void Collision(float DeltaTime);
     virtual void Render(float DeltaTime);
     virtual CSpriteComponent* Clone();
+
 
 public:
     void CallNotify(const std::string& Name);
